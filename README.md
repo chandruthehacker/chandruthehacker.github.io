@@ -2,6 +2,8 @@
 
 Welcome to my cybersecurity portfolio! This repository contains details about my skills, hands-on projects, and continuous learning as I work towards becoming a Security Analyst or SOC Analyst.
 
+### 🔗 Weblink: [Live Website](https://chandruthehacker.github.io)
+
 ## 👨‍💻 About Me
 
 I'm **Chandraprakash**, a passionate cybersecurity enthusiast and B.Sc. Computer Science student at GTN Arts College, Dindigul (Graduation: May 2026). I have a strong interest in defending digital systems, detecting threats, and building secure infrastructures.
