@@ -1,9 +1,9 @@
 {
   "files": {
     "main.css": "/static/css/main.a7461685.css",
-    "main.js": "/static/js/main.93d81f53.js",
+    "main.js": "/static/js/main.6a981fee.js",
     "static/media/gtn.png": "/static/media/gtn.6e448276ac892cff6c90.png",
-    "static/media/honeypot.jpg": "/static/media/honeypot.d3de711a20f5b78afa43.jpg",
+    "static/media/honeypot.jpg": "/static/media/honeypot.f184df571e765e7946d8.jpg",
     "static/media/log-parser.jpg": "/static/media/log-parser.03d1a33a18c2f56ea9bc.jpg",
     "static/media/school.png": "/static/media/school.bc90b2497c87e74fc41b.png",
     "static/media/HeroImage.jpg": "/static/media/HeroImage.c8ac6b7a0e35fed873b4.jpg",
@@ -12,10 +12,10 @@
     "static/media/cybersecurity-learn.png": "/static/media/cybersecurity-learn.9dbf391f9ac332d6d9de.png",
     "index.html": "/index.html",
     "main.a7461685.css.map": "/static/css/main.a7461685.css.map",
-    "main.93d81f53.js.map": "/static/js/main.93d81f53.js.map"
+    "main.6a981fee.js.map": "/static/js/main.6a981fee.js.map"
   },
   "entrypoints": [
     "static/css/main.a7461685.css",
-    "static/js/main.93d81f53.js"
+    "static/js/main.6a981fee.js"
   ]
 }
