@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.a7461685.css",
-    "main.js": "/static/js/main.155e1b87.js",
+    "main.js": "/static/js/main.93d81f53.js",
     "static/media/gtn.png": "/static/media/gtn.6e448276ac892cff6c90.png",
     "static/media/honeypot.jpg": "/static/media/honeypot.d3de711a20f5b78afa43.jpg",
     "static/media/log-parser.jpg": "/static/media/log-parser.03d1a33a18c2f56ea9bc.jpg",
@@ -12,10 +12,10 @@
     "static/media/cybersecurity-learn.png": "/static/media/cybersecurity-learn.9dbf391f9ac332d6d9de.png",
     "index.html": "/index.html",
     "main.a7461685.css.map": "/static/css/main.a7461685.css.map",
-    "main.155e1b87.js.map": "/static/js/main.155e1b87.js.map"
+    "main.93d81f53.js.map": "/static/js/main.93d81f53.js.map"
   },
   "entrypoints": [
     "static/css/main.a7461685.css",
-    "static/js/main.155e1b87.js"
+    "static/js/main.93d81f53.js"
   ]
 }
