@@ -1,4 +1,3 @@
-import { icons } from "react-icons";
 import projectDeveloperImg from "../assets/icons/project.png";
 import labImg from "../assets/icons/lab.png";
 import cyberSecurityLearnImg from "../assets/icons/cybersecurity-learn.png";
