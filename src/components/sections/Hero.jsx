@@ -190,7 +190,7 @@ const Img = styled.img`
   height: 100%;
   max-width: 400px;
   max-height: 400px;
-  border: 2px solid ${({ theme }) => theme.primary};
+  border: 3px solid ${({ theme }) => theme.primary};
 
   @media (max-width: 960px){
     margin-top: 35px;
