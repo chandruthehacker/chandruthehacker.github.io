@@ -1,0 +1,15 @@
+{
+  "short_name": "CP Security",
+  "name": "Chandraprakash | Cybersecurity Portfolio",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#0f172a",
+  "background_color": "#0f172a"
+}
