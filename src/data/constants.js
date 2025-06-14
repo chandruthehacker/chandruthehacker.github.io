@@ -460,7 +460,7 @@ export const projects = [
     tags: ["Linux", "Python", "Packet Analysis", "Wireshark"],
     category: "detection",
     github: "https://github.com/chandruthehacker/honeypot",
-    blog: "https://chandruthehacker.github.io/portfolio/projects/all-projects/honeypot/honeypot_trap_logger.html",
+    blog: "https://chandruthehacker.github.io/portfolio/projects/all-projects/honeypot/honeypot.html",
   },
 ];
 
