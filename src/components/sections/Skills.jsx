@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { skills } from "../../data/constants";
 import { Tilt } from "react-tilt";
@@ -10,6 +9,7 @@ justify-content-center;
 position: relative;
 z-index: 1;
 align-items: center;
+padding: 0 30px;
 `;
 const Wrapper = styled.div`
   position: relative;
@@ -65,13 +65,13 @@ const Skill = styled.div`
   padding: 18px 36px;
 
   @media (max-width: 768px) {
-    max-width: 400px;
+    max-width: 500px;
     padding: 10px 36px;
   }
 
   @media (max-width: 500px) {
-    max-width: 330px;
-    padding: 10px 36px;
+    max-width: 400px;
+    padding: 10px 10px;
   }
 `;
 

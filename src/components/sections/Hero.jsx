@@ -81,11 +81,13 @@ const Title = styled.div`
   @media (max-width: 960px) {
     text-align: center;
   }
-
   @media (max-width: 960px) {
     font-size: 40px;
     line-height: 48px;
     margin-bottom: 8px;
+  }
+  @media (max-width: 370px){
+    font-size: 35px;
   }
 `;
 
@@ -105,6 +107,9 @@ const TextLoop = styled.div`
     font-size: 22px;
     line-height: 48px;
     margin-bottom: 16px;
+  }
+    @media (max-width: 370px){
+    font-size: 17px;
   }
 `;
 
@@ -126,6 +131,9 @@ const SubTitle = styled.div`
   @media (max-width: 960px) {
     font-size: 16px;
     line-height: 32px;
+  }
+  @media (max-width: 370px){
+    font-size: 15px;
   }
 `;
 
@@ -184,9 +192,12 @@ const Img = styled.img`
   max-height: 400px;
   border: 2px solid ${({ theme }) => theme.primary};
 
+  @media (max-width: 960px){
+    margin-top: 35px;
+  }
   @media (max-width: 640px) {
-    max-width: 280px;
-    max-height: 280px;
+    max-width: 300px;
+    max-height: 300px;
   }
 `;
 

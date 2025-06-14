@@ -19,6 +19,9 @@ const Card = styled.div`
     box-shadow: 0 0 50px 4px rgba(0, 0, 0, 0.6);
     filter: brightness(1.1);
   }
+  @media(max-width: 370px){
+    width: 100%;
+  }
 `;
 const Image = styled.img`
   width: 100%;
