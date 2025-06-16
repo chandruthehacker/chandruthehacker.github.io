@@ -121,7 +121,7 @@ const Span = styled.div`
 const SubTitle = styled.div`
   font-size: 20px;
   line-height: 32px;
-  margin-bottom: 42px;
+  margin: 10px 0;
   color: ${({ theme }) => theme.text_primary + 95};
 
   @media (max-width: 960px) {
@@ -147,6 +147,7 @@ const ResumeButton = styled.a`
   max-width: 300px;
   text-align: center;
   padding: 16px 0;
+  margin-top: 30px;
 
   background: hsla(271, 100%, 50%, 1);
   background: linear-gradient(
@@ -255,6 +256,7 @@ const Hero = () => {
 
               <motion.div {...headContentAnimation}>
                 <SubTitle>{Bio.description}</SubTitle>
+                <SubTitle><Span>My mission:</Span>{Bio.mission}</SubTitle>
               </motion.div>
 
               <ResumeButton href={Bio.resume} target="_blank">
