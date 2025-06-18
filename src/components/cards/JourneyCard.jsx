@@ -23,7 +23,7 @@ const Body = styled.div`
   flex-direction: column;
 `;
 
-const Role = styled.div`
+const Name = styled.div`
   font-size: 18px;
   font-weight: 600px;
   color: ${({ theme }) => theme.text_primary + 99};
@@ -32,7 +32,7 @@ const Role = styled.div`
     font-size: 14px;
   }
 `;
-const Company = styled.div`
+const Degree = styled.div`
   font-size: 14px;
   font-weight: 500px;
   color: ${({ theme }) => theme.text_secondary + 99};
@@ -57,20 +57,22 @@ const Description = styled.div`
   font-size: 15px;
   font-weight: 400;
   color: ${({ theme }) => theme.text_primary + 99};
-  margin-bottom: 10px;
+  margin-bottom: 0px;
   @media only screen and (max-width: 768px) {
     font-size: 12px;
   }
 `;
-const Span = styled.div`
-  display: -webkit-box;
-  max-width: 100%;
-`;
+const Span = styled.div``;
 const Skills = styled.div`
   width: 100%;
   display: flex;
   gap: 12px;
   margin-top: -10px;
+`;
+const ItemWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 `;
 const Skill = styled.div`
   font-size: 15px;
@@ -81,22 +83,17 @@ const Skill = styled.div`
   }
 `;
 
-const ItemWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-`;
 
-const ExperienceCard = ({ experience }) => {
+const JourneyCard = ({ journey }) => {
   return (
     <VerticalTimelineElement
       icon={
         <img
           width="100%"
           height="100%"
-          alt={experience.school}
-          style={{ borderRadius: "50%", backgroundColor: "black", }}
-          src={experience.img}
+          alt={journey.heading}
+          style={{ borderRadius: "50%", backgroundColor: "black",}}
+          src={journey.img}
         />
       }
       contentStyle={{
@@ -114,25 +111,25 @@ const ExperienceCard = ({ experience }) => {
       contentArrowStyle={{
         borderRight: "7px solid  rgba(255, 255, 255, 0.3)",
       }}
-      date={experience.date}
+      date={journey.date}
     >
       <Top>
-        <Image src={experience.img} />
+        <Image src={journey.img} />
         <Body>
-          <Role>{experience.role}</Role>
-          <Company>{experience.company}</Company>
-          <Date>{experience.date}</Date>
+          <Name>{journey.heading}</Name>
+          <Degree>{journey.sub_heading}</Degree>
+          <Date>{journey.date}</Date>
         </Body>
       </Top>
       <Description>
-        {experience?.desc && <Span>{experience?.desc}</Span>}
-        {experience?.skills && (
+        <Span>{journey.desc}</Span>
+        {journey?.skills && (
           <>
             <br />
             <Skills>
               <b>Skills:</b>
               <ItemWrapper>
-                {experience?.skills?.map((skill, index) => (
+                {journey?.skills?.map((skill, index) => (
                   <Skill>• {skill}</Skill>
                 ))}
               </ItemWrapper>
@@ -144,4 +141,4 @@ const ExperienceCard = ({ experience }) => {
   );
 };
 
-export default ExperienceCard;
+export default JourneyCard;

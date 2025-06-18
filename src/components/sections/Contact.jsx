@@ -2,6 +2,13 @@ import React, { useRef } from "react";
 import styled from "styled-components";
 import emailjs from "@emailjs/browser";
 import EarthCanvas from "../canvas/Earth";
+import { Bio } from "../../data/constants";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import TelegramIcon from "@mui/icons-material/Telegram";
+import GmailIcon from "@mui/icons-material/Email";
 
 const Container = styled.div`
   display: flex;
@@ -45,6 +52,7 @@ const Desc = styled.div`
   font-size: 18px;
   text-align: center;
   max-width: 600px;
+  padding: 0 15px;
   color: ${({ theme }) => theme.text_secondary};
   @media (max-width: 768px) {
     margin-top: 12px;
@@ -124,6 +132,28 @@ const ContactButton = styled.input`
   font-size: 18px;
   font-weight: 600;
 `;
+const SocialMediaIcons = styled.div`
+  display: flex;
+@media(max-width: 400px){
+  width: 100%;
+  justify-content: space-evenly;
+  padding: 0 10px;
+}
+`;
+const SocialMediaIcon = styled.a`
+  display: inline-block;
+  font-size: 1.5rem;
+  margin: 0 1rem;
+  color: ${({ theme }) => theme.text_primary};
+  transition: color 0.2s ease-in-out;
+  &:hover {
+    color: ${({ theme }) => theme.primary};
+  }
+  @media(max-width: 400px){
+  margin: 0;
+  }
+`;
+
 
 const Contact = () => {
   const form = useRef();
@@ -156,6 +186,27 @@ const Contact = () => {
         <Desc>
           Feel free to reach out to me for any questions or opportunities!
         </Desc>
+        <SocialMediaIcons>
+        <SocialMediaIcon href={`https://mail.google.com/mail/?view=cm&fs=1&to=${Bio.gmail}&su=Subject%20Here&body=Your%20message%20here`} target="_blank">
+          <GmailIcon />
+        </SocialMediaIcon>
+        <SocialMediaIcon href={Bio.facebook} target="_blank">
+          <FacebookIcon />
+        </SocialMediaIcon>
+        <SocialMediaIcon href={Bio.twitter} target="_blank">
+          <TwitterIcon />
+        </SocialMediaIcon>
+        <SocialMediaIcon href={Bio.linkedin} target="_blank">
+          <LinkedInIcon />
+        </SocialMediaIcon>
+        <SocialMediaIcon href={Bio.insta} target="_blank">
+          <InstagramIcon />
+        </SocialMediaIcon>
+        <SocialMediaIcon href={Bio.telegram} target="_blank">
+          <TelegramIcon />
+        </SocialMediaIcon>
+                  
+                </SocialMediaIcons>
         <ContactForm onSubmit={handleSubmit}>
           <ContactTitle>Email Me 🚀</ContactTitle>
           <ContactInput placeholder="Your Email" name="from_email" />

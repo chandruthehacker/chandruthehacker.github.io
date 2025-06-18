@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { experiences } from "../../data/constants";
+import { journey } from "../../data/constants";
+import JourneyCard from "../cards/JourneyCard";
 import { VerticalTimeline } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
-import ExperienceCard from "../cards/ExperienceCard";
 
 const Container = styled.div`
 margin-top: 100px;
@@ -50,26 +50,23 @@ const Desc = styled.div`
   }
 `;
 
-const Experience = () => {
+const Journey = () => {
   return (
-    <Container id="Experience">
+    <Container id="Journey">
       <Wrapper>
-        <Title>Experience</Title>
+        <Title>Journey</Title>
         <Desc
           style={{
             marginBottom: "40px",
           }}
         >
-          My hands-on experience comes from building real-world cybersecurity
-          projects and practicing in platforms like TryHackMe and Hack The Box.
+          My education has been a journey of self-discovery and growth. My
+          educational details are as follows.
         </Desc>
 
         <VerticalTimeline>
-          {experiences.map((experience, index) => (
-            <ExperienceCard
-              key={`experience-${index}`}
-              experience={experience}
-            />
+          {journey.map((journey, index) => (
+            <JourneyCard key={`journey-${index}`} journey={journey} />
           ))}
         </VerticalTimeline>
       </Wrapper>
@@ -77,4 +74,4 @@ const Experience = () => {
   );
 };
 
-export default Experience;
+export default Journey;

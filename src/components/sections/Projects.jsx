@@ -60,6 +60,10 @@ font-size: 16px;
 border-radius: 12px;
 font-weight 500;
 margin: 22px 0;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
 @media (max-width: 768px){
     font-size: 12px;
 }

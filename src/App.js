@@ -5,14 +5,14 @@ import { BrowserRouter } from "react-router-dom";
 import Hero from "./components/sections/Hero";
 import Skills from "./components/sections/Skills";
 import { AnimatePresence } from "framer-motion";
-import Education from "./components/sections/Education";
-import Experience from "./components/sections/Experience";
+import Journey from "./components/sections/Journey";
 import Projects from "./components/sections/Projects";
 import Contact from "./components/sections/Contact";
 import Footer from "./components/sections/Footer";
 import ProjectDetails from "./components/Dialog/ProjectDetails";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
+import Certificates from "./components/sections/Certificates";
 
 const Body = styled.div`
   background-color: ${({ theme }) => theme.bg};
@@ -108,13 +108,13 @@ function App() {
           <AnimatePresence>
             <div>
               <Hero />
-              <Wrapper>
                 <Skills />
-                <Experience />
+                <Wrapper>
+                <Projects openModal={openModal} setOpenModal={setOpenModal} />
+                <Certificates openModal={openModal} setOpenModal={setOpenModal} />
               </Wrapper>
-              <Projects openModal={openModal} setOpenModal={setOpenModal} />
               <Wrapper>
-                <Education />
+                <Journey />
                 <Contact />
               </Wrapper>
               <Footer />

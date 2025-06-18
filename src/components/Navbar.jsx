@@ -15,6 +15,7 @@ const Nav = styled.div`
   top: 0;
   z-index: 10;
   color: white;
+  padding: auto auto;
 `;
 const ColorText = styled.div`
   color: ${({ theme }) => theme.primary};
@@ -23,17 +24,18 @@ const ColorText = styled.div`
 
 const NavbarContainer = styled.div`
   width: 100%;
-  max-width: 1200px;
-  padding: 0 24px;
+  padding: auto 24px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   font-size: 1rem;
+  @media screen and (max-width: 860px) {
+  justify-content: space-between;
+  padding: 0 15px;
+  }
 `;
 const NavLogo = styled(LinkR)`
   display: flex;
   align-items: center;
-  width: 80%;
   padding: 0 6px;
   font-weight: 500;
   font-size: 18px;
@@ -42,7 +44,6 @@ const NavLogo = styled(LinkR)`
 `;
 
 const NavItems = styled.ul`
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -50,7 +51,7 @@ const NavItems = styled.ul`
   padding: 0 6px;
   list-style: none;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 860px) {
     display: none;
   }
 `;
@@ -67,13 +68,13 @@ const NavLink = styled.a`
 `;
 
 const ButtonContainer = styled.div`
-  width: 80%;
   height: 100%;
   display: flex;
-  justify-content: end;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   padding: 0 6px;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 860px) {
     display: none;
   }
 `;
@@ -101,9 +102,10 @@ const MobileIcon = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
+  margin: auto 0;
   color: ${({ theme }) => theme.text_primary};
   display: none;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 860px) {
     display: block;
   }
 `;
@@ -151,9 +153,9 @@ const Navbar = () => {
         <NavItems>
           <NavLink href="#About">About</NavLink>
           <NavLink href="#Skills">Skills</NavLink>
-          <NavLink href="#Experience">Experience</NavLink>
           <NavLink href="#Projects">Projects</NavLink>
-          <NavLink href="#Education">Education</NavLink>
+          <NavLink href="#Certificates">Certificates</NavLink>
+          <NavLink href="#Journey">Journey</NavLink>
         </NavItems>
 
         {isOpen && (
@@ -164,14 +166,14 @@ const Navbar = () => {
             <NavLink onClick={() => setIsOpen(!isOpen)} href="#Skills">
               Skills
             </NavLink>
-            <NavLink onClick={() => setIsOpen(!isOpen)} href="#Experience">
-              Experience
-            </NavLink>
             <NavLink onClick={() => setIsOpen(!isOpen)} href="#Projects">
               Projects
             </NavLink>
-            <NavLink onClick={() => setIsOpen(!isOpen)} href="#Education">
-              Education
+            <NavLink onClick={() => setIsOpen(!isOpen)} href="#Certificates">
+              Certificates
+            </NavLink>
+            <NavLink onClick={() => setIsOpen(!isOpen)} href="#Journey">
+              Journey
             </NavLink>
             <GithubButton
               href={Bio.github}
