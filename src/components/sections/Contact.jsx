@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, Suspense } from "react";
 import styled from "styled-components";
 import emailjs from "@emailjs/browser";
 import EarthCanvas from "../canvas/Earth";
@@ -285,7 +285,9 @@ const Contact = () => {
   return (
     <Container>
       <Wrapper>
-        <EarthCanvas />
+        <Suspense fallback={<div>Loading 3D...</div>}>
+          <EarthCanvas />
+        </Suspense>
         <Title>Contact</Title>
         <Desc>
           Feel free to reach out to me for any questions or opportunities!
