@@ -148,7 +148,7 @@ const SkillItem = styled.div`
   align-items: center;
   justify-content: center;
   gap: 8px;
-  cursor: pointer;
+  // cursor: pointer;
 
   @media (max-width: 768px) {
     font-size: 14px;
@@ -192,7 +192,7 @@ const Skills = () => {
                         <SkillImage src={item.image} alt={item.name} />
                         {item.name}
                       </SkillItem>
-                      <Tooltip>{item.description}</Tooltip>
+                      {/* <Tooltip>{item.description}</Tooltip> */}
                     </SkillItemWrapper>
                   ))}
                 </SkillList>

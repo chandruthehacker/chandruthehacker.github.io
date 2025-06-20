@@ -6,9 +6,8 @@ import logParserImg from "../assets/projects/log-parser.jpg";
 import phisingDetectorImg from "../assets/projects/phising-detector.jpg";
 import schoolImg from "../assets/education/school.png";
 import collegeImg from "../assets/education/gtn.png";
-import resume from "../assets/resume/resume.pdf";
-import googleCyb from "../assets/certificates/google_cybersecurity.jpg";
-import internshalaEth from "../assets/certificates/internshala_nsdc.jpg";
+import googleCyb from "../assets/certificates/google_cybersecurity.webp";
+import internshalaEth from "../assets/certificates/internshala_nsdc.webp";
 
 export const Bio = {
   name: "Chandrapraksh",
@@ -21,7 +20,8 @@ export const Bio = {
   description:
     "Passionate about threat detection, log analysis, and incident response. Constantly sharpening my skills through CTF challenges (TryHackMe, Hack The Box), malware analysis labs, and SIEM tools (Splunk, Wazuh). Eager to contribute to a security team by detecting and mitigating threats effectively.",
   github: "https://github.com/chandruthehacker",
-  resume: resume,
+  resume:
+    "https://drive.google.com/file/d/19OSHfpV1Qal25pRsxN3b1vBVi6wB1qN3/view?usp=drive_link",
   gmail: "cyberchandru87@gmail.com",
   linkedin: "https://www.linkedin.com/in/chandraprakash87/",
   twitter: "https://x.com/cyberchandru",
@@ -476,7 +476,6 @@ export const skills = [
   },
 ];
 
-
 export const projects = [
   {
     id: 0,
@@ -521,8 +520,7 @@ export const certificates = [
     id: 0,
     title: "Google",
     date: "April 2025",
-    description:
-      "Cyber Security Proffessional",
+    description: "Cyber Security Proffessional",
     image: googleCyb,
     link: "https://www.coursera.org/account/accomplishments/professional-cert/TGJE3FRTFS2N",
   },
@@ -530,43 +528,41 @@ export const certificates = [
     id: 1,
     title: "Internshala",
     date: "November 2025",
-    description:
-      "Ethical Hacking",
+    description: "Ethical Hacking",
     image: internshalaEth,
     link: "https://trainings.internshala.com/certificate/view/nsdc/1gvfiyruzvc/fj2c4mq927_/",
   },
-]
-
+];
 
 export const journey = [
-   {
-  id: 0,
-  img: schoolImg,
-  heading: "Government Higher Secondary School",
-  sub_heading: "Computer Science Group (HSC XII) | GPA: XX%",
-  date: "2022 - 2023",
-  desc: "Specialized in Computer Science with focus on programming fundamentals. Initiated self-study in cybersecurity through online resources and basic network security concepts.",
-  skills: [
-    "Python (Scripting Basics)",
-    "SQL (Database Security Concepts)",
-    "C++ (Programming Foundation)"
-  ],
-},
-{
-  id: 1,
-  img: collegeImg,
-  heading: "GTN Arts College",
-  sub_heading: "B.Sc Computer Science | Cybersecurity Focus",
-  date: "2023 - 2026 (Expected)",
-  desc: "Advancing cybersecurity expertise through coursework and independent projects. Currently combining formal education with hands-on SOC skill development through:",
-  skills: [
-    "Network Security",
-    "Cryptography",
-    "Python",
-    "C/C++",
-    "Bash Scripting"
-  ],
-},
+  {
+    id: 0,
+    img: schoolImg,
+    heading: "Government Higher Secondary School",
+    sub_heading: "Computer Science Group (HSC XII) | GPA: 70%",
+    date: "2022 - 2023",
+    desc: "Specialized in Computer Science with focus on programming fundamentals. Initiated self-study in cybersecurity through online resources and basic network security concepts.",
+    skills: [
+      "Python (Scripting Basics)",
+      "SQL (Database Security Concepts)",
+      "C++ (Programming Foundation)",
+    ],
+  },
+  {
+    id: 1,
+    img: collegeImg,
+    heading: "GTN Arts College",
+    sub_heading: "B.Sc Computer Science | Cybersecurity Focus",
+    date: "2023 - 2026 (Expected)",
+    desc: "Advancing cybersecurity expertise through coursework and independent projects. Currently combining formal education with hands-on SOC skill development through:",
+    skills: [
+      "Network Security",
+      "Cryptography",
+      "Python",
+      "C/C++",
+      "Bash Scripting",
+    ],
+  },
   {
     id: 2,
     img: cyberSecurityLearnImg,
@@ -574,12 +570,7 @@ export const journey = [
     sub_heading: "Independent Learning",
     date: "2022 - Present",
     desc: "Mastered SOC fundamentals: networking, OSINT, CLI tools, and log forensics.",
-    skills: [
-      "Networking",
-      "OSINT",
-      "Bug Hunting",
-      "Cybersecurity Basics",
-    ],
+    skills: ["Networking", "OSINT", "Bug Hunting", "Cybersecurity Basics"],
   },
   {
     id: 3,
@@ -588,16 +579,10 @@ export const journey = [
     sub_heading: "TryHackMe & Hack The Box",
     date: "2024 - Present",
     desc: "Solved 50+ SOC-focused labs, specializing in Splunk log analysis and network defense.",
-    skills: [
-      "Splunk",
-      "Burp Suite",
-      "Nmap",
-      "HTB",
-      "THM"
-    ],
+    skills: ["Splunk", "Burp Suite", "Nmap", "HTB", "THM"],
   },
   {
-  id: 4,
+    id: 4,
     img: projectDeveloperImg,
     heading: "Cybersecurity Project Developer",
     sub_heading: "Personal Projects",
@@ -609,8 +594,7 @@ export const journey = [
       "Wireshark",
       "Regex",
       "Linux",
-      "Packet Analysis"
+      "Packet Analysis",
     ],
   },
-  
 ];

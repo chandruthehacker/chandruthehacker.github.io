@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import emailjs from "@emailjs/browser";
 import EarthCanvas from "../canvas/Earth";
@@ -64,6 +64,7 @@ const ContactForm = styled.form`
   max-width: 600px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   background-color: rgba(17, 25, 40, 0.83);
   border: 1px solid rgba(255, 255, 255, 0.125);
   padding: 32px;
@@ -74,14 +75,16 @@ const ContactForm = styled.form`
 `;
 const ContactTitle = styled.div`
   font-size: 28px;
-  margin-bottom: 6px;
+  text-align: center;
+  margin-bottom: 10px;
   font-weight: 600;
   color: ${({ theme }) => theme.text_primary};
 `;
+
 const ContactInput = styled.input`
   flex: 1;
   background-color: transparent;
-  border: 1px solid ${({ theme }) => theme.text_secondary + 50};
+  border: 1px solid ${({ theme, $hasError }) => ($hasError ? 'red' : theme.text_secondary + 50)};
   outline: none;
   font-size: 18px;
   color: ${({ theme }) => theme.text_primary};
@@ -91,10 +94,11 @@ const ContactInput = styled.input`
     border: 1px solid ${({ theme }) => theme.primary};
   }
 `;
+
 const ContactInputMessage = styled.textarea`
   flex: 1;
   background-color: transparent;
-  border: 1px solid ${({ theme }) => theme.text_secondary + 50};
+  border: 1px solid ${({ theme, $hasError }) => ($hasError ? 'red' : theme.text_secondary + 50)};
   outline: none;
   font-size: 18px;
   color: ${({ theme }) => theme.text_primary};
@@ -104,10 +108,10 @@ const ContactInputMessage = styled.textarea`
     border: 1px solid ${({ theme }) => theme.primary};
   }
 `;
-const ContactButton = styled.input`
+
+const ContactButton = styled.button`
   width: 100%;
   text-decoration: none;
-  text-align: center;
   background: hsla(271, 100%, 50%, 1);
   background: linear-gradient(
     225deg,
@@ -131,6 +135,12 @@ const ContactButton = styled.input`
   color: ${({ theme }) => theme.text_primary};
   font-size: 18px;
   font-weight: 600;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  opacity: ${({ disabled }) => (disabled ? 0.7 : 1)};
+  display: flex; /* Key for centering content */
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+  gap: 8px; /* Space between spinner and text (if both are present) */
 `;
 const SocialMediaIcons = styled.div`
   display: flex;
@@ -143,7 +153,7 @@ const SocialMediaIcons = styled.div`
 const SocialMediaIcon = styled.a`
   display: inline-block;
   font-size: 1.5rem;
-  margin: 0 1rem;
+  margin: 10px 1rem 0;
   color: ${({ theme }) => theme.text_primary};
   transition: color 0.2s ease-in-out;
   &:hover {
@@ -154,28 +164,122 @@ const SocialMediaIcon = styled.a`
   }
 `;
 
+const LoadingSpinner = styled.div`
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid ${({ theme }) => theme.text_primary};
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+`;
+
+const FormMessage = styled.p`
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  color: ${({ type }) => (type === 'error' ? 'red' : 'green')};
+`;
+
 
 const Contact = () => {
   const form = useRef();
+  const [isSending, setIsSending] = useState(false);
+  const [formMessage, setFormMessage] = useState('');
+  const [formMessageType, setFormMessageType] = useState('');
 
-  const handleSubmit = (e) => {
+  const [validationErrors, setValidationErrors] = useState({
+    from_email: false,
+    from_name: false,
+    message: false,
+  });
+
+  const clearValidationError = (fieldName) => {
+    if (validationErrors[fieldName]) {
+      setValidationErrors((prevErrors) => ({
+        ...prevErrors,
+        [fieldName]: false,
+      }));
+      if (formMessageType === 'error' && formMessage.includes('required fields')) {
+          setFormMessage('');
+          setFormMessageType('');
+      }
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    emailjs
-      .sendForm(
+
+    setFormMessage('');
+    setFormMessageType('');
+
+    let hasError = false;
+    const errors = {
+      from_email: false,
+      from_name: false,
+      message: false,
+    };
+
+    const emailInput = form.current.elements.from_email;
+    const nameInput = form.current.elements.from_name;
+    const messageInput = form.current.elements.message;
+
+    if (!nameInput.value.trim()) {
+      errors.from_name = true;
+      hasError = true;
+    }
+    if (!emailInput.value.trim()) {
+      errors.from_email = true;
+      hasError = true;
+    } else if (!/\S+@\S+\.\S+/.test(emailInput.value)) {
+      errors.from_email = true;
+      hasError = true;
+    }
+    if (!messageInput.value.trim()) {
+      errors.message = true;
+      hasError = true;
+    }
+
+    setValidationErrors(errors);
+
+    if (hasError) {
+      setFormMessage('Please fill in all required fields and ensure email is valid.');
+      setFormMessageType('error');
+      return;
+    }
+
+    setIsSending(true);
+
+    try {
+      const result = await emailjs.sendForm(
         "service_j8n2w7r",
         "template_k34okyh",
         form.current,
         "CPqsd_WoFyuxo09lw"
-      )
-      .then(
-        (result) => {
-          alert("Message Sent");
-          form.current.resut();
-        },
-        (error) => {
-          alert(error);
-        }
       );
+
+      console.log('EmailJS Result:', result.text);
+      setFormMessage('Message Sent Successfully!');
+      setFormMessageType('success');
+      form.current.reset();
+      setValidationErrors({
+        from_email: false,
+        from_name: false,
+        message: false,
+      });
+
+    } catch (error) {
+      console.error('EmailJS Error:', error);
+      setFormMessage(`Failed to send message: ${error.text || 'An unexpected error occurred.'}`);
+      setFormMessageType('error');
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -187,33 +291,66 @@ const Contact = () => {
           Feel free to reach out to me for any questions or opportunities!
         </Desc>
         <SocialMediaIcons>
-        <SocialMediaIcon href={`https://mail.google.com/mail/?view=cm&fs=1&to=${Bio.gmail}&su=Subject%20Here&body=Your%20message%20here`} target="_blank">
+        <SocialMediaIcon href={`https://mail.google.com/mail/?view=cm&fs=1&to=${Bio.gmail}&su=Subject%20Here&body=Your%20message%20here`} target="_blank" aria-label="Gmail">
           <GmailIcon />
         </SocialMediaIcon>
-        <SocialMediaIcon href={Bio.facebook} target="_blank">
+        <SocialMediaIcon href={Bio.facebook} target="_blank" aria-label="Facebook">
           <FacebookIcon />
         </SocialMediaIcon>
-        <SocialMediaIcon href={Bio.twitter} target="_blank">
+        <SocialMediaIcon href={Bio.twitter} target="_blank" aria-label="Twitter">
           <TwitterIcon />
         </SocialMediaIcon>
-        <SocialMediaIcon href={Bio.linkedin} target="_blank">
+        <SocialMediaIcon href={Bio.linkedin} target="_blank" aria-label="LinkedIn">
           <LinkedInIcon />
         </SocialMediaIcon>
-        <SocialMediaIcon href={Bio.insta} target="_blank">
+        <SocialMediaIcon href={Bio.insta} target="_blank" aria-label="Instagram">
           <InstagramIcon />
         </SocialMediaIcon>
-        <SocialMediaIcon href={Bio.telegram} target="_blank">
+        <SocialMediaIcon href={Bio.telegram} target="_blank" aria-label="Telegram">
           <TelegramIcon />
         </SocialMediaIcon>
-                  
-                </SocialMediaIcons>
-        <ContactForm onSubmit={handleSubmit}>
+        </SocialMediaIcons>
+        <ContactForm onSubmit={handleSubmit} ref={form}>
           <ContactTitle>Email Me 🚀</ContactTitle>
-          <ContactInput placeholder="Your Email" name="from_email" />
-          <ContactInput placeholder="Your Name" name="from_name" />
-          <ContactInput placeholder="Subject" name="subject" />
-          <ContactInputMessage placeholder="Message" name="message" rows={4} />
-          <ContactButton type="submit" value="Send" />
+
+          {formMessage && (
+            <FormMessage type={formMessageType}>{formMessage}</FormMessage>
+          )}
+
+          <ContactInput
+            placeholder="Your Email"
+            name="from_email"
+            type="email"
+            $hasError={validationErrors.from_email}
+            onFocus={() => clearValidationError('from_email')} 
+            onChange={() => clearValidationError('from_email')}
+          />
+          <ContactInput
+            placeholder="Your Name"
+            name="from_name"
+            $hasError={validationErrors.from_name}
+            onFocus={() => clearValidationError('from_name')} 
+            onChange={() => clearValidationError('from_name')}
+          />
+          <ContactInput
+            placeholder="Subject"
+            name="subject"
+          />
+          <ContactInputMessage
+            placeholder="Message"
+            name="message"
+            rows={4}
+            $hasError={validationErrors.message}
+            onFocus={() => clearValidationError('message')}
+            onChange={() => clearValidationError('message')}
+          />
+          
+          <ContactButton 
+            type="submit" 
+            disabled={isSending}
+          >
+            {isSending ? <LoadingSpinner /> : "Send"}
+          </ContactButton>
         </ContactForm>
       </Wrapper>
     </Container>
