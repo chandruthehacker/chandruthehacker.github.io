@@ -1,24 +1,19 @@
 {
   "files": {
     "main.css": "/static/css/main.a7461685.css",
-    "main.js": "/static/js/main.53ddebd7.js",
-    "static/media/google_cybersecurity.jpg": "/static/media/google_cybersecurity.609fd70a9aad37c902e1.jpg",
-    "static/media/internshala_nsdc.jpg": "/static/media/internshala_nsdc.de7cb2cf9b958ca50aa4.jpg",
-    "static/media/HeroImage2.jpg": "/static/media/HeroImage2.b52f4c87d376768d3d16.jpg",
-    "static/media/gtn.png": "/static/media/gtn.6e448276ac892cff6c90.png",
-    "static/media/honeypot.jpg": "/static/media/honeypot.f184df571e765e7946d8.jpg",
-    "static/media/resume.pdf": "/static/media/resume.51b2df274c9b36f65612.pdf",
-    "static/media/log-parser.jpg": "/static/media/log-parser.03d1a33a18c2f56ea9bc.jpg",
-    "static/media/school.png": "/static/media/school.bc90b2497c87e74fc41b.png",
-    "static/media/phising-detector.jpg": "/static/media/phising-detector.d880ffce20dc622353f8.jpg",
-    "static/media/project.png": "/static/media/project.c122a82de78158da255f.png",
-    "static/media/cybersecurity-learn.png": "/static/media/cybersecurity-learn.9dbf391f9ac332d6d9de.png",
+    "main.js": "/static/js/main.73d8f59e.js",
+    "static/media/HeroImage.webp": "/static/media/HeroImage.4594fbd672e5f65f6618.webp",
+    "static/media/log-parser.jpg": "/static/media/log-parser.7ef17e6b0777f7a223df.jpg",
+    "static/media/honeypot.jpg": "/static/media/honeypot.b57ffc279232f93410cd.jpg",
+    "static/media/phising-detector.jpg": "/static/media/phising-detector.ed9d5086fdc4c1a9d6b7.jpg",
+    "static/media/google_cybersecurity.webp": "/static/media/google_cybersecurity.bdf48bc17ff502d9309b.webp",
+    "static/media/internshala_nsdc.webp": "/static/media/internshala_nsdc.67a96ec59c21a1f1fde7.webp",
     "index.html": "/index.html",
     "main.a7461685.css.map": "/static/css/main.a7461685.css.map",
-    "main.53ddebd7.js.map": "/static/js/main.53ddebd7.js.map"
+    "main.73d8f59e.js.map": "/static/js/main.73d8f59e.js.map"
   },
   "entrypoints": [
     "static/css/main.a7461685.css",
-    "static/js/main.53ddebd7.js"
+    "static/js/main.73d8f59e.js"
   ]
 }
