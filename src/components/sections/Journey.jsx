@@ -1,15 +1,15 @@
-import React from "react";
+import React, {Suspense} from "react";
 import styled from "styled-components";
 import { journey } from "../../data/constants";
-import JourneyCard from "../cards/JourneyCard";
 import { VerticalTimeline } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
+const JourneyCard = React.lazy(() => import("../cards/JourneyCard"));
 
 const Container = styled.div`
 margin-top: 100px;
 display: flex;
 flex-direction: column;
-justify-content-center;
+justify-content: center;
 position: relative;
 z-index: 1;
 align-items: center;
@@ -64,14 +64,17 @@ const Journey = () => {
           educational details are as follows.
         </Desc>
 
-        <VerticalTimeline>
-          {journey.map((journey, index) => (
-            <JourneyCard key={`journey-${index}`} journey={journey} />
+        <VerticalTimeline
+        style={{ maxHeight: "80vh", overflowY: "auto", scrollBehavior: "smooth" }} >
+          <Suspense fallback={<div>Loading...</div>}>
+            {journey.map((item, index) => (
+          <JourneyCard key={index} journey={item} />
           ))}
+</Suspense>
         </VerticalTimeline>
       </Wrapper>
     </Container>
   );
 };
 
-export default Journey;
+export default React.memo(Journey);

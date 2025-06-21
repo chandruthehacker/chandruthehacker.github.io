@@ -479,36 +479,94 @@ export const skills = [
 export const projects = [
   {
     id: 0,
-    title: "Log Analysis Tool",
+    title: "AI-Powered Phishing Email Detector",
     date: "2025",
-    description:
-      "Built a Python-based tool to parse server logs, detect brute-force attacks, and visualize results via charts for easier incident tracking.",
-    image: logParserImg,
-    tags: ["Python", "Regex", "SIEM", "Log Analysis"],
-    category: "automation",
-    github: "https://github.com/chandruthehacker/log-parser",
-    blog: "https://chandruthehacker.github.io/portfolio/projects/all-projects/log-analysis/log-analysis.html",
-  },
-  {
-    id: 1,
-    title: "Phishing Detector",
-    date: "2025",
-    description:
-      "Developed a machine-learning driven phishing email detector that analyzes email headers and URLs to flag potential threats.",
+    description: `Detects malicious emails using Google Generative AI
+## 🛠️ Features  
+✅ Scans email headers, subject, and body for phishing indicators.  
+✅ Uses NLP to detect urgency/scare tactics (e.g., "Your account is locked!").  
+✅ Returns a risk like (Legitimate/Phishing).  
+
+## ⚙️ How It Works  
+Extracts email text (Gmail API/IMAP).  
+Sends content to Google Generative AI for analysis.  
+Flags suspicious patterns (fake links, impersonation).  
+
+## 🧪 Testing & Results  
+Tested on **100+ phishing samples** (Accuracy: 90%).  
+Reduced false positives by **20%** with keyword filtering.
+`,
     image: phisingDetectorImg,
-    tags: ["Python", "Security", "Phishing Detection"],
+    tags: ["Python", "Email Security", "AI Phishing Detector"],
     category: "detection",
     github: "https://github.com/chandruthehacker/phishing-email-detector",
     blog: "https://chandruthehacker.github.io/portfolio/projects/all-projects/phising-email-detector/phising-email-detector.html",
   },
   {
-    id: 2,
-    title: "Honeypot",
+    id: 1,
+    title: "Log Analysis Tool",
     date: "2025",
-    description:
-      "Deployed a lightweight honeypot in a VM to mimic vulnerable services, captured malicious traffic, and logged attacker behaviors for analysis.",
+    description: `A CLI tool to parse, analyze, and visualize security logs with threat detection.
+## 🛠️ Features
+✅ Automatically detects log types (Apache/Nginx/Syslog/auth.log)
+✅ Parses logs using regex to extract IPs, timestamps, and events
+✅ Detects brute-force SSH attacks (>5 failed logins in 5 mins)
+✅ Flags suspicious sudo activity and odd-hour logins
+✅ Identifies geo-based anomalies (unexpected country logins)
+✅ Outputs results as CSV, Excel, or Matplotlib charts
+
+## ⚙️ How It Works
+Ingests raw log files via CLI path or drag-and-drop
+Classifies log type and extracts key data using Pandas
+Applies threat detection rules (customizable thresholds)
+Generates reports in multiple formats:
+CSV/Excel for SIEM integration
+Interactive charts for attack visualization
+
+## 🧪 Testing & Results
+Tested on **100+ real-world logs** (AWS/on-prem servers)
+Detected **90%** of simulated attacks vs manual review's 70%
+Reduced analysis time by **60%** compared to manual processes
+
+`,
+    image: logParserImg,
+    tags: ["Python", "Regex", "Pandas", "Log Analysis", "matplotlib"],
+    category: "automation",
+    github: "https://github.com/chandruthehacker/log-parser",
+    blog: "https://chandruthehacker.github.io/portfolio/projects/all-projects/log-analysis/log-analysis.html",
+  },
+  {
+    id: 2,
+    title: "HoneyAuth: Decoy Login Threat Analyzer",
+    date: "2025",
+    description: `Deployed a honeypot in a VM to log attacker behavior by simulating vulnerable services.
+## 🛠️ Features
+✅ Simulates realistic login pages (Fake admin portals/OAuth)
+✅ Logs attacker IPs, user agents, and timestamps
+✅ Records brute-force patterns and password attempts
+✅ Tracks geographical locations of malicious visitors
+✅ Generates threat reports with access heatmaps
+
+## ⚙️ How It Works
+Hosts fake login interface (HTML/CSS indistinguishable from real systems)
+Captures all submitted credentials (never stored/used)
+Logs detailed metadata:
+Browser fingerprints
+Attack timing patterns
+GeoIP data (via free API)
+
+## 🔍 Outputs analysis:
+Top attacker IPs
+Common brute-force dictionaries
+Geographic threat map
+
+## 🧪 Testing & Results
+Collected **200+ malicious** attempts during 2-week deployment
+Identified **3 distinct** attack patterns (credential stuffing, dictionary attacks)
+Mapped threats from **12 countries** (85% from unexpected regions)
+`,
     image: honeypotImg,
-    tags: ["Linux", "Python", "Artificial Intelligence"],
+    tags: ["Python", "Flask", "Security"],
     category: "detection",
     github: "https://github.com/chandruthehacker/honeypot",
     blog: "https://chandruthehacker.github.io/portfolio/projects/all-projects/honeypot/honeypot.html",

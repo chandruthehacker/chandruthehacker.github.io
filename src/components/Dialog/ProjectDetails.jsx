@@ -53,10 +53,11 @@ const Date = styled.div`
 `;
 
 const Desc = styled.div`
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 400;
   color: ${({ theme }) => theme.text_primary};
   margin: 8px 6px;
+  white-space: pre-line;
   @media only screen and (max-width: 600px) {
     font-size: 14px;
     margin: 6px 6px;
@@ -181,6 +182,27 @@ const Button = styled.a`
 `;
 
 const ProjectDetails = ({ openModal, setOpenModal }) => {
+  function formatDescription(description) {
+  const lines = description.trim().split('\n');
+
+  return lines.map((line, index) => {
+    if (line.startsWith("##")) {
+      return <div key={index} style={{ fontWeight: "bold", marginTop: "18px", marginBottom: "5px" }}>{line.replace(/^##\s*/, '')}</div>;
+    }
+
+    const formattedLine = line
+      .replace(/\*\*(.*?)\*\*/g, "<i><b>$1</b></i>");
+
+    return (
+      <div
+        key={index}
+        dangerouslySetInnerHTML={{ __html: formattedLine }}
+        style={{ whiteSpace: "pre-line", fontSize: "15px", lineHeight: "21px" }}
+      />
+    );
+  });
+}
+
   const project = openModal?.project;
   return (
     <Modal
@@ -206,7 +228,7 @@ const ProjectDetails = ({ openModal, setOpenModal }) => {
               <Tag>{tag}</Tag>
             ))}
           </Tags>
-          <Desc>{project?.description}</Desc>
+        <Desc>{formatDescription(project.description)}</Desc>
           {project.member && (
             <>
               <Label>Members</Label>

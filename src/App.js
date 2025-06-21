@@ -4,9 +4,8 @@ import Navbar from "./components/Navbar";
 import { BrowserRouter } from "react-router-dom";
 import Hero from "./components/sections/Hero";
 import { AnimatePresence } from "framer-motion";
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import { Helmet } from "react-helmet";
-// import { useInView } from "react-intersection-observer"; // No longer needed if not waiting for Hero to be in view
 
 // Lazy-loaded sections
 const Skills = React.lazy(() => import("./components/sections/Skills"));
@@ -22,6 +21,7 @@ const Body = styled.div`
   width: 100%;
   overflow-x: hidden;
   position: relative;
+  scroll-behavior: smooth;
 `;
 
 const Wrapper = styled.div`
@@ -42,20 +42,11 @@ const Wrapper = styled.div`
 
 function App() {
   const [openModal, setOpenModal] = useState({ state: false, project: null });
-  // Remove useInView and related state if you want all content to load immediately
-  // const { ref: heroRef, inView: isHeroVisible } = useInView({ threshold: 0.8 });
-  const [loadSections] = useState(true); // <--- CHANGE THIS LINE TO TRUE
-
-  // Remove the useEffect that depends on isHeroVisible
-  // useEffect(() => {
-  //   if (isHeroVisible) setLoadSections(true);
-  // }, [isHeroVisible]);
 
   return (
     <ThemeProvider theme={darkTheme}>
       <BrowserRouter>
         <Helmet>
-          {/* SEO Meta Tags */}
           <title>Chandraprakash | Cybersecurity Portfolio</title>
           <meta
             name="description"
@@ -69,8 +60,6 @@ function App() {
           <meta name="robots" content="index, follow" />
           <link rel="canonical" href="https://chandruthehacker.github.io/" />
           <meta name="theme-color" content="#0f172a" />
-
-          {/* Open Graph Tags */}
           <meta property="og:type" content="website" />
           <meta property="og:url" content="https://chandruthehacker.github.io/" />
           <meta property="og:title" content="Chandraprakash | Cybersecurity Portfolio" />
@@ -78,8 +67,6 @@ function App() {
           <meta property="og:image" content="https://chandruthehacker.github.io/og-image-cybersecurity.png" />
           <meta property="og:image:width" content="1200" />
           <meta property="og:image:height" content="630" />
-
-          {/* Twitter Card */}
           <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:site" content="@chandruthehacker" />
           <meta name="twitter:creator" content="@chandruthehacker" />
@@ -93,34 +80,38 @@ function App() {
 
         <Body>
           <AnimatePresence>
-            <div>
-              {/* Removed ref={heroRef} as we're not waiting for hero visibility */}
-              <div>
-                <Hero />
-              </div>
+            <Hero />
 
-              {/* The conditional rendering (loadSections &&) is still useful
-                  if you want to ensure React.Suspense kicks in for
-                  lazy-loaded components, but now it will be true from the start.
-              */}
-              {loadSections && (
-                <React.Suspense fallback={<div style={{ textAlign: "center", color: "#ccc" }}>Loading portfolio...</div>}>
-                  <Skills />
-                  <Wrapper>
-                    <Projects openModal={openModal} setOpenModal={setOpenModal} />
-                    <Certificates openModal={openModal} setOpenModal={setOpenModal} />
-                  </Wrapper>
-                  <Wrapper>
-                    <Journey />
-                    <Contact />
-                  </Wrapper>
-                  <Footer />
-                  {openModal.state && (
-                    <ProjectDetails openModal={openModal} setOpenModal={setOpenModal} />
-                  )}
-                </React.Suspense>
-              )}
-            </div>
+            <Suspense fallback={<div style={{ textAlign: "center", color: "#ccc" }}>Loading Skills...</div>}>
+              <Wrapper>
+                <Skills />
+              </Wrapper>
+            </Suspense>
+
+            <Suspense fallback={<div style={{ textAlign: "center", color: "#ccc" }}>Loading Projects & Certificates...</div>}>
+              <Wrapper>
+                <Projects openModal={openModal} setOpenModal={setOpenModal} />
+                <Certificates openModal={openModal} setOpenModal={setOpenModal} />
+              </Wrapper>
+            </Suspense>
+
+            <Suspense fallback={<div style={{ textAlign: "center", color: "#ccc" }}>Loading Journey & Contact...</div>}>
+              <Wrapper>
+                <Journey />
+                <Contact />
+              </Wrapper>
+            </Suspense>
+            <Suspense fallback={<div style={{ textAlign: "center", color: "#ccc" }}>Loading Footer...</div>}>
+              <Wrapper>
+                <Footer />
+              </Wrapper>
+            </Suspense>
+
+            {openModal.state && (
+              <Suspense fallback={<div style={{ textAlign: "center", color: "#ccc" }}>Loading Project Details...</div>}>
+                <ProjectDetails openModal={openModal} setOpenModal={setOpenModal} />
+              </Suspense>
+            )}
           </AnimatePresence>
         </Body>
       </BrowserRouter>

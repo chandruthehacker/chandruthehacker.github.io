@@ -25,7 +25,7 @@ const Body = styled.div`
 
 const Name = styled.div`
   font-size: 18px;
-  font-weight: 600px;
+  font-weight: 600;
   color: ${({ theme }) => theme.text_primary + 99};
 
   @media only screen and (max-width: 768px) {
@@ -103,7 +103,6 @@ const JourneyCard = ({ journey }) => {
         background: "#1d1836",
         color: "#fff",
         boxShadow: "rgba(23, 92, 230, 0.15) 0px 4px 24px",
-        // backdropFilter: "blur(3px) saturate(106%)",
         backgroundColor: "rgba(17, 25, 40, 0.83)",
         border: "1px solid rgba(255, 255, 255, 0.125)",
         borderRadius: "6px",
@@ -114,7 +113,7 @@ const JourneyCard = ({ journey }) => {
       date={journey.date}
     >
       <Top>
-        <Image src={journey.img} />
+        <Image src={journey.img} loading="lazy" alt={journey.heading} />
         <Body>
           <Name>{journey.heading}</Name>
           <Degree>{journey.sub_heading}</Degree>
@@ -130,7 +129,7 @@ const JourneyCard = ({ journey }) => {
               <b>Skills:</b>
               <ItemWrapper>
                 {journey?.skills?.map((skill, index) => (
-                  <Skill>• {skill}</Skill>
+                  <Skill key={index}>• {skill}</Skill>
                 ))}
               </ItemWrapper>
             </Skills>

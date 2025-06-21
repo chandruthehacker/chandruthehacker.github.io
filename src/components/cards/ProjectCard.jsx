@@ -81,7 +81,8 @@ const Description = styled.div`
   margin-top: 8px;
   display: -webkit-box;
   max-width: 100%;
-  -webkit-line-clamp: 3;
+  white-space: pre-line;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
 `;
@@ -102,6 +103,29 @@ const Avatar = styled.img`
 
 
 const ProjectCard = ({ project, setOpenModal }) => {
+  function formatDescription(description) {
+  const lines = description.trim().split('\n');
+
+  return lines.map((line, index) => {
+    // Bold title line (starts with ##)
+    if (line.startsWith("##")) {
+      return <div key={index} style={{ fontWeight: "bold", marginTop: "8px" }}>{line.replace(/^##\s*/, '')}</div>;
+    }
+
+    // Replace **bold** and italic
+    const formattedLine = line
+      .replace(/\*\*(.*?)\*\*/g, "<i>$1</i>"); // Convert **text** to <i>text</i>
+
+    return (
+      <div
+        key={index}
+        dangerouslySetInnerHTML={{ __html: formattedLine }}
+        style={{ whiteSpace: "pre-line", fontSize: "14px", lineHeight: "20px" }}
+      />
+    );
+  });
+}
+
   return (
     <Card onClick={() => setOpenModal({ state: true, project: project })}>
       <Image src={project.image} />
@@ -113,7 +137,7 @@ const ProjectCard = ({ project, setOpenModal }) => {
       <Details>
         <Title>{project.title}</Title>
         <Date>{project.date}</Date>
-        <Description>{project.description}</Description>
+        <Description>{formatDescription(project.description)}</Description>
       </Details>
       <Members>
         {project.member?.map((member) => (
