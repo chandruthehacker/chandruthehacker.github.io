@@ -9,7 +9,6 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import GmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
-import { FaWhatsapp } from 'react-icons/fa';
 import { GitHub, WhatsApp } from "@mui/icons-material";
 
 const Container = styled.div`
@@ -151,13 +150,12 @@ const ContactIcons = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 30px;
-
+  padding: 0 15px;
   @media (max-width: 768px) {
     gap: 24px;
   }
 
   @media (max-width: 480px) {
-    flex-direction: column;
     align-items: center;
     gap: 16px;
   }
@@ -168,14 +166,14 @@ const ContactIcon = styled.a`
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 16px 20px;
+  padding: 10px 18px;
   border: 1px solid ${({ theme }) => theme.primary};
   border-radius: 12px;
   background-color: ${({ theme }) => theme.card_light};
   color: ${({ theme }) => theme.text_primary};
   text-decoration: none;
   font-size: 16px;
-  transition: 0.3s ease;
+  transition: 0.5s ease-in-out;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 
   &:hover {
@@ -355,34 +353,32 @@ const Contact = () => {
           Feel free to reach out to me for any questions or opportunities!
         </Desc>
         <ContactIcons>
-    <ContactIcon
-      href={`https://mail.google.com/mail/?view=cm&fs=1&to=${Bio.gmail}&su=Subject%20Here&body=Your%20message%20here`}
-      target="_blank"
-      aria-label="Gmail"
-    >
-      <GmailIcon />
-      {Bio.gmail}
-    </ContactIcon>
+          <ContactIcon
+            href={`https://mail.google.com/mail/?view=cm&fs=1&to=${Bio.gmail}&su=Subject%20Here&body=Your%20message%20here`}
+            target="_blank"
+            aria-label="Gmail"
+            >
+              <GmailIcon />
+              Let’s Connect
+          </ContactIcon>
 
-    <ContactIcon href={Bio.linkedin} target="_blank" aria-label="LinkedIn">
-      <LinkedInIcon />
-      Chandraprakash C
-    </ContactIcon>
+          <ContactIcon href={Bio.linkedin} target="_blank" aria-label="LinkedIn">
+            <LinkedInIcon />
+            Connect Now
+          </ContactIcon>
 
-    <ContactIcon href={`tel:${Bio.phone}`} aria-label="Call">
-      <PhoneIcon />
-      {Bio.phone}
-    </ContactIcon>
-
-
-  </ContactIcons>
+          <ContactIcon href={`tel:${Bio.phone}`} aria-label="Call">
+            <PhoneIcon />
+            Quick Chat
+          </ContactIcon>
+        </ContactIcons>
 
         <SocialMediaIcons>
         <SocialMediaIcon href={`https://mail.google.com/mail/?view=cm&fs=1&to=${Bio.gmail}&su=Subject%20Here&body=Your%20message%20here`} target="_blank" aria-label="Gmail">
           <GitHub style={{fontSize: "35px"}} />
         </SocialMediaIcon>
         <SocialMediaIcon href={Bio.whatsapp} target="_blank" aria-label="Whatsapp">
-          <FaWhatsapp style={{fontSize: "35px"}} />
+          <WhatsApp style={{fontSize: "35px"}} />
         </SocialMediaIcon>
         <SocialMediaIcon href={Bio.facebook} target="_blank" aria-label="Facebook">
           <FacebookIcon style={{fontSize: "35px"}}/>

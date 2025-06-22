@@ -4,7 +4,6 @@ import cyberSecurityLearnImg from "../assets/icons/cybersecurity-learn.png";
 import honeypotImg from "../assets/projects/honeypot.jpg";
 import logParserImg from "../assets/projects/log-parser.jpg";
 import phisingDetectorImg from "../assets/projects/phising-detector.jpg";
-import schoolImg from "../assets/education/school.png";
 import collegeImg from "../assets/education/gtn.png";
 import googleCyb from "../assets/certificates/google_cybersecurity.webp";
 import internshalaEth from "../assets/certificates/internshala_nsdc.webp";
@@ -23,7 +22,7 @@ export const Bio = {
   resume:
     "https://drive.google.com/file/d/19OSHfpV1Qal25pRsxN3b1vBVi6wB1qN3/view?usp=sharing",
   gmail: "cyberchandru87@gmail.com",
-  phone: "+91 9786475035",
+  phone: "+919786475035",
   linkedin: "https://www.linkedin.com/in/chandraprakash87/",
   twitter: "https://x.com/cyberchandru",
   telegram: "https://t.me/chandruthehacker",
@@ -596,65 +595,59 @@ export const certificates = [
 
 export const journey = [
   {
-    id: 0,
-    img: schoolImg,
-    heading: "Government Higher Secondary School",
-    sub_heading: "Computer Science Group (HSC XII) | GPA: 70%",
-    date: "2022 - 2023",
-    desc: "Specialized in Computer Science with focus on programming fundamentals. Initiated self-study in cybersecurity through online resources and basic network security concepts.",
-    skills: [
-      "Python (Scripting Basics)",
-      "SQL (Database Security Concepts)",
-      "C++ (Programming Foundation)",
-    ],
-  },
-  {
     id: 1,
     img: collegeImg,
-    heading: "GTN Arts College",
-    sub_heading: "B.Sc Computer Science | Cybersecurity Focus",
     date: "2023 - 2026 (Expected)",
-    desc: "Advancing cybersecurity expertise through coursework and independent projects. Currently combining formal education with hands-on SOC skill development through:",
+    heading: "B.Sc in Computer Science (Cybersecurity Focus)",
+    sub_heading: "GTN Arts College | 2023 - 2026 (Expected)",
+    desc: `Blending academic rigor with practical security training, I ranked in the top 5% on TryHackMe by completing over 100 rooms and publishing 50+ write-ups. I self-learned key SOC skills including Splunk, SIEM fundamentals, and log analysis before college labs began. Additionally, I conducted workshops for peers on ethical hacking fundamentals.`,
     skills: [
       "Network Security",
+      "Python Automation",
       "Cryptography",
-      "Python",
-      "C/C++",
-      "Bash Scripting",
+      "Incident Response Basics",
     ],
   },
   {
     id: 2,
-    img: cyberSecurityLearnImg,
-    heading: "Self-Taught Security Researcher",
-    sub_heading: "Independent Learning",
-    date: "2022 - Present",
-    desc: "Mastered SOC fundamentals: networking, OSINT, CLI tools, and log forensics.",
-    skills: ["Networking", "OSINT", "Bug Hunting", "Cybersecurity Basics"],
+    img: labImg,
+    date: "2024 - Present",
+    heading: "Bug Hunter & CTF Player",
+    sub_heading: "Hack The Box | TryHackMe | 2024 - Present",
+    desc: `As a passionate CTF player, I solved 50+ machines on Hack The Box and TryHackMe with a focus on web application pentesting and forensics. During my vulnerability research, I discovered 3 valid CVEs in educational platforms. I also built a custom reconnaissance tool using Python and Bash to automate information gathering.`,
+    skills: [
+      "Burp Suite",
+      "Nmap",
+      "Metasploit",
+      "OSINT",
+      "Web Exploitation",
+    ],
   },
   {
     id: 3,
-    img: labImg,
-    heading: "Cybersecurity Lab Practitioner",
-    sub_heading: "TryHackMe & Hack The Box",
+    img: projectDeveloperImg,
     date: "2024 - Present",
-    desc: "Solved 50+ SOC-focused labs, specializing in Splunk log analysis and network defense.",
-    skills: ["Splunk", "Burp Suite", "Nmap", "HTB", "THM"],
+    heading: "Security Lab Developer",
+    sub_heading: "SIEM, Honeypots, Threat Hunting | 2024 - Present",
+    desc: `I developed hands-on lab environments that simulate real cyber attacks. I deployed the ELK Stack to process and analyze over 10,000 logs per day for anomaly detection. I created a phishing email detection model using Python and Regex with 85% accuracy and set up a honeypot that recorded over 500 intrusion attempts within two weeks.`,
+    skills: [
+      "Splunk",
+      "Wireshark",
+      "YARA Rules",
+      "Linux Hardening",
+    ],
   },
   {
     id: 4,
-    img: projectDeveloperImg,
-    heading: "Cybersecurity Project Developer",
-    sub_heading: "Personal Projects",
+    img: cyberSecurityLearnImg,
     date: "2024 - Present",
-    desc: "Built threat detection labs (log analysis, phishing sims, honeypots) to replicate real attacks.",
+    heading: "Next: OSCP & Blue Team Certifications",
+    sub_heading: "Roadmap: 2025 - 2026",
+    desc: `My upcoming focus includes pursuing the OSCP certification to strengthen my penetration testing skills, contributing to open-source security tools with a focus on threat intelligence, and publishing technical blogs that cover malware analysis, blue team strategies, and defensive security techniques.`,
     skills: [
-      "SIEM",
-      "Python",
-      "Wireshark",
-      "Regex",
-      "Linux",
-      "Packet Analysis",
+      "Certification Prep",
+      "Threat Research",
+      "Technical Writing",
     ],
   },
 ];

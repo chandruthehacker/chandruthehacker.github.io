@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { Link as LinkR } from "react-router-dom";
+import React, { useState, useEffect  } from "react";
+import { Link as LinkR } from "react-scroll";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { MenuRounded } from "@mui/icons-material";
 import DarkMode from "./Toggle/DarkMode/DarkMode";
@@ -11,11 +12,15 @@ const Nav = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
   position: sticky;
   top: 0;
   z-index: 10;
   padding: 0 20px;
+  transition: box-shadow 0.3s ease, border-bottom 0.3s ease;
+
+  &.scrolled {
+    box-shadow: 0 0 1px ${({theme})=> theme.primary};
+  }
 `;
 
 const NavbarContainer = styled.div`
@@ -43,12 +48,29 @@ const Right = styled.div`
   user-select: none;
 `;
 
-const NavLogo = styled(LinkR)`
+const NavLogo = styled(LinkR).attrs(() => ({
+  to: "About",
+  smooth: true,
+  duration: 0,
+  spy: true,
+  exact: "true",
+  offset: -80,
+}))`
   font-weight: 600;
   font-size: 24px;
   color: ${({ theme }) => theme.primary};
   text-decoration: none;
+  cursor: pointer;
+  transition: .5s ease-in-out;
+  padding: 2px 15px;
+  border-radius: 30px;
+
+  &:hover {
+    color: ${({ theme }) => theme.text_primary};
+  }
 `;
+
+
 
 const NavItems = styled.ul`
   display: flex;
@@ -70,15 +92,6 @@ const NavLink = styled.a`
   &:hover {
     color: ${({ theme }) => theme.primary};
   }
-`;
-
-const ThemeToggle = styled.div`
-  font-size: 18px;
-  color: ${({ theme }) => theme.text_primary};
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  height: 100%;
 `;
 
 
@@ -115,14 +128,25 @@ const MobileMenu = styled.ul`
   transition: all 0.4s ease-in-out;
 `;
 
-const Navbar = ({ themeMode, toggleTheme }) => {
+
+const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 0);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <Nav>
+    <Nav className={scrolled ? "scrolled" : ""}>
       <NavbarContainer>
         <Left>
-          <NavLogo to="/">Portfolio</NavLogo>
+          <NavLogo onClick={() =>{navigate("/");}}
+          >Portfolio</NavLogo>
         </Left>
 
         <NavItems>
