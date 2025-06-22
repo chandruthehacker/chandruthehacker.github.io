@@ -8,9 +8,6 @@ import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import { journey } from "../../data/constants";
 import JourneyCard from "../cards/JourneyCard";
-import EarthCanvas from "../canvas/Earth";
-
-
 
 const Container = styled.div`
     display: flex;
@@ -100,7 +97,6 @@ const Journey = () => {
           </Timeline>
         </TimelineSection>
         <Suspense fallback={<div>Loading 3D...</div>}>
-          <EarthCanvas />
         </Suspense>
       </Wrapper>
     </Container>
