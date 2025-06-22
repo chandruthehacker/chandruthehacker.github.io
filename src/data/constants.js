@@ -21,7 +21,7 @@ export const Bio = {
     "Passionate about threat detection, log analysis, and incident response. Constantly sharpening my skills through CTF challenges (TryHackMe, Hack The Box), malware analysis labs, and SIEM tools (Splunk, Wazuh). Eager to contribute to a security team by detecting and mitigating threats effectively.",
   github: "https://github.com/chandruthehacker",
   resume:
-    "https://drive.google.com/file/d/19OSHfpV1Qal25pRsxN3b1vBVi6wB1qN3/view?usp=drive_link",
+    "https://drive.google.com/file/d/19OSHfpV1Qal25pRsxN3b1vBVi6wB1qN3/view?usp=sharing",
   gmail: "cyberchandru87@gmail.com",
   phone: "+91 9786475035",
   linkedin: "https://www.linkedin.com/in/chandraprakash87/",
