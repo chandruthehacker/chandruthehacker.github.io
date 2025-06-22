@@ -8,6 +8,9 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import GmailIcon from "@mui/icons-material/Email";
+import PhoneIcon from "@mui/icons-material/Phone";
+import { FaWhatsapp } from 'react-icons/fa';
+import { GitHub, WhatsApp } from "@mui/icons-material";
 
 const Container = styled.div`
   display: flex;
@@ -141,8 +144,64 @@ const ContactButton = styled.button`
   align-items: center; /* Centers vertically */
   gap: 8px; /* Space between spinner and text (if both are present) */
 `;
+const ContactIcons = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+
+  @media (max-width: 768px) {
+    gap: 24px;
+  }
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+}
+`;
+
+const ContactIcon = styled.a`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border: 1px solid ${({ theme }) => theme.primary};
+  border-radius: 12px;
+  background-color: ${({ theme }) => theme.card_light};
+  color: ${({ theme }) => theme.text_primary};
+  text-decoration: none;
+  font-size: 16px;
+  transition: 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+  &:hover {
+    transform: scale(1.03);
+    background-color: ${({ theme }) => theme.primary};
+    color: ${({ theme }) => theme.white};
+  }
+
+  svg {
+    font-size: 32px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+    padding: 12px 16px;
+
+    svg {
+      font-size: 26px;
+    }
+  }
+`;
+
+
 const SocialMediaIcons = styled.div`
   display: flex;
+  margin-top: 3rem;
 @media(max-width: 400px){
   width: 100%;
   justify-content: space-evenly;
@@ -157,6 +216,13 @@ const SocialMediaIcon = styled.a`
   transition: color 0.2s ease-in-out;
   &:hover {
     color: ${({ theme }) => theme.primary};
+  }
+   @media (max-width: 500px) {
+    font-size: 24px;
+
+    & > * {
+      font-size: 28px !important;
+    }
   }
   @media(max-width: 400px){
   margin: 0;
@@ -288,24 +354,47 @@ const Contact = () => {
         <Desc>
           Feel free to reach out to me for any questions or opportunities!
         </Desc>
+        <ContactIcons>
+    <ContactIcon
+      href={`https://mail.google.com/mail/?view=cm&fs=1&to=${Bio.gmail}&su=Subject%20Here&body=Your%20message%20here`}
+      target="_blank"
+      aria-label="Gmail"
+    >
+      <GmailIcon />
+      {Bio.gmail}
+    </ContactIcon>
+
+    <ContactIcon href={Bio.linkedin} target="_blank" aria-label="LinkedIn">
+      <LinkedInIcon />
+      Chandraprakash C
+    </ContactIcon>
+
+    <ContactIcon href={`tel:${Bio.phone}`} aria-label="Call">
+      <PhoneIcon />
+      {Bio.phone}
+    </ContactIcon>
+
+
+  </ContactIcons>
+
         <SocialMediaIcons>
         <SocialMediaIcon href={`https://mail.google.com/mail/?view=cm&fs=1&to=${Bio.gmail}&su=Subject%20Here&body=Your%20message%20here`} target="_blank" aria-label="Gmail">
-          <GmailIcon />
+          <GitHub style={{fontSize: "35px"}} />
+        </SocialMediaIcon>
+        <SocialMediaIcon href={Bio.whatsapp} target="_blank" aria-label="Whatsapp">
+          <FaWhatsapp style={{fontSize: "35px"}} />
         </SocialMediaIcon>
         <SocialMediaIcon href={Bio.facebook} target="_blank" aria-label="Facebook">
-          <FacebookIcon />
-        </SocialMediaIcon>
-        <SocialMediaIcon href={Bio.twitter} target="_blank" aria-label="Twitter">
-          <TwitterIcon />
-        </SocialMediaIcon>
-        <SocialMediaIcon href={Bio.linkedin} target="_blank" aria-label="LinkedIn">
-          <LinkedInIcon />
+          <FacebookIcon style={{fontSize: "35px"}}/>
         </SocialMediaIcon>
         <SocialMediaIcon href={Bio.insta} target="_blank" aria-label="Instagram">
-          <InstagramIcon />
+          <InstagramIcon style={{fontSize: "35px"}}/>
         </SocialMediaIcon>
         <SocialMediaIcon href={Bio.telegram} target="_blank" aria-label="Telegram">
-          <TelegramIcon />
+          <TelegramIcon style={{fontSize: "35px"}}/>
+        </SocialMediaIcon>
+        <SocialMediaIcon href={Bio.twitter} target="_blank" aria-label="Twitter">
+          <TwitterIcon style={{fontSize: "35px"}}/>
         </SocialMediaIcon>
         </SocialMediaIcons>
         <ContactForm onSubmit={handleSubmit} ref={form}>

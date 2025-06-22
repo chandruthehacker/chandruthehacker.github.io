@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar";
 import { BrowserRouter } from "react-router-dom";
 import Hero from "./components/sections/Hero";
 import { AnimatePresence } from "framer-motion";
-import React, { useState, Suspense } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { Helmet } from "react-helmet";
 
 // Lazy-loaded sections
@@ -22,6 +22,7 @@ const Body = styled.div`
   overflow-x: hidden;
   position: relative;
   scroll-behavior: smooth;
+  transition: background-color 0.25s ease-in-out;
 `;
 
 const Wrapper = styled.div`
@@ -40,21 +41,29 @@ const Wrapper = styled.div`
   clip-path: polygon(0 0, 100% 0, 100% 100%, 30% 98%, 0 100%);
 `;
 
-// Load theme from localStorage or default to dark
 const getInitialTheme = () => {
-  const savedTheme = localStorage.getItem("themeMode");
-  return savedTheme ? savedTheme : "dark";
+  const stored = localStorage.getItem("theme");
+  return stored === "dark" ? "dark" : "light";
 };
 
 function App() {
   const [openModal, setOpenModal] = useState({ state: false, project: null });
   const [themeMode, setThemeMode] = useState(getInitialTheme);
 
-  const toggleTheme = () => {
-    const newTheme = themeMode === "dark" ? "light" : "dark";
-    setThemeMode(newTheme);
-    localStorage.setItem("themeMode", newTheme);
-  };
+  // Sync with <DarkMode /> toggle component
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      const newTheme = document.body.getAttribute("data-theme");
+      setThemeMode(newTheme === "dark" ? "dark" : "light");
+    });
+
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <ThemeProvider theme={themeMode === "dark" ? darkTheme : lightTheme}>
@@ -89,7 +98,7 @@ function App() {
           <meta name="twitter:image" content="https://chandruthehacker.github.io/og-image-cybersecurity.png" />
         </Helmet>
 
-        <Navbar themeMode={themeMode} toggleTheme={toggleTheme} />
+        <Navbar />
 
         <Body>
           <AnimatePresence>

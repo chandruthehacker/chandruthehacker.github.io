@@ -8,7 +8,7 @@ const HeroBgAnimation = () => (
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g opacity="0.15">
+      <g opacity="0.5">
         <path
           fillRule="evenodd"
           clipRule="evenodd"
@@ -234,7 +234,7 @@ const HeroBgAnimation = () => (
           gradientTransform="translate(301 301) rotate(90) scale(300)"
         >
           <stop offset="0.333333" stopColor="#FBFBFB" />
-          <stop offset="1" stopColor="white" stopOpacity="0" />
+          <stop offset="1" stopColor="blue" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint1_radial"
@@ -245,7 +245,7 @@ const HeroBgAnimation = () => (
           gradientTransform="translate(301 301) rotate(90) scale(300)"
         >
           <stop offset="0.333333" stopColor="#FBFBFB" />
-          <stop offset="1" stopColor="white" stopOpacity="0" />
+          <stop offset="1" stopColor="blue" stopOpacity="0" />
         </radialGradient>
         <radialGradient
           id="paint2_radial"
@@ -256,7 +256,7 @@ const HeroBgAnimation = () => (
           gradientTransform="translate(301 301) rotate(90) scale(300)"
         >
           <stop offset="0.333333" stopColor="#FBFBFB" />
-          <stop offset="1" stopColor="white" stopOpacity="0" />
+          <stop offset="1" stopColor="blue" stopOpacity="0" />
         </radialGradient>
         <linearGradient
           id="paint3_linear"

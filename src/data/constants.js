@@ -23,11 +23,13 @@ export const Bio = {
   resume:
     "https://drive.google.com/file/d/19OSHfpV1Qal25pRsxN3b1vBVi6wB1qN3/view?usp=drive_link",
   gmail: "cyberchandru87@gmail.com",
+  phone: "+91 9786475035",
   linkedin: "https://www.linkedin.com/in/chandraprakash87/",
   twitter: "https://x.com/cyberchandru",
   telegram: "https://t.me/chandruthehacker",
   insta: "https://www.instagram.com/cyberchandru",
   facebook: "https://www.facebook.com/chandru87125",
+  whatsapp: "https://wa.me/919786475035",
 };
 
 export const skills = [

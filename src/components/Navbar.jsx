@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link as LinkR } from "react-router-dom";
 import styled from "styled-components";
 import { MenuRounded } from "@mui/icons-material";
+import DarkMode from "./Toggle/DarkMode/DarkMode";
+
 
 const Nav = styled.div`
   background-color: ${({ theme }) => theme.bg};
@@ -132,9 +134,7 @@ const Navbar = ({ themeMode, toggleTheme }) => {
         </NavItems>
 
         <Right>
-          <ThemeToggle onClick={toggleTheme}>
-            {themeMode === "dark" ? "🌞 Light" : "🌙 Dark"}
-          </ThemeToggle>
+          <DarkMode />
 
           <MobileIcon onClick={() => setIsOpen(!isOpen)}>
             <MenuRounded />
