@@ -1,5 +1,5 @@
 import styled, { ThemeProvider } from "styled-components";
-import { darkTheme } from "./utils/Themes";
+import { darkTheme, lightTheme } from "./utils/Themes";
 import Navbar from "./components/Navbar";
 import { BrowserRouter } from "react-router-dom";
 import Hero from "./components/sections/Hero";
@@ -40,11 +40,24 @@ const Wrapper = styled.div`
   clip-path: polygon(0 0, 100% 0, 100% 100%, 30% 98%, 0 100%);
 `;
 
+// Load theme from localStorage or default to dark
+const getInitialTheme = () => {
+  const savedTheme = localStorage.getItem("themeMode");
+  return savedTheme ? savedTheme : "dark";
+};
+
 function App() {
   const [openModal, setOpenModal] = useState({ state: false, project: null });
+  const [themeMode, setThemeMode] = useState(getInitialTheme);
+
+  const toggleTheme = () => {
+    const newTheme = themeMode === "dark" ? "light" : "dark";
+    setThemeMode(newTheme);
+    localStorage.setItem("themeMode", newTheme);
+  };
 
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={themeMode === "dark" ? darkTheme : lightTheme}>
       <BrowserRouter>
         <Helmet>
           <title>Chandraprakash | Cybersecurity Portfolio</title>
@@ -76,7 +89,7 @@ function App() {
           <meta name="twitter:image" content="https://chandruthehacker.github.io/og-image-cybersecurity.png" />
         </Helmet>
 
-        <Navbar />
+        <Navbar themeMode={themeMode} toggleTheme={toggleTheme} />
 
         <Body>
           <AnimatePresence>
@@ -101,6 +114,7 @@ function App() {
                 <Contact />
               </Wrapper>
             </Suspense>
+
             <Suspense fallback={<div style={{ textAlign: "center", color: "#ccc" }}>Loading Footer...</div>}>
               <Wrapper>
                 <Footer />

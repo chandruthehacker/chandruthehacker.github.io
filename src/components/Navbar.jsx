@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link as LinkR } from "react-router-dom";
-import styled, { useTheme } from "styled-components";
-import { Bio } from "../data/constants";
+import styled from "styled-components";
 import { MenuRounded } from "@mui/icons-material";
 
 const Nav = styled.div`
@@ -14,44 +13,48 @@ const Nav = styled.div`
   position: sticky;
   top: 0;
   z-index: 10;
-  color: white;
-  padding: auto auto;
-`;
-const ColorText = styled.div`
-  color: ${({ theme }) => theme.primary};
-  font-size: 32px;
+  padding: 0 20px;
 `;
 
 const NavbarContainer = styled.div`
   width: 100%;
-  padding: auto 24px;
+  max-width: 1280px;
   display: flex;
-  justify-content: space-around;
-  font-size: 1rem;
-  @media screen and (max-width: 860px) {
   justify-content: space-between;
-  padding: 0 15px;
-  }
+  align-items: center;
 `;
-const NavLogo = styled(LinkR)`
+
+const Left = styled.div`
   display: flex;
   align-items: center;
-  padding: 0 6px;
-  font-weight: 500;
-  font-size: 18px;
+`;
+
+const Right = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+  height: 80px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+`;
+
+const NavLogo = styled(LinkR)`
+  font-weight: 600;
+  font-size: 24px;
+  color: ${({ theme }) => theme.primary};
   text-decoration: none;
-  color: ${({ theme }) => theme.text_primary};
 `;
 
 const NavItems = styled.ul`
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 32px;
-  padding: 0 6px;
   list-style: none;
 
-  @media screen and (max-width: 860px) {
+  @media screen and (max-width: 780px) {
     display: none;
   }
 `;
@@ -67,88 +70,58 @@ const NavLink = styled.a`
   }
 `;
 
-const ButtonContainer = styled.div`
-  height: 100%;
+const ThemeToggle = styled.div`
+  font-size: 18px;
+  color: ${({ theme }) => theme.text_primary};
+  cursor: pointer;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 0 6px;
-  @media screen and (max-width: 860px) {
-    display: none;
-  }
+  height: 100%;
 `;
 
-const GithubButton = styled.a`
-  border: 1px solid ${({ theme }) => theme.primary};
-  color: ${({ theme }) => theme.primary};
-  justify-content: center;
-  display: flex;
-  align-items: center;
-  border-radius: 20px;
-  cursor: pointer;
-  padding: 10px 20px;
-  font-size: 16px;
-  font-weight: 500;
-  transition: all 0.6s ease-in-out;
-  text-decoration: none;
-  &:hover {
-    background: ${({ theme }) => theme.primary};
-    color: ${({ theme }) => theme.text_primary};
-  }
-`;
 
 const MobileIcon = styled.div`
-  height: 100%;
-  display: flex;
-  align-items: center;
-  margin: auto 0;
-  color: ${({ theme }) => theme.text_primary};
   display: none;
-  @media screen and (max-width: 860px) {
-    display: block;
+  color: ${({ theme }) => theme.text_primary};
+  cursor: pointer;
+  height: 100%;
+  display: none;
+  align-items: center;
+
+  @media screen and (max-width: 780px) {
+    display: flex;
   }
 `;
 
 const MobileMenu = styled.ul`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: 16px;
-  padding: 0 6px;
-  list-style: none;
-  width: 100%;
-  padding: 12px 40px 24px 40px;
-  background: ${({ theme }) => theme.card_light + 99};
   position: absolute;
   top: 80px;
   right: 0;
-
-  transition: all 0.6s ease-in-out;
-  transform: ${({ isOpen }) =>
-    isOpen ? "translateY(0)" : "translateY(-100%)"};
+  width: 100%;
+  background: ${({ theme }) => theme.card_light + 99};
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 40px;
+  list-style: none;
   border-radius: 0 0 20px 20px;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  transform: ${({ isOpen }) => (isOpen ? "translateY(0)" : "translateY(-100%)")};
   opacity: ${({ isOpen }) => (isOpen ? "100%" : "0")};
   z-index: ${({ isOpen }) => (isOpen ? "1000" : "-1000")};
+  transition: all 0.4s ease-in-out;
 `;
 
-const Navbar = () => {
+const Navbar = ({ themeMode, toggleTheme }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const theme = useTheme();
+
   return (
     <Nav>
       <NavbarContainer>
-        <NavLogo to="/">
-          <ColorText>&lt;</ColorText>Cyber
-          <div style={{ color: theme.primary }}>/</div>Chandru
-          <ColorText>&gt;</ColorText>
-        </NavLogo>
-
-        <MobileIcon onClick={() => setIsOpen(!isOpen)}>
-          <MenuRounded style={{ color: "inherit" }} />
-        </MobileIcon>
+        <Left>
+          <NavLogo to="/">Portfolio</NavLogo>
+        </Left>
 
         <NavItems>
           <NavLink href="#About">About</NavLink>
@@ -158,42 +131,26 @@ const Navbar = () => {
           <NavLink href="#Journey">Journey</NavLink>
         </NavItems>
 
-        {isOpen && (
-          <MobileMenu isOpen={isOpen}>
-            <NavLink onClick={() => setIsOpen(!isOpen)} href="#About">
-              About
-            </NavLink>
-            <NavLink onClick={() => setIsOpen(!isOpen)} href="#Skills">
-              Skills
-            </NavLink>
-            <NavLink onClick={() => setIsOpen(!isOpen)} href="#Projects">
-              Projects
-            </NavLink>
-            <NavLink onClick={() => setIsOpen(!isOpen)} href="#Certificates">
-              Certificates
-            </NavLink>
-            <NavLink onClick={() => setIsOpen(!isOpen)} href="#Journey">
-              Journey
-            </NavLink>
-            <GithubButton
-              href={Bio.github}
-              target="_Blank"
-              style={{
-                background: theme.primary,
-                color: theme.text_primary,
-              }}
-            >
-              Github Profile
-            </GithubButton>
-          </MobileMenu>
-        )}
+        <Right>
+          <ThemeToggle onClick={toggleTheme}>
+            {themeMode === "dark" ? "🌞 Light" : "🌙 Dark"}
+          </ThemeToggle>
 
-        <ButtonContainer>
-          <GithubButton href={Bio.github} target="_Blank">
-            Github Profile
-          </GithubButton>
-        </ButtonContainer>
+          <MobileIcon onClick={() => setIsOpen(!isOpen)}>
+            <MenuRounded />
+          </MobileIcon>
+        </Right>
       </NavbarContainer>
+
+      {isOpen && (
+        <MobileMenu isOpen={isOpen}>
+          <NavLink onClick={() => setIsOpen(false)} href="#About">About</NavLink>
+          <NavLink onClick={() => setIsOpen(false)} href="#Skills">Skills</NavLink>
+          <NavLink onClick={() => setIsOpen(false)} href="#Projects">Projects</NavLink>
+          <NavLink onClick={() => setIsOpen(false)} href="#Certificates">Certificates</NavLink>
+          <NavLink onClick={() => setIsOpen(false)} href="#Journey">Journey</NavLink>
+        </MobileMenu>
+      )}
     </Nav>
   );
 };
