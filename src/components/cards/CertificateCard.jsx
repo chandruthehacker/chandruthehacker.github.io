@@ -24,6 +24,7 @@ const Image = styled.img`
   width: 100%;
   height: 200px;
   border-radius: 10px;
+  box-shadow: 0 0 5px ${({ theme }) => theme.primary};
 `;
 
 const Details = styled.div`

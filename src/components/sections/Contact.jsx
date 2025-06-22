@@ -1,7 +1,6 @@
-import React, { useRef, useState, Suspense } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import emailjs from "@emailjs/browser";
-import EarthCanvas from "../canvas/Earth";
 import { Bio } from "../../data/constants";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
@@ -65,7 +64,7 @@ const ContactForm = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: rgba(17, 25, 40, 0.83);
+  background-color: ${({ theme }) => theme.card_bg};
   border: 1px solid rgba(255, 255, 255, 0.125);
   padding: 32px;
   border-radius: 12px;
@@ -285,9 +284,6 @@ const Contact = () => {
   return (
     <Container>
       <Wrapper>
-        <Suspense fallback={<div>Loading 3D...</div>}>
-          <EarthCanvas />
-        </Suspense>
         <Title>Contact</Title>
         <Desc>
           Feel free to reach out to me for any questions or opportunities!

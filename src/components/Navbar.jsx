@@ -40,7 +40,7 @@ const NavLogo = styled(LinkR)`
   font-weight: 500;
   font-size: 18px;
   text-decoration: none;
-  color: inherit;
+  color: ${({ theme }) => theme.text_primary};
 `;
 
 const NavItems = styled.ul`

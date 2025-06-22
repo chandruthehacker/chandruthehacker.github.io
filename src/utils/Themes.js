@@ -9,14 +9,19 @@ export const darkTheme = {
   button: "#854CE6",
   white: "#FFFFFF",
   black: "#000000",
+  card_bg: "rgba(17, 25, 40, 0.83)",
 };
 
 export const lightTheme = {
-  bg: "#FFFFFF",
-  bgLight: "#f0f0f0",
-  primary: "#be1adb",
+  bg: "#F8F9FA",
+  bgLight: "#F1F3F5",
+  primary: "#7B16FF",
   text_primary: "#111111",
-  text_secondary: "#48494a",
+  text_secondary: "#5C5F66",
   card: "#FFFFFF",
-  button: "#5c5b5b",
+  card_light: "#f7f7f9",
+  button: "#7B16FF",
+  white: "#FFFFFF",
+  black: "#000000",
+  card_bg: "rgba(255, 255, 255, 0.9)",
 };

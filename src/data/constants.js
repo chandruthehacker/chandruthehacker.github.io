@@ -479,7 +479,7 @@ export const skills = [
 export const projects = [
   {
     id: 0,
-    title: "AI-Powered Phishing Email Detector",
+    title: "AI Phishing Email Detector",
     date: "2025",
     description: `Detects malicious emails using Google Generative AI
 ## 🛠️ Features  
@@ -537,7 +537,7 @@ Reduced analysis time by **60%** compared to manual processes
   },
   {
     id: 2,
-    title: "HoneyAuth: Decoy Login Threat Analyzer",
+    title: "HoneyAuth: Decoy Login",
     date: "2025",
     description: `Deployed a honeypot in a VM to log attacker behavior by simulating vulnerable services.
 ## 🛠️ Features

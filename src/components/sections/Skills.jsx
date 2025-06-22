@@ -104,7 +104,7 @@ const SkillsContainer = styled.div`
 const Skill = styled.div`
   width: 100%;
   max-width: 500px;
-  background-color: rgba(17, 25, 40, 0.83);
+  background-color: ${({ theme }) => theme.card_bg};
   border: 1px solid rgba(255, 255, 255, 0.125);
   box-shadow: rgba(23, 92, 230, 0.15) 0px 4px 24px;
   border-radius: 16px;
