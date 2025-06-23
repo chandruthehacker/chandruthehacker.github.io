@@ -59,6 +59,10 @@ const ViewButton = styled.a`
   color: ${({ theme }) => theme.primary};
   text-decoration: none;
   cursor: pointer;
+  -webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
 `;
 
 const CertificateCard = ({ certificate, setOpenModal }) => {

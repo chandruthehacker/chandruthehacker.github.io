@@ -138,10 +138,10 @@ const ContactButton = styled.button`
   font-weight: 600;
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
   opacity: ${({ disabled }) => (disabled ? 0.7 : 1)};
-  display: flex; /* Key for centering content */
-  justify-content: center; /* Centers horizontally */
-  align-items: center; /* Centers vertically */
-  gap: 8px; /* Space between spinner and text (if both are present) */
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  gap: 8px; 
 `;
 const ContactIcons = styled.div`
   display: flex;
@@ -159,14 +159,15 @@ const ContactIcons = styled.div`
     align-items: center;
     gap: 16px;
   }
-}
 `;
 
 const ContactIcon = styled.a`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
   padding: 10px 18px;
+  width: 200px;
   border: 1px solid ${({ theme }) => theme.primary};
   border-radius: 12px;
   background-color: ${({ theme }) => theme.card_light};
@@ -175,6 +176,10 @@ const ContactIcon = styled.a`
   font-size: 16px;
   transition: 0.5s ease-in-out;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  -webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
 
   &:hover {
     transform: scale(1.03);
@@ -212,6 +217,10 @@ const SocialMediaIcon = styled.a`
   margin: 10px 1rem 0;
   color: ${({ theme }) => theme.text_primary};
   transition: color 0.2s ease-in-out;
+  -webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
   &:hover {
     color: ${({ theme }) => theme.primary};
   }
@@ -374,7 +383,7 @@ const Contact = () => {
         </ContactIcons>
 
         <SocialMediaIcons>
-        <SocialMediaIcon href={`https://mail.google.com/mail/?view=cm&fs=1&to=${Bio.gmail}&su=Subject%20Here&body=Your%20message%20here`} target="_blank" aria-label="Gmail">
+        <SocialMediaIcon href={`${Bio.github}`} target="_blank" aria-label="Gmail">
           <GitHub style={{fontSize: "35px"}} />
         </SocialMediaIcon>
         <SocialMediaIcon href={Bio.whatsapp} target="_blank" aria-label="Whatsapp">

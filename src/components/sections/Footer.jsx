@@ -36,6 +36,10 @@ const Nav = styled.nav`
   flex-direction: row;
   gap: 2rem;
   justify-content: center;
+  -webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
   @media (max-width: 768px) {
     flex-wrap: wrap;
     gap: 1rem;

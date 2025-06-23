@@ -17,7 +17,10 @@ const Nav = styled.div`
   z-index: 10;
   padding: 0 20px;
   transition: box-shadow 0.3s ease, border-bottom 0.3s ease;
-
+  -webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
   &.scrolled {
     box-shadow: 0 0 1px ${({theme})=> theme.primary};
   }
@@ -42,10 +45,6 @@ const Right = styled.div`
   justify-content: flex-end;
   gap: 20px;
   height: 80px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 `;
 
 const NavLogo = styled(LinkR).attrs(() => ({
