@@ -106,14 +106,12 @@ const ProjectCard = ({ project, setOpenModal }) => {
   const lines = description.trim().split('\n');
 
   return lines.map((line, index) => {
-    // Bold title line (starts with ##)
     if (line.startsWith("##")) {
       return <div key={index} style={{ fontWeight: "bold", marginTop: "8px" }}>{line.replace(/^##\s*/, '')}</div>;
     }
 
-    // Replace **bold** and italic
     const formattedLine = line
-      .replace(/\*\*(.*?)\*\*/g, "<i>$1</i>"); // Convert **text** to <i>text</i>
+      .replace(/\*\*(.*?)\*\*/g, "<i>$1</i>");
 
     return (
       <div

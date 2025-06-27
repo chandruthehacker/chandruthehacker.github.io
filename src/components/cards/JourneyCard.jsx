@@ -1,6 +1,8 @@
 import React from "react";
 import styled, { useTheme } from "styled-components";
 import { VerticalTimelineElement } from "react-vertical-timeline-component";
+import 'react-vertical-timeline-component/style.min.css';
+
 
 const Top = styled.div`
   width: 100%;
@@ -67,14 +69,16 @@ const Description = styled.div`
   }
 `;
 
-const Span = styled.div``;
+const Span = styled.div`
+  margin-top: 10px;
+`;
 
 const Skills = styled.div`
   width: 100%;
   display: flex;
   gap: 12px;
   flex-direction: column;
-  margin-top: 10px;
+  margin-top: 0px;
 `;
 
 const ItemWrapper = styled.div`
@@ -85,16 +89,16 @@ const ItemWrapper = styled.div`
 `;
 
 const Skill = styled.div`
-  padding: 6px 12px;
+  padding: 4px 8px;
   background-color: ${({ theme }) => theme.primary + 20};
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 400;
   user-select: none;
   border-radius: 20px;
   color: ${({ theme }) => theme.primary};
 
   @media only screen and (max-width: 768px) {
-    font-size: 12px;
+    font-size: 10px;
   }
 `;
 
@@ -116,9 +120,6 @@ const JourneyCard = ({ journey }) => {
         />
       }
       contentStyle={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "12px",
         background: theme.card_bg, 
         color: theme.text_primary,
         boxShadow: "rgba(23, 92, 230, 0.3) 0px 4px 24px",

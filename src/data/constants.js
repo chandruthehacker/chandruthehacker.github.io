@@ -1,12 +1,16 @@
 import projectDeveloperImg from "../assets/icons/project.png";
 import labImg from "../assets/icons/lab.png";
-import cyberSecurityLearnImg from "../assets/icons/cybersecurity-learn.png";
-import honeypotImg from "../assets/projects/honeypot.jpg";
-import logParserImg from "../assets/projects/log-parser.jpg";
-import phisingDetectorImg from "../assets/projects/phising-detector.jpg";
+//import cyberSecurityLearnImg from "../assets/icons/cybersecurity-learn.png";
+import honeypotImg from "../assets/projects/honeypot.webp";
+import logParserImg from "../assets/projects/log-parser.webp";
+import phishingDetectorImg from "../assets/projects/phishing-detector.webp";
+import passwordCheckerImg from "../assets/projects/password-strength-checker.webp";
 import collegeImg from "../assets/education/gtn.png";
 import googleCyb from "../assets/certificates/google_cybersecurity.webp";
 import internshalaEth from "../assets/certificates/internshala_nsdc.webp";
+import splunkUdemy from "../assets/certificates/Udemy_Splunk.webp";
+
+export const blogPortfolio = "portfolio-website-old";
 
 export const Bio = {
   name: "Chandrapraksh",
@@ -497,11 +501,11 @@ Flags suspicious patterns (fake links, impersonation).
 Tested on **100+ phishing samples** (Accuracy: 90%).  
 Reduced false positives by **20%** with keyword filtering.
 `,
-    image: phisingDetectorImg,
+    image: phishingDetectorImg,
     tags: ["Python", "Email Security", "AI Phishing Detector"],
     category: "detection",
-    github: "https://github.com/chandruthehacker/phishing-email-detector",
-    blog: "https://chandruthehacker.github.io/portfolio/projects/all-projects/phising-email-detector/phising-email-detector.html",
+    github: `https://github.com/chandruthehacker/phishing-email-detector`,
+    blog: `https://chandruthehacker.github.io/${blogPortfolio}/projects/all-projects/phising-email-detector/phising-email-detector.html`,
   },
   {
     id: 1,
@@ -534,7 +538,7 @@ Reduced analysis time by **60%** compared to manual processes
     tags: ["Python", "Regex", "Pandas", "Log Analysis", "matplotlib"],
     category: "automation",
     github: "https://github.com/chandruthehacker/log-parser",
-    blog: "https://chandruthehacker.github.io/portfolio/projects/all-projects/log-analysis/log-analysis.html",
+    blog: `https://chandruthehacker.github.io/${blogPortfolio}/projects/all-projects/log-analysis/log-analysis.html`,
   },
   {
     id: 2,
@@ -570,8 +574,41 @@ Mapped threats from **12 countries** (85% from unexpected regions)
     tags: ["Python", "Flask", "Security"],
     category: "detection",
     github: "https://github.com/chandruthehacker/honeypot",
-    blog: "https://chandruthehacker.github.io/portfolio/projects/all-projects/honeypot/honeypot.html",
+    blog: `https://chandruthehacker.github.io/${blogPortfolio}/projects/all-projects/honeypot/honeypot.html`,
   },
+  {
+  id: 3,
+  title: "Password Strength Checker",
+  date: "2025",
+  description: `
+A responsive and interactive web tool that evaluates the strength of user-entered passwords in real time and provides actionable feedback for stronger credentials.
+
+## 🔐 Key Features
+🧠 Analyzes passwords for length, character variety, and patterns  
+⚠️ Detects common weaknesses (e.g., all lowercase, repetitive chars, dictionary words)  
+✅ Provides live feedback with strength levels (Weak, Moderate, Strong)  
+🎨 Modern UI with animated indicators and color-coded messages  
+📱 Fully responsive and optimized for both desktop and mobile
+
+## ⚙️ How It Works
+- Captures user input and evaluates against defined security rules  
+- Uses JavaScript logic to calculate entropy and strength  
+- Displays dynamic visual feedback using progress bars and tips  
+- Built with clean HTML/CSS and efficient JS for speed and responsiveness
+
+## 🧪 Testing & Results
+🔍 Tested with **100+ real-world password samples**  
+🛡️ Identified **100% weak passwords** accurately  
+🚀 Enhanced user awareness about password hygiene during demos
+
+`,
+  image: passwordCheckerImg,
+  tags: ["JavaScript", "HTML", "CSS", "Security", "Frontend"],
+  category: "awareness",
+  github: "https://github.com/chandruthehacker/password-strength-checker",
+  blog: "https://chandruthehacker.github.io/blog/projects/password-checker/password-checker.html"
+}
+
 ];
 
 export const certificates = [
@@ -579,7 +616,7 @@ export const certificates = [
     id: 0,
     title: "Google",
     date: "April 2025",
-    description: "Cyber Security Proffessional",
+    description: "Cybersecurity Proffessional",
     image: googleCyb,
     link: "https://www.coursera.org/account/accomplishments/professional-cert/TGJE3FRTFS2N",
   },
@@ -591,63 +628,54 @@ export const certificates = [
     image: internshalaEth,
     link: "https://trainings.internshala.com/certificate/view/nsdc/1gvfiyruzvc/fj2c4mq927_/",
   },
+  {
+    id: 2,
+    title: "Udemy",
+    date: "June 2025",
+    description: "Splunk Core User",
+    image: splunkUdemy,
+    link: "https://www.udemy.com/certificate/UC-d1611f48-8dbb-4c43-9bde-9c0bfd0cf47c/",
+  },
 ];
 
 export const journey = [
-  {
-    id: 1,
-    img: collegeImg,
-    date: "2023 - 2026 (Expected)",
-    heading: "B.Sc in Computer Science (Cybersecurity Focus)",
-    sub_heading: "GTN Arts College | 2023 - 2026 (Expected)",
-    desc: `Blending academic rigor with practical security training, I ranked in the top 5% on TryHackMe by completing over 100 rooms and publishing 50+ write-ups. I self-learned key SOC skills including Splunk, SIEM fundamentals, and log analysis before college labs began. Additionally, I conducted workshops for peers on ethical hacking fundamentals.`,
-    skills: [
-      "Network Security",
-      "Python Automation",
-      "Cryptography",
-      "Incident Response Basics",
-    ],
-  },
-  {
-    id: 2,
-    img: labImg,
-    date: "2024 - Present",
-    heading: "Bug Hunter & CTF Player",
-    sub_heading: "Hack The Box | TryHackMe | 2024 - Present",
-    desc: `As a passionate CTF player, I solved 50+ machines on Hack The Box and TryHackMe with a focus on web application pentesting and forensics. During my vulnerability research, I discovered 3 valid CVEs in educational platforms. I also built a custom reconnaissance tool using Python and Bash to automate information gathering.`,
-    skills: [
-      "Burp Suite",
-      "Nmap",
-      "Metasploit",
-      "OSINT",
-      "Web Exploitation",
-    ],
-  },
-  {
-    id: 3,
-    img: projectDeveloperImg,
-    date: "2024 - Present",
-    heading: "Security Lab Developer",
-    sub_heading: "SIEM, Honeypots, Threat Hunting | 2024 - Present",
-    desc: `I developed hands-on lab environments that simulate real cyber attacks. I deployed the ELK Stack to process and analyze over 10,000 logs per day for anomaly detection. I created a phishing email detection model using Python and Regex with 85% accuracy and set up a honeypot that recorded over 500 intrusion attempts within two weeks.`,
-    skills: [
-      "Splunk",
-      "Wireshark",
-      "YARA Rules",
-      "Linux Hardening",
-    ],
-  },
-  {
-    id: 4,
-    img: cyberSecurityLearnImg,
-    date: "2024 - Present",
-    heading: "Next: OSCP & Blue Team Certifications",
-    sub_heading: "Roadmap: 2025 - 2026",
-    desc: `My upcoming focus includes pursuing the OSCP certification to strengthen my penetration testing skills, contributing to open-source security tools with a focus on threat intelligence, and publishing technical blogs that cover malware analysis, blue team strategies, and defensive security techniques.`,
-    skills: [
-      "Certification Prep",
-      "Threat Research",
-      "Technical Writing",
-    ],
-  },
+{
+  id: 1,
+  img: collegeImg,
+  heading: "B.Sc Computer Science",
+  sub_heading: "GTN Arts College | 2023-2026",
+  desc: "Final year with focus on networking, cybersecurity, and SOC-relevant skills like log analysis and SIEM basics.",
+  skills: [
+    "Network Security",
+    "Linux Hardening",
+    "Splunk/ELK Basics",
+    "Python Scripting"
+  ]
+},
+{
+  id: 2,
+  img: labImg,
+  heading: "SOC Labs & CTFs",
+  sub_heading: "TryHackMe | Hack The Box | 2024-Present",
+  desc: "Daily practice on defensive security: Splunk queries, log analysis, and incident response simulations.",
+  skills: [
+    "SIEM Queries",
+    "Wireshark/Nmap",
+    "Threat Detection",
+    "MITRE ATT&CK"
+  ]
+},
+{
+  id: 3,
+  img: projectDeveloperImg,
+  heading: "Defensive Projects",
+  sub_heading: "SIEM Labs | 2024-Present",
+  desc: "Built a functional SIEM lab with Elastic Stack and created automated log analysis scripts.",
+  skills: [
+    "ELK Stack",
+    "YARA Rules",
+    "Honeypots",
+    "Bash Automation"
+  ]
+},
 ];
