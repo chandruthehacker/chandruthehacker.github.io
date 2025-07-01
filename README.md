@@ -82,7 +82,3 @@ Feel free to connect or collaborate:
 - 🐙 GitHub: [github.com/chandruthehacker](https://github.com/chandruthehacker)
 
 ---
-
-## 📜 License
-
-This repository and its contents are released under the [MIT License](LICENSE).
