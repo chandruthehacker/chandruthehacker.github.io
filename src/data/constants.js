@@ -577,10 +577,10 @@ Mapped threats from **12 countries** (85% from unexpected regions)
     blog: `https://chandruthehacker.github.io/${blogPortfolio}/projects/all-projects/honeypot/honeypot.html`,
   },
   {
-  id: 3,
-  title: "Password Strength Checker",
-  date: "2025",
-  description: `
+    id: 3,
+    title: "Password Strength Checker",
+    date: "2025",
+    description: `
 A responsive and interactive web tool that evaluates the strength of user-entered passwords in real time and provides actionable feedback for stronger credentials.
 
 ## 🔐 Key Features
@@ -602,13 +602,12 @@ A responsive and interactive web tool that evaluates the strength of user-entere
 🚀 Enhanced user awareness about password hygiene during demos
 
 `,
-  image: passwordCheckerImg,
-  tags: ["JavaScript", "HTML", "CSS", "Security", "Frontend"],
-  category: "awareness",
-  github: "https://github.com/chandruthehacker/password-strength-checker",
-  blog: "https://chandruthehacker.github.io/blog/projects/password-checker/password-checker.html"
-}
-
+    image: passwordCheckerImg,
+    tags: ["JavaScript", "HTML", "CSS", "Security", "Frontend"],
+    category: "awareness",
+    github: "https://github.com/chandruthehacker/password-strength-checker",
+    blog: "https://chandruthehacker.github.io/portfolio-website-old/projects/all-projects/password-checker/password-checker.html",
+  },
 ];
 
 export const certificates = [
@@ -639,43 +638,31 @@ export const certificates = [
 ];
 
 export const journey = [
-{
-  id: 1,
-  img: collegeImg,
-  heading: "B.Sc Computer Science",
-  sub_heading: "GTN Arts College | 2023-2026",
-  desc: "Final year with focus on networking, cybersecurity, and SOC-relevant skills like log analysis and SIEM basics.",
-  skills: [
-    "Network Security",
-    "Linux Hardening",
-    "Splunk/ELK Basics",
-    "Python Scripting"
-  ]
-},
-{
-  id: 2,
-  img: labImg,
-  heading: "SOC Labs & CTFs",
-  sub_heading: "TryHackMe | Hack The Box | 2024-Present",
-  desc: "Daily practice on defensive security: Splunk queries, log analysis, and incident response simulations.",
-  skills: [
-    "SIEM Queries",
-    "Wireshark/Nmap",
-    "Threat Detection",
-    "MITRE ATT&CK"
-  ]
-},
-{
-  id: 3,
-  img: projectDeveloperImg,
-  heading: "Defensive Projects",
-  sub_heading: "SIEM Labs | 2024-Present",
-  desc: "Built a functional SIEM lab with Elastic Stack and created automated log analysis scripts.",
-  skills: [
-    "ELK Stack",
-    "YARA Rules",
-    "Honeypots",
-    "Bash Automation"
-  ]
-},
+  {
+    id: 1,
+    img: collegeImg,
+    heading: "B.Sc Computer Science",
+    sub_heading: "GTN Arts College, Dindigul",
+    date: "2023–2026",
+    desc: "Pursuing my final year with a strong focus on cybersecurity. Learned core concepts in networking, Linux, and Python while applying them in log analysis, SIEM basics, and SOC-related workflows through academic and self-driven learning.",
+    skills: ["Networking", "Log Analysis", "Linux", "Python"],
+  },
+  {
+    id: 2,
+    img: labImg,
+    heading: "SOC Labs & CTF Practice",
+    sub_heading: "TryHackMe & Hack The Box",
+    date: "2024–Present",
+    desc: "Practicing blue team skills daily through SOC simulations, defensive CTFs, and hands-on labs. Focused on log correlation, threat detection, packet inspection, and using Splunk and ELK to understand and respond to real-world attack patterns.",
+    skills: ["Splunk", "Wireshark", "Nmap", "MITRE"],
+  },
+  {
+    id: 3,
+    img: projectDeveloperImg,
+    heading: "Cybersecurity Projects",
+    sub_heading: "Self‑Driven Labs & Tools",
+    date: "2024–Present",
+    desc: "Built projects like phishing email detectors, honeypots, and a mini-SIEM using ELK. Automated alerting and log parsing with Python and Bash to simulate incident response scenarios and improve detection capabilities in small-scale environments.",
+    skills: ["ELK Stack", "YARA", "Honeypots", "Automation"],
+  },
 ];
