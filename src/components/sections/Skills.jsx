@@ -167,17 +167,13 @@ const SkillImage = styled.img`
   -webkit-user-drag: none;
 `;
 
-const Highlight = styled.span`
-  color: ${({ theme }) => theme.primary};
-`;
-
 const Skills = () => {
   return (
     <Container id="Skills">
       <Wrapper>
         <Title>Skills</Title>
         <Desc style={{ marginBottom: "40px" }}>
-          Here are some of my skills on which I have been working on for the past 3 years.<br/><Highlight>Hover My Skills</Highlight>
+          Here are some of my skills on which I have been working on for the past 3 years.
         </Desc>
 
         <SkillsContainer>
