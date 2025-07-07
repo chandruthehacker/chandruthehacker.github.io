@@ -8,7 +8,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import { Helmet } from "react-helmet";
 
 // Lazy-loaded sections
-const Skills = React.lazy(() => import("./components/sections/Skills"));
+const Skills = React.lazy(() => import("./components/sections/Skills.tsx"));
 const Journey = React.lazy(() => import("./components/sections/Journey"));
 const Projects = React.lazy(() => import("./components/sections/Projects"));
 const Contact = React.lazy(() => import("./components/sections/Contact"));

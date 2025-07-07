@@ -142,13 +142,15 @@ const SkillItem = styled.div`
   font-weight: 400;
   color: ${({ theme }) => theme.text_primary + 80};
   border: 1px solid ${({ theme }) => theme.text_primary + 80};
-  border-radius: 12px;
+  border-radius: 20px;
   padding: 12px 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  // cursor: pointer;
+  &:hover{
+    background-color: ${({ theme }) => theme.primary + 40};
+  }
 
   @media (max-width: 768px) {
     font-size: 14px;
@@ -160,12 +162,6 @@ const SkillItem = styled.div`
   }
 `;
 
-const SkillImage = styled.img`
-  width: 24px;
-  height: 24px;
-   user-select: none;
-  -webkit-user-drag: none;
-`;
 
 const Skills = () => {
   return (
@@ -182,15 +178,18 @@ const Skills = () => {
               <Skill>
                 <SkillTitle>{skill.title}</SkillTitle>
                 <SkillList>
-                  {skill.skills.map((item, index_x) => (
-                    <SkillItemWrapper key={`skill-x-${index_x}`}>
-                      <SkillItem>
-                        <SkillImage src={item.image} alt={item.name} />
-                        {item.name}
-                      </SkillItem>
-                      {/* <Tooltip>{item.description}</Tooltip> */}
-                    </SkillItemWrapper>
-                  ))}
+                  {skill.skills.map((item, index_x) => {
+                    return (
+                      <SkillItemWrapper key={`skill-x-${index_x}`}>
+                        <SkillItem>
+                          {item.icon ? (
+                            item.icon
+                          ) : null}
+                          <span>{item.name}</span>
+                        </SkillItem>
+                      </SkillItemWrapper>
+                    );
+                  })}
                 </SkillList>
               </Skill>
             </Tilt>
