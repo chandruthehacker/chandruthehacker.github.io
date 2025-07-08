@@ -14,9 +14,6 @@ const Container = styled.div`
   align-items: center;
   padding-bottom: 100px;
   
-  @media (max-width: 370px) {
-    padding: 0 15px;
-  }
 `;
 
 const Wrapper = styled.div`
