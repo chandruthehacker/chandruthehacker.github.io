@@ -1,9 +1,9 @@
 import React, {Suspense} from "react";
 import styled from "styled-components";
-import { journey } from "../../data/constants";
+import { experience } from "../../data/constants";
 import { VerticalTimeline } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
-const JourneyCard = React.lazy(() => import("../cards/JourneyCard"));
+const ExperienceCard = React.lazy(() => import("../cards/ExperienceCard"));
 
 const Container = styled.div`
 margin-top: 100px;
@@ -13,7 +13,6 @@ justify-content: center;
 position: relative;
 z-index: 1;
 align-items: center;
-padding-bottom: 100px;
 `;
 const Wrapper = styled.div`
   position: relative;
@@ -57,13 +56,13 @@ const StyledVerticalTimeline = styled(VerticalTimeline)`
   }
 `;
 
-const Journey = () => {
+const Experience = () => {
   return (
-    <Container id="Journey">
+    <Container id="Experience">
       <Wrapper>
-        <Title>Journey</Title>
+        <Title>Experience</Title>
         <Desc style={{ marginBottom: "40px" }}>
-          My education has been a journey of self-discovery and growth. My
+          My education has been a experience of self-discovery and growth. My
           educational details are as follows.
         </Desc>
 
@@ -71,8 +70,8 @@ const Journey = () => {
           style={{ maxHeight: "80vh", overflowY: "auto", scrollBehavior: "smooth" }}
         >
           <Suspense fallback={<div>Loading...</div>}>
-            {journey.map((item, index) => (
-              <JourneyCard key={index} journey={item} />
+            {experience.map((item, index) => (
+              <ExperienceCard key={index} experience={item} />
             ))}
           </Suspense>
         </StyledVerticalTimeline>
@@ -81,4 +80,4 @@ const Journey = () => {
   );
 };
 
-export default React.memo(Journey);
+export default React.memo(Experience);

@@ -27,7 +27,7 @@ const Body = styled.div`
   flex-direction: column;
 `;
 
-const Name = styled.div`
+const Heading = styled.div`
   font-size: 18px;
   font-weight: 600;
   color: ${({ theme }) => theme.text_primary};
@@ -37,7 +37,7 @@ const Name = styled.div`
   }
 `;
 
-const Degree = styled.div`
+const SubHeading = styled.div`
   font-size: 14px;
   font-weight: 500;
   color: ${({ theme }) => theme.text_secondary};
@@ -102,7 +102,7 @@ const Skill = styled.div`
   }
 `;
 
-const JourneyCard = ({ journey }) => {
+const ExperienceCard = ({ experience }) => {
   const theme = useTheme();
 
   return (
@@ -111,43 +111,43 @@ const JourneyCard = ({ journey }) => {
         <img
           width="100%"
           height="100%"
-          alt={journey.heading}
+          alt={experience.heading}
           style={{
             borderRadius: "50%",
             backgroundColor: "black",
           }}
-          src={journey.img}
+          src={experience.img}
         />
       }
       contentStyle={{
         background: theme.card_bg, 
         color: theme.text_primary,
-        boxShadow: "rgba(23, 92, 230, 0.3) 0px 4px 24px",
+        boxShadow: "rgba(0, 54, 162, 0.5) 0px 4px 24px",
         border: `1px solid rgba(255, 255, 255, 0.125)`,
         borderRadius: "15px",
       }}
       contentArrowStyle={{
         borderRight: `8px solid ${theme.text_secondary}`,
       }}
-      date={journey.date}
+      date={experience.date}
     >
       <Top>
-        <Image src={journey.img} loading="lazy" alt={journey.heading} />
+        <Image src={experience.img} loading="lazy" alt={experience.heading} />
         <Body>
-          <Name>{journey.heading}</Name>
-          <Degree>{journey.sub_heading}</Degree>
-          <Date>{journey.date}</Date>
+          <Heading>{experience.heading}</Heading>
+          <SubHeading>{experience.sub_heading}</SubHeading>
+          <Date>{experience.date}</Date>
         </Body>
       </Top>
       <Description>
-        <Span>{journey.desc}</Span>
-        {journey?.skills && (
+        <Span>{experience.desc}</Span>
+        {experience?.skills && (
           <>
             <br />
             <Skills>
               <b>Skills:</b>
               <ItemWrapper>
-                {journey.skills.map((skill, index) => (
+                {experience.skills.map((skill, index) => (
                   <Skill key={index}>{skill}</Skill>
                 ))}
               </ItemWrapper>
@@ -159,4 +159,4 @@ const JourneyCard = ({ journey }) => {
   );
 };
 
-export default JourneyCard;
+export default ExperienceCard;

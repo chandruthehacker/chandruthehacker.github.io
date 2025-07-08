@@ -1,27 +1,23 @@
 import {
-  Search, Monitor, Zap, Shield, Database, Network,
-  FileText, BellRing, CircleAlert, Code, Sigma, MailWarning, Bug,
-  Target, FileSearch2, Box, Cable, Siren, Activity, GlobeLock, BrickWallFire,
-  Globe, ChevronsLeftRightEllipsis, Repeat, Terminal, Layers,
-  Eye, ClipboardList, Command, Regex,
-  Users2, FileCode, Wrench, BrainCircuit, Share2,
-  ScrollText, Package, GitBranch, Table2, BookOpen,
-  Repeat2, Link, AlertTriangle, UserX, Lock, Brain,
-  Microscope, ListOrdered, ShieldCheck, Book, Trophy, Triangle
+  Search, Zap, Shield, Database, Network,
+  FileText, BellRing, Code, Sigma, MailWarning,
+  Target, FileSearch2, Cable, Siren, Activity, GlobeLock, BrickWallFire,
+  Globe, ChevronsLeftRightEllipsis, Terminal,
+  Eye, Command, Regex,
+  Users2, BrainCircuit, GitBranch, Link, Lock, ListOrdered, ShieldCheck, Trophy, LifeBuoy, List
 } from 'lucide-react';
 
 
-import projectDeveloperImg from "../assets/icons/project.png";
-import labImg from "../assets/icons/lab.png";
+import collegeImg from "../assets/education/gtn.png";
+import hackerImg from "../assets/icons/hacker.png";
+import internImg from "../assets/icons/internship.png";
 import honeypotImg from "../assets/projects/honeypot.webp";
 import logParserImg from "../assets/projects/log-parser.webp";
 import phishingDetectorImg from "../assets/projects/phishing-detector.webp";
 import passwordCheckerImg from "../assets/projects/password-strength-checker.webp";
-import collegeImg from "../assets/education/gtn.png";
 import googleCyb from "../assets/certificates/google_cybersecurity.webp";
 import internshalaEth from "../assets/certificates/internshala_nsdc.webp";
 import splunkUdemy from "../assets/certificates/Udemy_Splunk.webp";
-
 export const blogPortfolio = "portfolio-website-old";
 
 export const Bio = {
@@ -49,91 +45,69 @@ export const Bio = {
 
 export const skills = [
   {
-    title: "SIEM & Monitoring",
+    title: "SOC Core Tools",
     skills: [
       { name: "Splunk", icon: <Search color="#29bd00" /> },
-      { name: "SIEM", icon: <Monitor color="#00bcd4" /> },
-      { name: "SOAR", icon: <Zap color="#ff9800" /> },
+      { name: "Microsoft Sentinel", icon: <Shield color="#4caf50" /> },
+      { name: "ELK Stack", icon: <Database color="#673ab7" /> },
       { name: "Wazuh", icon: <Shield color="#9c27b0" /> },
-      { name: "ELK", icon: <Database color="#673ab7" /> },
       { name: "Zeek", icon: <Network color="#3f51b5" /> },
-      { name: "Sentinel", icon: <Shield color="#4caf50" /> },
-      { name: "Log Monitoring", icon: <FileText color="#ff5722" /> },
-      { name: "Alert Triage", icon: <BellRing color="#f44336" /> }
+      { name: "Suricata IDS", icon: <Siren color="#ff1744" /> }
     ]
   },
   {
-    title: "Threat Operations",
+    title: "Incident Response",
     skills: [
-      { name: "Incident Response", icon: <CircleAlert color="#e91e63" /> },
-      { name: "Threat Hunting", icon: <Search color="#00bcd4" /> },
-      { name: "YARA", icon: <Code color="#ff9800" /> },
-      { name: "Sigma", icon: <Sigma color="#3f51b5" /> },
-      { name: "Phishing", icon: <MailWarning color="#009688" /> },
-      { name: "Malware Analysis", icon: <Bug color="#f44336" /> },
+      { name: "Alert Triage", icon: <BellRing color="#f44336" /> },
       { name: "MITRE ATT&CK", icon: <Target color="#cddc39" /> },
+      { name: "Phishing Analysis", icon: <MailWarning color="#009688" /> },
       { name: "IOC Analysis", icon: <FileSearch2 color="#4caf50" /> },
-      { name: "Sandboxing", icon: <Box color="#9e9e9e" /> }
+      { name: "EDR Tools", icon: <Eye color="#2e7d32" /> },
+      { name: "NIST IR Lifecycle", icon: <LifeBuoy color="#00bcd4" /> }
     ]
   },
   {
     title: "Network Defense",
     skills: [
-      { name: "TCP/IP", icon: <Cable color="#00acc1" /> },
-      { name: "Firewalls", icon: <BrickWallFire color="#ef6c00" /> },
-      { name: "IDS/IPS", icon: <Siren color="#ff1744" /> },
       { name: "Wireshark", icon: <Activity color="#00e676" /> },
-      { name: "VPNs", icon: <GlobeLock color="#7c4dff" /> },
-      { name: "DNS", icon: <Globe color="#2196f3" /> },
-      { name: "NetFlow", icon: <ChevronsLeftRightEllipsis color="#c2185b" /> },
-      { name: "Proxy", icon: <Repeat color="#607d8b" /> },
+      { name: "TCP/IP Analysis", icon: <Cable color="#00acc1" /> },
+      { name: "Firewall Logs", icon: <BrickWallFire color="#ef6c00" /> },
+      { name: "VPN Monitoring", icon: <GlobeLock color="#7c4dff" /> },
       { name: "Nmap", icon: <Eye color="#26a69a" /> },
-      { name: "SSH", icon: <Terminal color="#fbc02d" /> },
-      { name: "Network Layers", icon: <Layers color="#6d4c41" /> }
+      { name: "NetFlow", icon: <ChevronsLeftRightEllipsis color="#c2185b" /> }
     ]
   },
   {
-    title: "Endpoint Security",
+    title: "Threat Detection",
     skills: [
-      { name: "Windows Security", icon: <Lock color="#2962ff" /> },
-      { name: "Linux Hardening", icon: <ShieldCheck color="#c51162" /> },
-      { name: "EDR", icon: <Eye color="#2e7d32" /> },
-      { name: "FIM", icon: <ClipboardList color="#5e35b1" /> },
-      { name: "PowerShell", icon: <Command color="#00838f" /> },
-      { name: "Bash", icon: <Terminal color="#455a64" /> },
-      { name: "Active Directory", icon: <Users2 color="#00c853" /> },
-      { name: "Sysmon", icon: <FileCode color="#8e24aa" /> },
-      { name: "Patch Management", icon: <Wrench color="#fdd835" /> }
+      { name: "Sigma Rules", icon: <Sigma color="#3f51b5" /> },
+      { name: "YARA Rules", icon: <Code color="#ff9800" /> },
+      { name: "SIEM Querying", icon: <FileSearch2 color="#2196f3" /> },
+      { name: "Log Analysis", icon: <FileText color="#ff5722" /> },
+      { name: "Regex", icon: <Regex color="#ff7043" /> },
+      { name: "OSINT", icon: <Globe color="#2196f3" /> }
     ]
   },
   {
-    title: "Automation",
+    title: "Automation & Scripting",
     skills: [
       { name: "Python", icon: <BrainCircuit color="#ffd600" /> },
-      { name: "Regex", icon: <Regex color="#ff7043" /> },
-      { name: "APIs", icon: <Share2 color="#00b0ff" /> },
-      { name: "Bash Scripting", icon: <ScrollText color="#607d8b" /> },
-      { name: "Ansible", icon: <Package color="#ab47bc" /> },
-      { name: "Git", icon: <GitBranch color="#e64a19" /> },
-      { name: "SQL", icon: <Table2 color="#4db6ac" /> },
-      { name: "Log Parsing", icon: <FileText color="#dce775" /> },
-      { name: "PlayBooks", icon: <BookOpen color="#8bc34a" /> },
-      { name: "Task Automation", icon: <Repeat2 color="#78909c" /> },
-      { name: "API Integration", icon: <Link color="#90a4ae" /> }
+      { name: "Bash", icon: <Terminal color="#455a64" /> },
+      { name: "PowerShell", icon: <Command color="#00838f" /> },
+      { name: "SOAR Basics", icon: <Zap color="#ff9800" /> },
+      { name: "API Integration", icon: <Link color="#90a4ae" /> },
+      { name: "Git", icon: <GitBranch color="#e64a19" /> }
     ]
   },
   {
-    title: "Security Foundations",
+    title: "Security Fundamentals",
     skills: [
-      { name: "Risk Assessment", icon: <AlertTriangle color="#f44336" /> },
-      { name: "Zero Trust", icon: <UserX color="#e53935" /> },
-      { name: "Encryption", icon: <Lock color="#1e88e5" /> },
-      { name: "Threat Intel", icon: <Brain color="#43a047" /> },
-      { name: "Forensics", icon: <Microscope color="#ffca28" /> },
+      { name: "Windows Event Logs", icon: <List color="#2962ff" /> },
+      { name: "Linux Auditing", icon: <ShieldCheck color="#c51162" /> },
+      { name: "Active Directory", icon: <Users2 color="#00c853" /> },
       { name: "OWASP Top 10", icon: <ListOrdered color="#5c6bc0" /> },
-      { name: "CIA Triad", icon: <Triangle color="#00acc1" /> },
-      { name: "NIST CSF", icon: <Book color="#3949ab" /> },
-      { name: "CTFs", icon: <Trophy color="#fdd835" /> }
+      { name: "Encryption", icon: <Lock color="#1e88e5" /> },
+      { name: "CTF Experience", icon: <Trophy color="#fdd835" /> }
     ]
   }
 ];
@@ -294,32 +268,32 @@ export const certificates = [
   },
 ];
 
-export const journey = [
+export const experience = [
   {
     id: 1,
     img: collegeImg,
     heading: "B.Sc Computer Science",
     sub_heading: "GTN Arts College, Dindigul",
     date: "2023–2026",
-    desc: "Pursuing my final year with a strong focus on cybersecurity. Learned core concepts in networking, Linux, and Python while applying them in log analysis, SIEM basics, and SOC-related workflows through academic and self-driven learning.",
-    skills: ["Networking", "Log Analysis", "Linux", "Python"],
+    desc: "Final year focused on cybersecurity applications, including network security, Python scripting for log analysis, and Linux system hardening. Complemented coursework with hands-on SIEM/SOC labs and CTF challenges.",
+    skills: ["Network Security", "Python", "Linux", "SIEM Basics"],
   },
   {
     id: 2,
-    img: labImg,
-    heading: "SOC Labs & CTF Practice",
-    sub_heading: "TryHackMe & Hack The Box",
-    date: "2024–Present",
-    desc: "Practicing blue team skills daily through SOC simulations, defensive CTFs, and hands-on labs. Focused on log correlation, threat detection, packet inspection, and using Splunk and ELK to understand and respond to real-world attack patterns.",
-    skills: ["Splunk", "Wireshark", "Nmap", "MITRE"],
+    img: internImg,
+    heading: "Cybersecurity Intern",
+    sub_heading: "Elevate Labs",
+    date: "June 2025 – July 2025",
+    desc: "Worked on real-world SOC tasks including log analysis, alert triage, and threat detection using Splunk and ELK. Built a Python-based log parser to identify brute-force attacks, reducing false positives by 30%. Participated in simulated phishing campaigns and incident response drills.",
+    skills: ["Splunk", "ELK", "Incident Response", "Python", "Phishing Analysis"],
   },
   {
     id: 3,
-    img: projectDeveloperImg,
-    heading: "Cybersecurity Projects",
-    sub_heading: "Self‑Driven Labs & Tools",
+    img: hackerImg,
+    heading: "Defensive CTF Practitioner",
+    sub_heading: "TryHackMe & Hack The Box",
     date: "2024–Present",
-    desc: "Built projects like phishing email detectors, honeypots, and a mini-SIEM using ELK. Automated alerting and log parsing with Python and Bash to simulate incident response scenarios and improve detection capabilities in small-scale environments.",
-    skills: ["ELK Stack", "YARA", "Honeypots", "Automation"],
-  },
+    desc: "Ranked top 10% in TryHackMe’s SOC Level 1 path. Solved 50+ blue-team challenges focused on log analysis (Zeek, Splunk), network forensics (Wireshark), and malware detection. Applied MITRE ATT&CK to map attacker TTPs in CTF scenarios.",
+    skills: ["Splunk", "Wireshark", "MITRE ATT&CK", "Zeek", "YARA"],
+  }
 ];

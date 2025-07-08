@@ -3,13 +3,16 @@ import { darkTheme, lightTheme } from "./utils/Themes";
 import Navbar from "./components/Navbar";
 import { BrowserRouter } from "react-router-dom";
 import Hero from "./components/sections/Hero";
+import Labs from "./components/sections/Labs";
 import { AnimatePresence } from "framer-motion";
 import React, { useState, useEffect, Suspense } from "react";
 import { Helmet } from "react-helmet";
 
 // Lazy-loaded sections
 const Skills = React.lazy(() => import("./components/sections/Skills.tsx"));
-const Journey = React.lazy(() => import("./components/sections/Journey"));
+const Experience = React.lazy(() =>
+  import("./components/sections/Experience.jsx")
+);
 const Projects = React.lazy(() => import("./components/sections/Projects"));
 const Contact = React.lazy(() => import("./components/sections/Contact"));
 const Footer = React.lazy(() => import("./components/sections/Footer"));
@@ -163,7 +166,6 @@ function App() {
         <Body>
           <AnimatePresence>
             <Hero />
-
             <Suspense
               fallback={
                 <div style={{ textAlign: "center", color: "#ccc" }}>
@@ -174,6 +176,16 @@ function App() {
               <Wrapper>
                 <Skills />
               </Wrapper>
+            </Suspense>
+
+            <Suspense
+              fallback={
+                <div style={{ textAlign: "center", color: "#ccc" }}>
+                  Loading Expperience...
+                </div>
+              }
+            >
+              <Experience />
             </Suspense>
 
             <Suspense
@@ -195,12 +207,12 @@ function App() {
             <Suspense
               fallback={
                 <div style={{ textAlign: "center", color: "#ccc" }}>
-                  Loading Journey & Contact...
+                  Loading Labs & Contact...
                 </div>
               }
             >
               <Wrapper>
-                <Journey />
+                <Labs />
                 <Contact />
               </Wrapper>
             </Suspense>

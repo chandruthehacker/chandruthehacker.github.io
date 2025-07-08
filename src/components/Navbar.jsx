@@ -78,7 +78,7 @@ const NavItems = styled.ul`
   list-style: none;
 
 
-  @media screen and (max-width: 780px) {
+  @media screen and (max-width: 820px) {
     display: none;
   }
 `;
@@ -93,7 +93,7 @@ const NavLink = styled.a`
   &:hover {
     color: ${({ theme }) => theme.primary};
   }
-  @media screen and (max-width: 780px) {
+  @media screen and (max-width: 820px) {
     width: 100%;
     border-bottom: 1px solid ${({ theme }) => theme.text_primary}40;
   }
@@ -108,7 +108,7 @@ const MobileIcon = styled.div`
   display: none;
   align-items: center;
 
-  @media screen and (max-width: 780px) {
+  @media screen and (max-width: 820px) {
     display: flex;
   }
 `;
@@ -157,9 +157,10 @@ const Navbar = () => {
         <NavItems>
           <NavLink href="#About">About</NavLink>
           <NavLink href="#Skills">Skills</NavLink>
+          <NavLink href="#Experience">Experience</NavLink>
           <NavLink href="#Projects">Projects</NavLink>
           <NavLink href="#Certificates">Certificates</NavLink>
-          <NavLink href="#Journey">Journey</NavLink>
+          {/* <NavLink href="#Labs">Labs</NavLink> */}
         </NavItems>
 
         <Right>
@@ -175,9 +176,10 @@ const Navbar = () => {
         <MobileMenu isOpen={isOpen}>
           <NavLink onClick={() => setIsOpen(false)} href="#About">About</NavLink>
           <NavLink onClick={() => setIsOpen(false)} href="#Skills">Skills</NavLink>
+          <NavLink onClick={() => setIsOpen(false)} href="#Experience">Experience</NavLink>
           <NavLink onClick={() => setIsOpen(false)} href="#Projects">Projects</NavLink>
           <NavLink onClick={() => setIsOpen(false)} href="#Certificates">Certificates</NavLink>
-          <NavLink onClick={() => setIsOpen(false)} href="#Journey">Journey</NavLink>
+          {/* <NavLink onClick={() => setIsOpen(false)} href="#Labs">Labs</NavLink> */}
         </MobileMenu>
       )}
     </Nav>

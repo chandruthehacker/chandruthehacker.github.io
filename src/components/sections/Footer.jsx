@@ -24,7 +24,7 @@ const FooterWrapper = styled.div`
 
 const Logo = styled.div`
   font-weight: 600;
-  font-size: 20px;
+  font-size: 24px;
   color: ${({ theme }) => theme.primary};
 `;
 
@@ -77,9 +77,10 @@ const Footer = () => {
         <Nav>
           <NavLink href="#About">About</NavLink>
           <NavLink href="#Skills">Skills</NavLink>
+          <NavLink href="#Experience">Experience</NavLink>
           <NavLink href="#Projects">Projects</NavLink>
           <NavLink href="#Certificates">Certificates</NavLink>
-          <NavLink href="#Journey">Journey</NavLink>
+          <NavLink href="#Labs">Labs</NavLink>
         </Nav>
         <Copyright>&copy; 2025 Chandraprakash. All rights reserved.</Copyright>
       </FooterWrapper>
