@@ -68,7 +68,8 @@ const Certificates = ({ openModal, setOpenModal }) => {
       <Wrapper>
         <Title>Certificates</Title>
         <Desc style={{ marginBottom: "40px" }}>
-Certified in threat detection, log analysis, and SOC operations through hands-on labs and industry-recognized credentials.        </Desc>
+          Certified in threat detection, log analysis, and SOC operations through hands-on labs and industry-recognized credentials.        
+        </Desc>
         <CardContainer>
           {certificates.map((certificate, index) => (
             <CertificateCard

@@ -77,6 +77,7 @@ const NavItems = styled.ul`
   gap: 32px;
   list-style: none;
 
+
   @media screen and (max-width: 780px) {
     display: none;
   }
@@ -88,8 +89,13 @@ const NavLink = styled.a`
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   text-decoration: none;
+
   &:hover {
     color: ${({ theme }) => theme.primary};
+  }
+  @media screen and (max-width: 780px) {
+    width: 100%;
+    border-bottom: 1px solid ${({ theme }) => theme.text_primary}40;
   }
 `;
 
