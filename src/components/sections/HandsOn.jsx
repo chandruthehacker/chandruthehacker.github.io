@@ -68,6 +68,11 @@ const BadgeContainer = styled.div`
     &:hover{
       transform: scale(1.13);
     }
+
+    @media(max-width: 376px){
+      width: 280px;
+      height: auto;
+    }
   }
 `;
 

@@ -133,7 +133,7 @@ const MobileMenu = styled.ul`
   transform: ${({ isOpen }) => (isOpen ? "translateY(0)" : "translateY(-100%)")};
   opacity: ${({ isOpen }) => (isOpen ? "100%" : "0")};
   z-index: ${({ isOpen }) => (isOpen ? "1000" : "-1000")};
-  transition: all 0.4s ease-in-out;
+  transition: all 0.5s ease-in-out;
 `;
 
 
