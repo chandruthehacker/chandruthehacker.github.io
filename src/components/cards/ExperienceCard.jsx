@@ -2,7 +2,7 @@ import React from "react";
 import styled, { useTheme } from "styled-components";
 import { VerticalTimelineElement } from "react-vertical-timeline-component";
 import 'react-vertical-timeline-component/style.min.css';
-
+import {Link} from "lucide-react";
 
 const Top = styled.div`
   width: 100%;
@@ -30,7 +30,7 @@ const Body = styled.div`
 const Heading = styled.div`
   font-size: 18px;
   font-weight: 600;
-  color: ${({ theme }) => theme.text_primary};
+  color: ${({theme})=>theme.text_primary};
 
   @media only screen and (max-width: 768px) {
     font-size: 14px;
@@ -96,11 +96,35 @@ const Skill = styled.div`
   user-select: none;
   border-radius: 20px;
   color: ${({ theme }) => theme.primary};
+  transition: all 0.5s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.primary};
+    color: ${({ theme }) => theme.bg};
+  }
 
   @media only screen and (max-width: 768px) {
     font-size: 10px;
   }
 `;
+
+const CertLink = styled.a`
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+
+
+  .LinkLogo{
+    width: 20px;
+  }
+
+  .LinkColor{
+    color:rgb(0, 85, 255);
+  }
+`;
+
 
 const ExperienceCard = ({ experience }) => {
   const theme = useTheme();
@@ -134,7 +158,14 @@ const ExperienceCard = ({ experience }) => {
       <Top>
         <Image src={experience.img} loading="lazy" alt={experience.heading} />
         <Body>
-          <Heading>{experience.heading}</Heading>
+          {experience.cert_link ? (
+          <CertLink href={experience.cert_link} target="_blank" rel="noopener noreferrer">
+            <Heading className="LinkColor">{experience.heading}</Heading>
+            <Link className="LinkLogo LinkColor" size={18} />
+          </CertLink>
+          ) : (
+            <Heading>{experience.heading}</Heading>
+          )}
           <SubHeading>{experience.sub_heading}</SubHeading>
           <Date>{experience.date}</Date>
         </Body>

@@ -3,7 +3,6 @@ import { darkTheme, lightTheme } from "./utils/Themes";
 import Navbar from "./components/Navbar";
 import { BrowserRouter } from "react-router-dom";
 import Hero from "./components/sections/Hero";
-import Labs from "./components/sections/Labs";
 import { AnimatePresence } from "framer-motion";
 import React, { useState, useEffect, Suspense } from "react";
 import { Helmet } from "react-helmet";
@@ -22,6 +21,7 @@ const Certificates = React.lazy(() =>
 const ProjectDetails = React.lazy(() =>
   import("./components/Dialog/ProjectDetails")
 );
+const HandsOn = React.lazy(() => import("./components/sections/HandsOn"));
 
 const Body = styled.div`
   background-color: ${({ theme }) => theme.bg};
@@ -212,7 +212,7 @@ function App() {
               }
             >
               <Wrapper>
-                <Labs />
+                <HandsOn />
                 <Contact />
               </Wrapper>
             </Suspense>

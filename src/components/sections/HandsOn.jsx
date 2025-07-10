@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import htmImg from "../../assets/icons/htb_academy.webp";
+import htbImg from "../../assets/icons/htb_academy.webp";
 
 
 const Container = styled.div`
@@ -13,7 +13,6 @@ const Container = styled.div`
   padding: 0 16px;
   align-items: center;
   padding-bottom: 100px;
-  
 `;
 
 const Wrapper = styled.div`
@@ -74,11 +73,11 @@ const BadgeContainer = styled.div`
 
 
 
-const Certificates = ({ openModal, setOpenModal }) => {
+const HandsOn = ({ openModal, setOpenModal }) => {
   return (
-    <Container id="Labs">
+    <Container id="HandsOn">
       <Wrapper>
-        <Title>Labs</Title>
+        <Title>HandsOn</Title>
         <Desc style={{ marginBottom: "40px" }}>
           Completed real-world cybersecurity labs on TryHackMe and HTB to practice SOC-level detection, log analysis, and threat investigation.
         </Desc>
@@ -87,12 +86,14 @@ const Certificates = ({ openModal, setOpenModal }) => {
             <img src="https://tryhackme-badges.s3.amazonaws.com/chandruthehacker.png" alt="Tryhackme badge" className="badgeImg"/>
           </a>
           <a href="https://ctf.hackthebox.com/user/profile/settings/545795" target="_blank" rel="noreferrer">
-            <img src={htmImg} alt="Hack The Box Profile" className="badgeImg"/>
+            <img src={htbImg} alt="Hack The Box Profile" className="badgeImg"/>
           </a>
         </BadgeContainer>
+
+        
       </Wrapper>
     </Container>
   );
 };
 
-export default Certificates;
+export default HandsOn;

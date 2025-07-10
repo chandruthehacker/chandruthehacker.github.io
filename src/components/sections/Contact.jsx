@@ -2,14 +2,19 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import emailjs from "@emailjs/browser";
 import { Bio } from "../../data/constants";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import TelegramIcon from "@mui/icons-material/Telegram";
-import GmailIcon from "@mui/icons-material/Email";
-import PhoneIcon from "@mui/icons-material/Phone";
-import { GitHub, WhatsApp } from "@mui/icons-material";
+import { GitHub, WhatsApp,Phone as PhoneIcon, Email as GmailIcon,
+  Telegram as TelegramIcon, Instagram as InstagramIcon, LinkedIn as LinkedInIcon,
+  Twitter as TwitterIcon, Facebook as FacebookIcon, 
+ } from "@mui/icons-material";
+
+
+const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+const email = Bio.gmail;
+const subject = "Subject Here";
+const body = "Your message here";
+
+const mobileHref = `mailto:${email}`;
+const desktopHref = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
 const Container = styled.div`
   display: flex;
@@ -204,7 +209,7 @@ user-select: none;
 
 const SocialMediaIcons = styled.div`
   display: flex;
-  margin-top: 3rem;
+  margin-top: 2rem;
 @media(max-width: 400px){
   width: 100%;
   justify-content: space-evenly;
@@ -336,15 +341,32 @@ const Contact = () => {
       );
 
       console.log('EmailJS Result:', result.text);
-      setFormMessage('Message Sent Successfully!');
-      setFormMessageType('success');
+      let res = result.text;
+
+      if (res === 'OK') {
+        setFormMessage('Message Sent Successfully!');
+        setFormMessageType('success');
+        form.current.reset();
+        setValidationErrors({
+          from_email: false,
+          from_name: false,
+          message: false,
+        });
+      } else {
+        setFormMessage('Failed to send. Please try again or use another way of communication.');
+        setFormMessageType('error');
+      }
+
       form.current.reset();
       setValidationErrors({
         from_email: false,
         from_name: false,
         message: false,
-      });
-
+      }, setTimeout(() => {
+          setFormMessage('');
+          setFormMessageType('');
+        }, 5000)
+      );
     } catch (error) {
       console.error('EmailJS Error:', error);
       setFormMessage(`Failed to send message: ${error.text || 'An unexpected error occurred.'}`);
@@ -361,26 +383,7 @@ const Contact = () => {
         <Desc>
           Feel free to reach out to me for any questions or opportunities!
         </Desc>
-        <ContactIcons>
-          <ContactIcon
-            href={`https://mail.google.com/mail/?view=cm&fs=1&to=${Bio.gmail}&su=Subject%20Here&body=Your%20message%20here`}
-            target="_blank"
-            aria-label="Gmail"
-            >
-              <GmailIcon />
-              Let’s Connect
-          </ContactIcon>
 
-          <ContactIcon href={Bio.linkedin} target="_blank" aria-label="LinkedIn">
-            <LinkedInIcon />
-            Connect Now
-          </ContactIcon>
-
-          <ContactIcon href={`tel:${Bio.phone}`} aria-label="Call">
-            <PhoneIcon />
-            Quick Chat
-          </ContactIcon>
-        </ContactIcons>
 
         <SocialMediaIcons>
         <SocialMediaIcon href={`${Bio.github}`} target="_blank" aria-label="Gmail">
@@ -402,6 +405,27 @@ const Contact = () => {
           <TwitterIcon style={{fontSize: "35px"}}/>
         </SocialMediaIcon>
         </SocialMediaIcons>
+                <ContactIcons>
+          <ContactIcon
+            href={isMobile ? mobileHref : desktopHref}
+            target="_blank"
+            aria-label="Gmail"
+          >
+            <GmailIcon />
+            Let’s Connect
+          </ContactIcon>
+
+          <ContactIcon href={Bio.linkedin} target="_blank" aria-label="LinkedIn">
+            <LinkedInIcon />
+            Connect Now
+          </ContactIcon>
+
+          <ContactIcon href={`tel:${Bio.phone}`} aria-label="Call">
+            <PhoneIcon />
+            Quick Call
+          </ContactIcon>
+        </ContactIcons>
+
         <ContactForm onSubmit={handleSubmit} ref={form}>
           <ContactTitle>Email Me 🚀</ContactTitle>
 

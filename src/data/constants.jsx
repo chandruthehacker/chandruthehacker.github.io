@@ -18,6 +18,8 @@ import passwordCheckerImg from "../assets/projects/password-strength-checker.web
 import googleCyb from "../assets/certificates/google_cybersecurity.webp";
 import internshalaEth from "../assets/certificates/internshala_nsdc.webp";
 import splunkUdemy from "../assets/certificates/Udemy_Splunk.webp";
+
+
 export const blogPortfolio = "portfolio-website-old";
 
 export const Bio = {
@@ -286,6 +288,7 @@ export const experience = [
     date: "June 2025 – July 2025",
     desc: "Worked on real-world SOC tasks including log analysis, alert triage, and threat detection using Splunk and ELK. Built a Python-based log parser to identify brute-force attacks, reducing false positives by 30%. Participated in simulated phishing campaigns and incident response drills.",
     skills: ["Splunk", "ELK", "Incident Response", "Python", "Phishing Analysis"],
+    cert_link: "https://drive.google.com/file/d/1PxM19ue3-0FkXZVccJtcrmlvNPv-u2Ow/view?usp=sharing",
   },
   {
     id: 3,

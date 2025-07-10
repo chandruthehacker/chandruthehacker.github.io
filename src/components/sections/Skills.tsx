@@ -106,7 +106,7 @@ const Skill = styled.div`
   max-width: 500px;
   background-color: ${({ theme }) => theme.card_bg};
   border: 1px solid rgba(255, 255, 255, 0.125);
-  box-shadow: rgba(0, 48, 143, 0.5) 0px 4px 24px;
+  box-shadow: rgba(0, 40, 121, 0.5) 0px 4px 24px;
   border-radius: 16px;
   padding: 18px 36px;
 
@@ -148,8 +148,11 @@ const SkillItem = styled.div`
   align-items: center;
   justify-content: center;
   gap: 8px;
+  transition: all 0.3s ease-in-out;
+
   &:hover{
     background-color: ${({ theme }) => theme.primary + 40};
+    color: ${({theme}) => theme.text_primary};
   }
 
   @media (max-width: 768px) {
