@@ -34,7 +34,6 @@ const RadarContainer = styled.div`
   position: relative;
   width: 160px;
   height: 160px;
-  
 `;
 
 const Ring = styled.div`
@@ -45,7 +44,7 @@ const Ring = styled.div`
 const OuterRing = styled(Ring)`
   width: 100%;
   height: 100%;
-  border: 2px solid ${({ theme }) => theme.colors.accent}33; /* 20% opacity */
+  border: 2px solid ${({ theme }) => theme.colors.accent}33;
 `;
 
 const MiddleRing = styled(Ring)`
@@ -53,7 +52,7 @@ const MiddleRing = styled(Ring)`
   bottom: 12px;
   left: 12px;
   right: 12px;
-  border: 1px solid ${({ theme }) => theme.colors.accent}88; /* 50% opacity */
+  border: 1px solid ${({ theme }) => theme.colors.accent}88;
 `;
 
 const InnerRing = styled(Ring)`
@@ -61,7 +60,7 @@ const InnerRing = styled(Ring)`
   bottom: 24px;
   left: 24px;
   right: 24px;
-  border: 1px solid ${({ theme }) => theme.colors.accent}bb; /* 70% opacity */
+  border: 1px solid ${({ theme }) => theme.colors.accent}bb;
 `;
 
 const CenterDot = styled.div`
@@ -109,13 +108,31 @@ const RadarIcon = styled.div`
   transform: translate(-50%, -50%);
 `;
 
-const CyberPreloader: React.FC<{ onComplete?: () => void }> = ({ onComplete }) => {
-  useEffect(() => {
-    const scanTimer = setTimeout(() => {
-      onComplete?.();
-    }, 2000); // 1.5s total duration
+const FooterText = styled.div`
+  position: absolute;
+  bottom: 36px;
+  width: 100%;
+  text-align: center;
+  font-size: 24px;
+  color: ${({ theme }) => theme.colors.accent}aa;
+  letter-spacing: 1px;
+  animation: fadeIn 1s ease-in-out;
 
-    return () => clearTimeout(scanTimer);
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+`;
+
+const CyberPreloader: React.FC<{ onComplete?: () => void }> = ({ onComplete }) => {
+  const theme = useTheme();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onComplete?.();
+    }, 2000);
+
+    return () => clearTimeout(timer);
   }, [onComplete]);
 
   return (
@@ -136,10 +153,13 @@ const CyberPreloader: React.FC<{ onComplete?: () => void }> = ({ onComplete }) =
           ))}
 
           <RadarIcon>
-            <Radar size={28} color={useTheme().colors.accent} />
+            <Radar size={28} color={theme.colors.accent} />
           </RadarIcon>
         </RadarContainer>
       </Centered>
+
+      {/* ✅ Your name appears at the bottom of the screen */}
+      <FooterText>chandruthehacker</FooterText>
     </PreloaderWrapper>
   );
 };

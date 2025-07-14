@@ -11,7 +11,7 @@ export const darkTheme = {
   black: "#000000",
   card_bg: "rgba(17, 25, 40, 0.83)",
   colors: {
-    accent: '#00ff00',
+    accent: '#7B16FF',
     // ...other colors
   },
 };

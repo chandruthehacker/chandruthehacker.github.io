@@ -53,8 +53,14 @@ const Wrapper = styled.div`
 
 const getInitialTheme = () => {
   const stored = localStorage.getItem("theme");
-  return stored === "dark" ? "dark" : "light";
+
+  if (stored === "dark" || stored === "light") return stored;
+
+  // Optional: follow system preference
+  const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
+  return prefersDark ? "dark" : "light";
 };
+
 
 function App() {
   const [preloaderDone, setPreloaderDone] = useState(false);
@@ -64,7 +70,7 @@ function App() {
   useEffect(() => {
     const observer = new MutationObserver(() => {
       const newTheme = document.body.getAttribute("data-theme");
-      setThemeMode(newTheme === "dark" ? "dark" : "light");
+      setThemeMode(newTheme === "light" ? "light" : "dark");
     });
 
     observer.observe(document.body, {
