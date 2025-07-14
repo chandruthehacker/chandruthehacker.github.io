@@ -3,7 +3,7 @@ import { Link as LinkR } from "react-scroll";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { MenuRounded } from "@mui/icons-material";
-import DarkMode from "./Toggle/DarkMode/DarkMode";
+import ThemeToggle from "./Toggle/DarkMode/DarkMode";
 
 
 const Nav = styled.div`
@@ -129,7 +129,7 @@ const MobileMenu = styled.ul`
   padding: 16px 40px;
   list-style: none;
   border-radius: 0 0 20px 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
   transform: ${({ isOpen }) => (isOpen ? "translateY(0)" : "translateY(-100%)")};
   opacity: ${({ isOpen }) => (isOpen ? "100%" : "0")};
   z-index: ${({ isOpen }) => (isOpen ? "1000" : "-1000")};
@@ -167,7 +167,7 @@ const Navbar = () => {
         </NavItems>
 
         <Right>
-          <DarkMode />
+          <ThemeToggle />
 
           <MobileIcon onClick={() => setIsOpen(!isOpen)}>
             <MenuRounded />

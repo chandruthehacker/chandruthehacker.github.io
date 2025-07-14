@@ -10,6 +10,10 @@ export const darkTheme = {
   white: "#FFFFFF",
   black: "#000000",
   card_bg: "rgba(17, 25, 40, 0.83)",
+  colors: {
+    accent: '#00ff00',
+    // ...other colors
+  },
 };
 
 export const lightTheme = {
@@ -24,4 +28,8 @@ export const lightTheme = {
   white: "#FFFFFF",
   black: "#000000",
   card_bg: "rgba(255, 255, 255, 0.9)",
+  colors: {
+    accent: '#7B16FF',
+    // ...other colors
+  },
 };

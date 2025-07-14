@@ -1,27 +1,30 @@
 import styled, { ThemeProvider } from "styled-components";
-import { darkTheme, lightTheme } from "./utils/Themes";
-import Navbar from "./components/Navbar";
+import { darkTheme, lightTheme } from "./utils/Themes.js";
+import Navbar from "./components/Navbar.jsx";
 import { BrowserRouter } from "react-router-dom";
-import Hero from "./components/sections/Hero";
+import Hero from "./components/sections/Hero.jsx";
 import { AnimatePresence } from "framer-motion";
 import React, { useState, useEffect, Suspense } from "react";
 import { Helmet } from "react-helmet";
+import CyberPreloader from './components/CyberPreloader.tsx';
 
 // Lazy-loaded sections
 const Skills = React.lazy(() => import("./components/sections/Skills.tsx"));
 const Experience = React.lazy(() =>
   import("./components/sections/Experience.jsx")
 );
-const Projects = React.lazy(() => import("./components/sections/Projects"));
-const Contact = React.lazy(() => import("./components/sections/Contact"));
-const Footer = React.lazy(() => import("./components/sections/Footer"));
+const Projects = React.lazy(() => import("./components/sections/Projects.jsx"));
+const Contact = React.lazy(() => import("./components/sections/Contact.jsx"));
+const Footer = React.lazy(() => import("./components/sections/Footer.jsx"));
 const Certificates = React.lazy(() =>
-  import("./components/sections/Certificates")
+  import("./components/sections/Certificates.jsx")
 );
 const ProjectDetails = React.lazy(() =>
-  import("./components/Dialog/ProjectDetails")
+  import("./components/Dialog/ProjectDetails.jsx")
 );
-const HandsOn = React.lazy(() => import("./components/sections/HandsOn"));
+const HandsOn = React.lazy(() => import("./components/sections/HandsOn.jsx"));
+
+
 
 const Body = styled.div`
   background-color: ${({ theme }) => theme.bg};
@@ -54,10 +57,10 @@ const getInitialTheme = () => {
 };
 
 function App() {
-  const [openModal, setOpenModal] = useState({ state: false, project: null });
+  const [preloaderDone, setPreloaderDone] = useState(false);
   const [themeMode, setThemeMode] = useState(getInitialTheme);
+  const [openModal, setOpenModal] = useState({ state: false, project: null });
 
-  // Sync with <DarkMode /> toggle component
   useEffect(() => {
     const observer = new MutationObserver(() => {
       const newTheme = document.body.getAttribute("data-theme");
@@ -75,7 +78,11 @@ function App() {
   return (
     <ThemeProvider theme={themeMode === "dark" ? darkTheme : lightTheme}>
       <BrowserRouter>
-        <Helmet>
+        {!preloaderDone ? (
+          <CyberPreloader onComplete={() => setPreloaderDone(true)} />
+        ) : (
+          <>
+            <Helmet>
           {/* Basic Meta */}
           <title>Chandraprakash | Cybersecurity Portfolio</title>
           <meta
@@ -161,93 +168,51 @@ function App() {
           />
         </Helmet>
 
-        <Navbar />
+            <Navbar />
+            <Body>
+              <AnimatePresence>
+                <Hero />
 
-        <Body>
-          <AnimatePresence>
-            <Hero />
-            <Suspense
-              fallback={
-                <div style={{ textAlign: "center", color: "#ccc" }}>
-                  Loading Skills...
-                </div>
-              }
-            >
-              <Wrapper>
-                <Skills />
-              </Wrapper>
-            </Suspense>
+                <Suspense fallback={<div>Loading Skills...</div>}>
+                  <Wrapper><Skills /></Wrapper>
+                </Suspense>
 
-            <Suspense
-              fallback={
-                <div style={{ textAlign: "center", color: "#ccc" }}>
-                  Loading Expperience...
-                </div>
-              }
-            >
-              <Experience />
-            </Suspense>
+                <Suspense fallback={<div>Loading Experience...</div>}>
+                  <Experience />
+                </Suspense>
 
-            <Suspense
-              fallback={
-                <div style={{ textAlign: "center", color: "#ccc" }}>
-                  Loading Projects & Certificates...
-                </div>
-              }
-            >
-              <Wrapper>
-                <Projects openModal={openModal} setOpenModal={setOpenModal} />
-                <Certificates
-                  openModal={openModal}
-                  setOpenModal={setOpenModal}
-                />
-              </Wrapper>
-            </Suspense>
+                <Suspense fallback={<div>Loading Projects & Certificates...</div>}>
+                  <Wrapper>
+                    <Projects openModal={openModal} setOpenModal={setOpenModal} />
+                    <Certificates openModal={openModal} setOpenModal={setOpenModal} />
+                  </Wrapper>
+                </Suspense>
 
-            <Suspense
-              fallback={
-                <div style={{ textAlign: "center", color: "#ccc" }}>
-                  Loading Labs & Contact...
-                </div>
-              }
-            >
-              <Wrapper>
-                <HandsOn />
-                <Contact />
-              </Wrapper>
-            </Suspense>
+                <Suspense fallback={<div>Loading Labs & Contact...</div>}>
+                  <Wrapper>
+                    <HandsOn />
+                    <Contact />
+                  </Wrapper>
+                </Suspense>
 
-            <Suspense
-              fallback={
-                <div style={{ textAlign: "center", color: "#ccc" }}>
-                  Loading Footer...
-                </div>
-              }
-            >
-              <Wrapper>
-                <Footer />
-              </Wrapper>
-            </Suspense>
+                <Suspense fallback={<div>Loading Footer...</div>}>
+                  <Wrapper><Footer /></Wrapper>
+                </Suspense>
 
-            {openModal.state && (
-              <Suspense
-                fallback={
-                  <div style={{ textAlign: "center", color: "#ccc" }}>
-                    Loading Project Details...
-                  </div>
-                }
-              >
-                <ProjectDetails
-                  openModal={openModal}
-                  setOpenModal={setOpenModal}
-                />
-              </Suspense>
-            )}
-          </AnimatePresence>
-        </Body>
+                {openModal.state && (
+                  <Suspense fallback={<div>Loading Project Details...</div>}>
+                    <ProjectDetails openModal={openModal} setOpenModal={setOpenModal} />
+                  </Suspense>
+                )}
+              </AnimatePresence>
+            </Body>
+          </>
+        )}
       </BrowserRouter>
     </ThemeProvider>
   );
 }
+
+
 
 export default App;

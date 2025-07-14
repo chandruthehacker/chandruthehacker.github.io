@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styled from "styled-components";
 import { Bio } from "../../data/constants";
 import Typewriter from "typewriter-effect";
@@ -229,7 +229,11 @@ const HeroBg = styled.div`
   }
 `;
 
-const Hero = () => {
+const Hero = ({ onLoaded }) => {
+  useEffect(() => {
+    // Notify parent when Hero is rendered
+    onLoaded?.();
+  }, [onLoaded]);
   return (
     <div id="About">
       <HeroContainer>
