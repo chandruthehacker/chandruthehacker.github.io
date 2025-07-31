@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import styled from "styled-components";
 import { Bio } from "../../data/constants";
 import Typewriter from "typewriter-effect";
-import HeroImg from "../../assets/profile/HeroImage.webp";
+import HeroImg from "../../assets/profile/Hero.webp";
 import HeroBgAnimation from "../HeroBgAnimation";
 import { Tilt } from "react-tilt";
 import { motion } from "framer-motion";
@@ -178,6 +178,52 @@ const ResumeButton = styled.a`
   }
 `;
 
+const GradientBorderWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+  border-radius: 50%;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    z-index: -1;
+    background: linear-gradient(
+  45deg,
+  #ff007f,  /* hot pink */
+  #ff5e00,  /* vivid orange */
+  #ff0000,  /* bright red */
+  #8a00ff,  /* deep violet */
+  #0047ff,  /* electric blue */
+  #ff1493,  /* deep pink */
+  #ff4500,  /* orange red */
+  #6a0dad,  /* purple/violet */
+  #ff007f   /* loop back to pink */
+);
+
+    background-size: 400%;
+    border-radius: 50%;
+    animation: gradient-border 20s linear infinite;
+    filter: blur(5px);
+  }
+
+  @keyframes gradient-border {
+    0% {
+      background-position: 0 0;
+    }
+    50% {
+      background-position: 400% 0;
+    }
+    100% {
+      background-position: 0 0;
+    }
+  }
+
+  @media (max-width: 960px) {
+    margin-top: 32px;
+  }
+`;
+
 
 const Img = styled.img`
   border-radius: 50%;
@@ -185,11 +231,10 @@ const Img = styled.img`
   height: 100%;
   max-width: 400px;
   max-height: 400px;
-  border: 3px solid ${({ theme }) => theme.primary};
+  // border: 3px solid ${({ theme }) => theme.primary};
+  position: relative;
+  z-index: 1;
 
-  @media (max-width: 960px){
-    margin-top: 35px;
-  }
   @media (max-width: 640px) {
     max-width: 300px;
     max-height: 300px;
@@ -263,7 +308,9 @@ const Hero = ({ onLoaded }) => {
             <HeroRightContainer>
               <motion.div {...headContentAnimation}>
                 <Tilt>
-                  <Img src={HeroImg} alt="Chandraprakash" />
+                  <GradientBorderWrapper>
+                    <Img src={HeroImg} alt="Chandraprakash" />
+                  </GradientBorderWrapper>
                 </Tilt>
               </motion.div>
             </HeroRightContainer>

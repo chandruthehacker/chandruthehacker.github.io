@@ -158,7 +158,6 @@ const CyberPreloader: React.FC<{ onComplete?: () => void }> = ({ onComplete }) =
         </RadarContainer>
       </Centered>
 
-      {/* ✅ Your name appears at the bottom of the screen */}
       <FooterText>chandruthehacker</FooterText>
     </PreloaderWrapper>
   );
