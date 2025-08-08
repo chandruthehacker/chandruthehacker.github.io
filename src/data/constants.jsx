@@ -9,16 +9,18 @@ import {
 
 
 import collegeImg from "../assets/education/gtn.png";
-import hackerImg from "../assets/icons/hacker.png";
+// import hackerImg from "../assets/icons/hacker.png";
 import internImg from "../assets/icons/internship.png";
 import honeypotImg from "../assets/projects/honeypot.webp";
 import logParserImg from "../assets/projects/log-parser.webp";
 import phishingDetectorImg from "../assets/projects/phishing-detector.webp";
 import passwordCheckerImg from "../assets/projects/password-strength-checker.webp";
+import sensiemImg from "../assets/projects/sensiem.webp";
+
 import googleCyb from "../assets/certificates/google_cybersecurity.webp";
 import internshalaEth from "../assets/certificates/internshala_nsdc.webp";
 import splunkUdemy from "../assets/certificates/Udemy_Splunk.webp";
-
+import ibmCyb from "../assets/certificates/ibm_cybersecurity.webp";
 
 export const blogPortfolio = "portfolio-website-old";
 
@@ -116,7 +118,62 @@ export const skills = [
 
 export const projects = [
   {
-    id: 0,
+  id: 0,
+  title: "SenSIEM – Open-Source SIEM & Alerting Platform",
+  date: "2025",
+  description: `A lightweight, open-source SIEM & alerting platform for real-time log monitoring, threat detection, and alert management.
+
+## 🛠️ Technologies  
+✅ **Backend:** FastAPI, SQLite, WebSockets  
+✅ **Frontend:** React (Next.js), Tailwind CSS, Lucide Icons, Recharts  
+
+## 🧠 Key Features  
+✅ Real-time log monitoring & parsing  
+✅ Splunk-like search & filtering  
+✅ Custom dashboards with visual insights  
+✅ 35+ detection rules (brute-force, suspicious logins, port scans, etc.)  
+✅ Alerts with acknowledgment & resolution workflows  
+✅ Notifications via Email, Slack, Telegram  
+✅ Easy log ingestion via file upload or raw text  
+
+## 🔍 Search Page  
+- Global search bar with advanced filters (\`index=""\`, \`source=""\`, keywords)  
+- Time range, log level, and source filters  
+- Save Search feature for reusability  
+- Instant filtering within results  
+
+## 📊 Dashboards Page  
+- Overview cards: Total Logs Today, Active Alerts, Error Rate, Source Activity  
+- Visuals: log level pie chart, top alerts, top IPs, geo-location map, log activity trends, noisy sources, system errors  
+
+## 📄 Logs Page  
+- Full raw log display (formatted JSON / key-value view)  
+- Planned: Export logs, advanced filters, grouping by source/IP/process, compact/detailed toggle  
+
+## 🚨 Alerts Page  
+- Summary cards: Total, New, Acknowledged, Resolved  
+- Filters: Search, Status, Severity, Type, Timestamp  
+- Alert details: matched rule, source log reference, actions (Details, Acknowledge, Resolve)  
+
+## ⚙️ Settings Page  
+- Log source management via path input  
+- Log ingestion: file upload, raw text paste  
+- 35+ pre-built detection rules (auth, syslog, Apache, SSH, etc.)  
+- Notification settings: Email, Slack, Telegram  
+
+## 🌟 Why SenSIEM?  
+- Lightweight, fast, and open-source  
+- Minimal setup, beginner-friendly UI  
+- Security-focused with powerful detection & alerting capabilities
+`,
+  image: sensiemImg,
+  tags: ["FastAPI", "SQLite", "Next.js", "Tailwind CSS", "SIEM", "Cybersecurity"],
+  category: "detection",
+  github: `https://github.com/chandruthehacker/SenSIEM`,
+  blog: `https://chandruthehacker.github.io/${blogPortfolio}/projects/all-projects/sensiem/sensiem.html`,
+},
+  {
+    id: 1,
     title: "AI Phishing Email Detector",
     date: "2025",
     description: `Detects malicious emails using Google Generative AI
@@ -141,7 +198,7 @@ Reduced false positives by **20%** with keyword filtering.
     blog: `https://chandruthehacker.github.io/${blogPortfolio}/projects/all-projects/phising-email-detector/phising-email-detector.html`,
   },
   {
-    id: 1,
+    id: 2,
     title: "Log Analysis Tool",
     date: "2025",
     description: `A CLI tool to parse, analyze, and visualize security logs with threat detection.
@@ -174,7 +231,7 @@ Reduced analysis time by **60%** compared to manual processes
     blog: `https://chandruthehacker.github.io/${blogPortfolio}/projects/all-projects/log-analysis/log-analysis.html`,
   },
   {
-    id: 2,
+    id: 3,
     title: "HoneyAuth: Decoy Login",
     date: "2025",
     description: `Deployed a honeypot in a VM to log attacker behavior by simulating vulnerable services.
@@ -210,7 +267,7 @@ Mapped threats from **12 countries** (85% from unexpected regions)
     blog: `https://chandruthehacker.github.io/${blogPortfolio}/projects/all-projects/honeypot/honeypot.html`,
   },
   {
-    id: 3,
+    id: 4,
     title: "Password Strength Checker",
     date: "2025",
     description: `
@@ -244,8 +301,16 @@ A responsive and interactive web tool that evaluates the strength of user-entere
 ];
 
 export const certificates = [
-  {
+    {
     id: 0,
+    title: "IBM",
+    date: "August 2025",
+    description: "Cybersecurity Fundamentals",
+    image: ibmCyb,
+    link: "https://www.credly.com/badges/2d74912f-a5e5-46d1-828f-2a331e46fdb1/public_url",
+  },
+  {
+    id: 1 ,
     title: "Google",
     date: "April 2025",
     description: "Cybersecurity Proffessional",
@@ -253,7 +318,7 @@ export const certificates = [
     link: "https://www.coursera.org/account/accomplishments/professional-cert/TGJE3FRTFS2N",
   },
   {
-    id: 1,
+    id: 2,
     title: "Internshala",
     date: "November 2025",
     description: "Ethical Hacking",
@@ -261,7 +326,7 @@ export const certificates = [
     link: "https://trainings.internshala.com/certificate/view/nsdc/1gvfiyruzvc/fj2c4mq927_/",
   },
   {
-    id: 2,
+    id: 3,
     title: "Udemy",
     date: "June 2025",
     description: "Splunk Core User",
@@ -290,13 +355,4 @@ export const experience = [
     skills: ["Splunk", "ELK", "Incident Response", "Python", "Phishing Analysis"],
     cert_link: "https://drive.google.com/file/d/1PxM19ue3-0FkXZVccJtcrmlvNPv-u2Ow/view?usp=sharing",
   },
-  {
-    id: 3,
-    img: hackerImg,
-    heading: "Defensive CTF Practitioner",
-    sub_heading: "TryHackMe & Hack The Box",
-    date: "2024–Present",
-    desc: "Ranked top 10% in TryHackMe’s SOC Level 1 path. Solved 50+ blue-team challenges focused on log analysis (Zeek, Splunk), network forensics (Wireshark), and malware detection. Applied MITRE ATT&CK to map attacker TTPs in CTF scenarios.",
-    skills: ["Splunk", "Wireshark", "MITRE ATT&CK", "Zeek", "YARA"],
-  }
 ];

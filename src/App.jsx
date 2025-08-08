@@ -22,7 +22,7 @@ const Certificates = React.lazy(() =>
 const ProjectDetails = React.lazy(() =>
   import("./components/Dialog/ProjectDetails.jsx")
 );
-const HandsOn = React.lazy(() => import("./components/sections/HandsOn.jsx"));
+// const HandsOn = React.lazy(() => import("./components/sections/HandsOn.jsx"));
 
 
 
@@ -196,7 +196,7 @@ function App() {
 
                 <Suspense fallback={<div>Loading Labs & Contact...</div>}>
                   <Wrapper>
-                    <HandsOn />
+                    {/* <HandsOn /> */}
                     <Contact />
                   </Wrapper>
                 </Suspense>

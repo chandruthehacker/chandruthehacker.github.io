@@ -163,7 +163,7 @@ const Navbar = () => {
           <NavLink href="#Experience">Experience</NavLink>
           <NavLink href="#Projects">Projects</NavLink>
           <NavLink href="#Certificates">Certificates</NavLink>
-          <NavLink href="#HandsOn">HandsOn</NavLink>
+          {/* <NavLink href="#HandsOn">HandsOn</NavLink> */}
         </NavItems>
 
         <Right>
@@ -182,7 +182,7 @@ const Navbar = () => {
           <NavLink onClick={() => setIsOpen(false)} href="#Experience">Experience</NavLink>
           <NavLink onClick={() => setIsOpen(false)} href="#Projects">Projects</NavLink>
           <NavLink onClick={() => setIsOpen(false)} href="#Certificates">Certificates</NavLink>
-          <NavLink onClick={() => setIsOpen(false)} href="#HandsOn">HandsOn</NavLink>
+          {/* <NavLink onClick={() => setIsOpen(false)} href="#HandsOn">HandsOn</NavLink> */}
         </MobileMenu>
       )}
     </Nav>
