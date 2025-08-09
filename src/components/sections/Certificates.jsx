@@ -5,6 +5,7 @@ import CertificateCard from "../cards/CertificateCard";
 
 const Container = styled.div`
   margin-top: 100px;
+  margin-bottom: 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -180,11 +180,11 @@ const ProjectDetails = ({ openModal, setOpenModal }) => {
         <Desc>{formatDescription(project.description)}</Desc>
     
           <ButtonGroup>
-            <Button dull href={project?.github} target="new">
-              View Code
-            </Button>
-            <Button href={project?.blog} target="new">
+            <Button dull href={project?.blog} target="new">
               View Blog
+            </Button>
+            <Button href={project?.github} target="new">
+              View Code
             </Button>
           </ButtonGroup>
         </Wrapper>

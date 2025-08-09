@@ -1,6 +1,6 @@
 export const darkTheme = {
   bg: "#090917",
-  bgLight: "#1C1E27",
+  bgLight: "#1d1f27ff",
   primary: "#854CE6",
   text_primary: "#F2F3F4",
   text_secondary: "#b1b2b3",
@@ -18,7 +18,7 @@ export const darkTheme = {
 
 export const lightTheme = {
   bg: "#F8F9FA",
-  bgLight: "#F1F3F5",
+  bgLight: "#d6d8dbff",
   primary: "#7B16FF",
   text_primary: "#111111",
   text_secondary: "#5C5F66",

@@ -319,19 +319,19 @@ export const certificates = [
   },
   {
     id: 2,
-    title: "Internshala",
-    date: "November 2025",
-    description: "Ethical Hacking",
-    image: internshalaEth,
-    link: "https://trainings.internshala.com/certificate/view/nsdc/1gvfiyruzvc/fj2c4mq927_/",
-  },
-  {
-    id: 3,
     title: "Udemy",
     date: "June 2025",
     description: "Splunk Core User",
     image: splunkUdemy,
     link: "https://www.udemy.com/certificate/UC-d1611f48-8dbb-4c43-9bde-9c0bfd0cf47c/",
+  },
+    {
+    id: 3,
+    title: "Internshala",
+    date: "November 2024",
+    description: "Ethical Hacking",
+    image: internshalaEth,
+    link: "https://trainings.internshala.com/certificate/view/nsdc/1gvfiyruzvc/fj2c4mq927_/",
   },
 ];
 
