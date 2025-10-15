@@ -2,7 +2,7 @@
 
 Welcome to my cybersecurity portfolio! This repository contains details about my skills, hands-on projects, and continuous learning as I work towards becoming a Security Analyst or SOC Analyst.
 
-### 🔗 Weblink: [Live Website](https://chandruthehacker.github.io)
+### 🔗 Weblink: [Live Website](https://chandru.me)
 
 ## 👨‍💻 About Me
 
