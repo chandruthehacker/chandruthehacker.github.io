@@ -80,7 +80,7 @@ export const Bio = {
     "Currently building hands-on experience through TryHackMe SOC Level 1 and SOC Level 2 learning paths.",
   github: socialLinks.github,
   resume:
-    "https://drive.google.com/file/d/1uvc_fGkEsu40CfaoMggKwQcCT0Ar4rPX/view?usp=sharing",
+    "https://drive.google.com/file/d/1uXPipbplMNvSRy67olJzTWVWdvJSgHgp/view?usp=sharing",
   gmail: "cyberchandru87@gmail.com",
   phone: "+919786475035",
   linkedin: socialLinks.linkedin,
