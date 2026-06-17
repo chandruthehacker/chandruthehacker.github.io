@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  ROLES, NAV_ITEMS, RESUME_URL, HERO_STATS, HERO_BADGE_TOP, HERO_BADGE_BOTTOM,
+  ROLES, NAV_ITEMS, RESUME_URL, HERO_STATS,
   BIO, ABOUT_HIGHLIGHTS, SKILLS, EDUCATION, EXPERIENCE, PROJECTS, CERTS, SOCIALS,
 } from "./data/constants";
 
@@ -95,8 +95,8 @@ const CSS = `
   .mob-menu{display:flex;flex-direction:column;gap:4px;position:fixed;top:72px;left:12px;right:12px;background:var(--nav-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--nav-border);border-radius:20px;padding:12px;z-index:90;animation:scale-in 0.2s ease both;}
 
   @media(max-width:900px){
-    .hero-grid{grid-template-columns:1fr!important;}
-    .hero-photo{display:none!important;}
+    .hero-grid{grid-template-columns:1fr!important;justify-items:center;}
+    .hero-photo{width:220px!important;height:220px!important;margin:0 auto 12px!important;}
     .about-grid{grid-template-columns:1fr!important;}
     .contact-grid{grid-template-columns:1fr!important;}
     .nav-links-desktop{display:none!important;}
@@ -107,6 +107,11 @@ const CSS = `
     .nav-brand{display:flex!important;}
     .nav-spacer{display:flex!important;}
     .nav-divider{display:none!important;}
+    /* Education & Experience timeline padding */
+    .tl-wrap{padding-left:36px!important;}
+    /* Education inner header — stack on mobile */
+    .edu-meta{flex-direction:column!important;align-items:flex-start!important;gap:10px!important;}
+    .edu-meta-right{text-align:left!important;}
   }
   @media(max-width:600px){
     .skills-grid{grid-template-columns:1fr!important;}
@@ -114,7 +119,10 @@ const CSS = `
     .cert-grid{grid-template-columns:1fr!important;}
     .stat-row{gap:20px!important;}
     .hero-text h1{font-size:42px!important;}
+    .hero-text{text-align:center!important;}
+    .hero-text .stat-row{justify-content:center!important;}
     .exp-stats{grid-template-columns:repeat(2,1fr)!important;}
+    .exp-header{flex-direction:column!important;align-items:flex-start!important;}
   }
 `;
 
@@ -243,14 +251,12 @@ function Navbar({ dark: isDark, setDark, active }: { dark: boolean; setDark: (v:
       {/* ── MOBILE DROPDOWN MENU ── */}
       {menuOpen && (
         <div className="mob-menu">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4 }}>
-            {NAV_ITEMS.map(n => (
-              <button key={n.id} onClick={() => go(n.id)}
-                style={{ background: active === n.id ? "rgba(124,58,237,0.12)" : "transparent", border: active === n.id ? "1px solid rgba(124,58,237,0.25)" : "1px solid transparent", color: active === n.id ? activeC : textC, padding: "11px 14px", borderRadius: 12, textAlign: "left", cursor: "pointer", fontFamily: "'Inter',sans-serif", fontSize: 13, fontWeight: 500, transition: "all 0.18s" }}>
-                {n.label}
-              </button>
-            ))}
-          </div>
+          {NAV_ITEMS.map(n => (
+            <button key={n.id} onClick={() => go(n.id)}
+              style={{ background: active === n.id ? "rgba(124,58,237,0.12)" : "transparent", border: active === n.id ? "1px solid rgba(124,58,237,0.25)" : "1px solid transparent", color: active === n.id ? activeC : textC, padding: "12px 16px", borderRadius: 12, textAlign: "left", cursor: "pointer", fontFamily: "'Inter',sans-serif", fontSize: 14, fontWeight: 500, transition: "all 0.18s", width: "100%" }}>
+              {n.label}
+            </button>
+          ))}
         </div>
       )}
     </>
@@ -313,14 +319,6 @@ function Hero({ dark: isDark }: { dark: boolean }) {
           <div style={{ position: "absolute", inset: -16, borderRadius: "50%", background: "var(--bg)" }} />
           <div style={{ position: "relative", width: "100%", height: "100%", borderRadius: "50%", overflow: "hidden", border: "3px solid rgba(124,58,237,0.45)", zIndex: 1 }}>
             <img src={BIO.profileImg} alt={BIO.name} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }} />
-          </div>
-          <div style={{ position: "absolute", top: 18, right: -54, background: "var(--nav-bg)", backdropFilter: "blur(12px)", border: "1px solid rgba(124,58,237,0.35)", borderRadius: 12, padding: "10px 16px", animation: "float2 4s ease-in-out infinite", zIndex: 2 }}>
-            <div style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 17, fontWeight: 800, color: "#a78bfa" }}>{HERO_BADGE_TOP.value}</div>
-            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 10, color: "var(--tm)" }}>{HERO_BADGE_TOP.label}</div>
-          </div>
-          <div style={{ position: "absolute", bottom: 24, left: -58, background: "var(--nav-bg)", backdropFilter: "blur(12px)", border: "1px solid rgba(6,182,212,0.35)", borderRadius: 12, padding: "10px 16px", animation: "float2 5s ease-in-out infinite 1.2s", zIndex: 2 }}>
-            <div style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 17, fontWeight: 800, color: "#67e8f9" }}>{HERO_BADGE_BOTTOM.value}</div>
-            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 10, color: "var(--tm)" }}>{HERO_BADGE_BOTTOM.label}</div>
           </div>
         </div>
       </div>
@@ -415,7 +413,7 @@ function Education() {
     <section id="education" ref={ref} style={{ padding: "120px 28px" }}>
       <div style={{ maxWidth: 900, margin: "0 auto" }}>
         <div className="rv"><SH label="Education" title="Academic Background" /></div>
-        <div className="rv d1" style={{ position: "relative", paddingLeft: 52 }}>
+        <div className="rv d1 tl-wrap" style={{ position: "relative", paddingLeft: 52 }}>
           <div className="tl-line" />
           <div className="tl-dot" style={{ top: 28 }} />
           <div className="gcard" style={{ borderRadius: 24, padding: 36 }}>
@@ -423,13 +421,13 @@ function Education() {
               <div style={{ width: 76, height: 76, borderRadius: 16, overflow: "hidden", border: "1px solid var(--border)", flexShrink: 0, background: "var(--tag-bg)" }}>
                 <img src={EDUCATION.img} alt={EDUCATION.college} style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} />
               </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 10, marginBottom: 12 }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div className="edu-meta" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 10, marginBottom: 12 }}>
                   <div>
                     <h3 style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 22, fontWeight: 800, color: "var(--tp)", letterSpacing: "-0.5px", marginBottom: 4 }}>{EDUCATION.degree}</h3>
                     <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 14, color: "#a78bfa", fontWeight: 600 }}>{EDUCATION.college}</p>
                   </div>
-                  <div style={{ textAlign: "right" }}>
+                  <div className="edu-meta-right" style={{ textAlign: "right" }}>
                     <div style={{ background: "rgba(52,211,153,0.12)", border: "1px solid rgba(52,211,153,0.3)", borderRadius: 8, padding: "4px 14px", fontSize: 12, color: "#34d399", fontFamily: "'Inter',sans-serif", fontWeight: 600, marginBottom: 6, display: "inline-block" }}>✓ {EDUCATION.status}</div>
                     <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "var(--tm)" }}>{EDUCATION.period}</div>
                   </div>
@@ -463,11 +461,11 @@ function Experience() {
     <section id="experience" ref={ref} style={{ padding: "120px 28px", background: "rgba(255,255,255,0.01)" }}>
       <div style={{ maxWidth: 900, margin: "0 auto" }}>
         <div className="rv"><SH label="Experience" title="Practical Exposure" sub="Hands-on security training through real labs, CTF competitions, and simulation exercises." /></div>
-        <div className="rv d1" style={{ position: "relative", paddingLeft: 52 }}>
+        <div className="rv d1 tl-wrap" style={{ position: "relative", paddingLeft: 52 }}>
           <div className="tl-line" style={{ background: "linear-gradient(to bottom,#06b6d4,#2563eb,#7c3aed,transparent)" }} />
           <div className="tl-dot" style={{ top: 28, background: "linear-gradient(135deg,#06b6d4,#2563eb)" }} />
           <div className="gcard" style={{ borderRadius: 24, padding: 36 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12, marginBottom: 24 }}>
+            <div className="exp-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12, marginBottom: 24 }}>
               <div>
                 <div style={{ display: "inline-flex", gap: 8, marginBottom: 10 }}>
                   <span style={{ background: "rgba(6,182,212,0.12)", border: "1px solid rgba(6,182,212,0.3)", borderRadius: 6, padding: "3px 12px", fontSize: 11, color: "#67e8f9", fontFamily: "'Inter',sans-serif", fontWeight: 700, letterSpacing: "0.06em" }}>{EXPERIENCE.badge}</span>
