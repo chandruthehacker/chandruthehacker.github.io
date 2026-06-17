@@ -15,6 +15,8 @@ const CSS = `
     --tm:#475569;--nav-bg:rgba(5,8,22,0.72);--nav-border:rgba(255,255,255,0.10);
     --input-bg:rgba(255,255,255,0.05);--blob-o:1;--tag-bg:rgba(255,255,255,0.04);
     --tag-c:#64748b;--stat-bg:rgba(255,255,255,0.03);--grid-c:rgba(255,255,255,0.025);
+    --exp-accent:#67e8f9;--exp-accent-bg:rgba(6,182,212,0.12);--exp-accent-border:rgba(6,182,212,0.3);
+    --exp-accent-bg2:rgba(6,182,212,0.08);--exp-accent-border2:rgba(6,182,212,0.22);
   }
   :root.light {
     --bg:#f0f4ff;--bg2:#e8edf8;--card:rgba(255,255,255,0.75);--card-h:rgba(255,255,255,0.95);
@@ -22,6 +24,8 @@ const CSS = `
     --tm:#64748b;--nav-bg:rgba(240,244,255,0.82);--nav-border:rgba(124,58,237,0.18);
     --input-bg:rgba(0,0,0,0.04);--blob-o:0.45;--tag-bg:rgba(124,58,237,0.07);
     --tag-c:#475569;--stat-bg:rgba(255,255,255,0.7);--grid-c:rgba(0,0,0,0.03);
+    --exp-accent:#0369a1;--exp-accent-bg:rgba(3,105,161,0.1);--exp-accent-border:rgba(3,105,161,0.28);
+    --exp-accent-bg2:rgba(3,105,161,0.07);--exp-accent-border2:rgba(3,105,161,0.2);
   }
 
   @keyframes blob1{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(70px,-50px) scale(1.15)}70%{transform:translate(-40px,40px) scale(0.9)}}
@@ -92,11 +96,13 @@ const CSS = `
   .nav-divider{width:1px;height:20px;background:var(--border);flex-shrink:0;}
 
   /* ── MOBILE DROPDOWN ── */
-  .mob-menu{display:flex;flex-direction:column;gap:4px;position:fixed;top:72px;left:12px;right:12px;background:var(--nav-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--nav-border);border-radius:20px;padding:12px;z-index:90;animation:scale-in 0.2s ease both;}
+  .mob-menu{display:flex;flex-direction:column;gap:4px;position:fixed;top:72px;right:12px;width:auto;min-width:170px;background:var(--nav-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--nav-border);border-radius:20px;padding:10px;z-index:90;animation:scale-in 0.2s ease both;}
 
   @media(max-width:900px){
-    .hero-grid{grid-template-columns:1fr!important;justify-items:center;}
-    .hero-photo{width:220px!important;height:220px!important;margin:0 auto 12px!important;}
+    /* Hero: image on top, text below */
+    .hero-section{padding:80px 20px 60px!important;}
+    .hero-grid{grid-template-columns:1fr!important;justify-items:center;gap:32px!important;}
+    .hero-photo{order:-1!important;width:clamp(160px,42vw,240px)!important;height:clamp(160px,42vw,240px)!important;margin:0 auto!important;}
     .about-grid{grid-template-columns:1fr!important;}
     .contact-grid{grid-template-columns:1fr!important;}
     .nav-links-desktop{display:none!important;}
@@ -107,22 +113,27 @@ const CSS = `
     .nav-brand{display:flex!important;}
     .nav-spacer{display:flex!important;}
     .nav-divider{display:none!important;}
-    /* Education & Experience timeline padding */
-    .tl-wrap{padding-left:36px!important;}
+    /* Timeline sections */
+    .tl-wrap{padding-left:32px!important;}
     /* Education inner header — stack on mobile */
-    .edu-meta{flex-direction:column!important;align-items:flex-start!important;gap:10px!important;}
+    .edu-meta{flex-direction:column!important;align-items:flex-start!important;gap:8px!important;}
     .edu-meta-right{text-align:left!important;}
+    /* Education card compact padding */
+    .edu-card{padding:20px!important;}
+    /* Experience header stack */
+    .exp-header{flex-direction:column!important;align-items:flex-start!important;}
   }
   @media(max-width:600px){
     .skills-grid{grid-template-columns:1fr!important;}
     .proj-grid{grid-template-columns:1fr!important;}
     .cert-grid{grid-template-columns:1fr!important;}
-    .stat-row{gap:20px!important;}
-    .hero-text h1{font-size:42px!important;}
+    .stat-row{gap:16px!important;flex-wrap:wrap!important;}
+    .hero-text h1{font-size:clamp(36px,9vw,52px)!important;letter-spacing:-1.5px!important;}
     .hero-text{text-align:center!important;}
     .hero-text .stat-row{justify-content:center!important;}
     .exp-stats{grid-template-columns:repeat(2,1fr)!important;}
-    .exp-header{flex-direction:column!important;align-items:flex-start!important;}
+    /* Education: hide logo image on very small screens to give content more room */
+    .edu-logo{display:none!important;}
   }
 `;
 
@@ -269,7 +280,7 @@ function Hero({ dark: isDark }: { dark: boolean }) {
   const go = (id: string) => document.getElementById("ps")?.querySelector(`#${id}`)?.scrollIntoView({ behavior: "smooth" });
 
   return (
-    <section id="hero" style={{ minHeight: "100vh", display: "flex", alignItems: "center", padding: "100px 28px 80px" }}>
+    <section id="hero" className="hero-section" style={{ minHeight: "100vh", display: "flex", alignItems: "center", padding: "100px 28px 80px" }}>
       <div style={{ maxWidth: 1180, margin: "0 auto", width: "100%", display: "grid", gridTemplateColumns: "1fr auto", gap: 64, alignItems: "center" }} className="hero-grid">
         <div className="hero-text" style={{ animation: "fade-up 0.9s cubic-bezier(.16,1,.3,1) both" }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(52,211,153,0.1)", border: "1px solid rgba(52,211,153,0.3)", borderRadius: 100, padding: "7px 18px", marginBottom: 28, fontSize: 12, color: "#34d399", fontFamily: "'Inter',sans-serif", fontWeight: 600, letterSpacing: "0.06em" }}>
@@ -416,9 +427,9 @@ function Education() {
         <div className="rv d1 tl-wrap" style={{ position: "relative", paddingLeft: 52 }}>
           <div className="tl-line" />
           <div className="tl-dot" style={{ top: 28 }} />
-          <div className="gcard" style={{ borderRadius: 24, padding: 36 }}>
-            <div style={{ display: "flex", gap: 22, alignItems: "flex-start", flexWrap: "wrap" }}>
-              <div style={{ width: 76, height: 76, borderRadius: 16, overflow: "hidden", border: "1px solid var(--border)", flexShrink: 0, background: "var(--tag-bg)" }}>
+          <div className="gcard edu-card" style={{ borderRadius: 24, padding: 36 }}>
+            <div style={{ display: "flex", gap: 18, alignItems: "flex-start", flexWrap: "wrap" }}>
+              <div className="edu-logo" style={{ width: 52, height: 52, borderRadius: 12, overflow: "hidden", border: "1px solid var(--border)", flexShrink: 0, background: "var(--tag-bg)" }}>
                 <img src={EDUCATION.img} alt={EDUCATION.college} style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} />
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
@@ -468,10 +479,10 @@ function Experience() {
             <div className="exp-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12, marginBottom: 24 }}>
               <div>
                 <div style={{ display: "inline-flex", gap: 8, marginBottom: 10 }}>
-                  <span style={{ background: "rgba(6,182,212,0.12)", border: "1px solid rgba(6,182,212,0.3)", borderRadius: 6, padding: "3px 12px", fontSize: 11, color: "#67e8f9", fontFamily: "'Inter',sans-serif", fontWeight: 700, letterSpacing: "0.06em" }}>{EXPERIENCE.badge}</span>
+                  <span style={{ background: "var(--exp-accent-bg)", border: "1px solid var(--exp-accent-border)", borderRadius: 6, padding: "3px 12px", fontSize: 11, color: "var(--exp-accent)", fontFamily: "'Inter',sans-serif", fontWeight: 700, letterSpacing: "0.06em" }}>{EXPERIENCE.badge}</span>
                 </div>
                 <h3 style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 20, fontWeight: 800, color: "var(--tp)", letterSpacing: "-0.5px", marginBottom: 4 }}>{EXPERIENCE.title}</h3>
-                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "#67e8f9" }}>{EXPERIENCE.org}</p>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "var(--exp-accent)" }}>{EXPERIENCE.org}</p>
               </div>
               <span style={{ background: "rgba(52,211,153,0.12)", border: "1px solid rgba(52,211,153,0.3)", borderRadius: 8, padding: "5px 14px", fontSize: 12, color: "#34d399", fontFamily: "'Inter',sans-serif", fontWeight: 600 }}>● {EXPERIENCE.status}</span>
             </div>
@@ -486,14 +497,14 @@ function Experience() {
             <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 11, marginBottom: 22 }}>
               {EXPERIENCE.points.map((pt, i) => (
                 <li key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                  <span style={{ width: 20, height: 20, borderRadius: "50%", background: "rgba(6,182,212,0.15)", border: "1px solid rgba(6,182,212,0.3)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, color: "#67e8f9", flexShrink: 0, marginTop: 2 }}>✓</span>
+                  <span style={{ width: 20, height: 20, borderRadius: "50%", background: "var(--exp-accent-bg)", border: "1px solid var(--exp-accent-border)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, color: "var(--exp-accent)", flexShrink: 0, marginTop: 2 }}>✓</span>
                   <span style={{ fontFamily: "'Inter',sans-serif", fontSize: 14, color: "var(--ts)", lineHeight: 1.7 }}>{pt}</span>
                 </li>
               ))}
             </ul>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
               {EXPERIENCE.tags.map(t => (
-                <span key={t} style={{ background: "rgba(6,182,212,0.08)", border: "1px solid rgba(6,182,212,0.22)", borderRadius: 8, padding: "5px 12px", fontFamily: "'Inter',sans-serif", fontSize: 12, color: "#67e8f9", fontWeight: 500 }}>{t}</span>
+                <span key={t} style={{ background: "var(--exp-accent-bg2)", border: "1px solid var(--exp-accent-border2)", borderRadius: 8, padding: "5px 12px", fontFamily: "'Inter',sans-serif", fontSize: 12, color: "var(--exp-accent)", fontWeight: 500 }}>{t}</span>
               ))}
             </div>
           </div>
