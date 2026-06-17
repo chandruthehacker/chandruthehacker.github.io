@@ -1,0 +1,114 @@
+I want you to completely redesign and rebuild my portfolio website from scratch with a professional cybersecurity / SOC Analyst aesthetic. Here are the full requirements:
+
+---
+
+🎯 GOAL
+I am targeting SOC Analyst L1 and entry-level cybersecurity roles. My portfolio must immediately communicate that I am a threat-aware, technically sharp, and detail-oriented security professional. The design should feel like a security operations dashboard — not a generic dev portfolio.
+
+---
+
+🎨 VISUAL IDENTITY
+
+Theme: Dark mode only. Deep navy/dark background (#0A0E1A), with electric blue (#00D4FF) as the primary accent, and soft green (#00FF88) as a secondary accent for "active/online" signals. Use subtle dark card surfaces (#111827) for section containers.
+
+Typography: Use "JetBrains Mono" or "Space Mono" for headings and code-style labels (gives a terminal/analyst feel). Use "Inter" for body text. Keep it clean and readable.
+
+Signature element: A subtle animated background — a very faint, slowly scrolling grid or hex pattern in the background (like a network topology map). This should NOT be distracting, just atmospheric.
+
+Micro-interactions: Smooth scroll between sections. Fade-in-up animations when sections come into viewport. Hover effects on cards with a soft electric-blue glow. A blinking cursor after my name in the hero (like a terminal).
+
+---
+
+📐 PAGE STRUCTURE (in this exact order)
+
+1. HERO SECTION
+- Full viewport height
+- My name with a blinking terminal cursor after it
+- Animated typewriter text cycling through: "SOC Analyst", "Threat Hunter", "Incident Responder", "Blue Team Defender"
+- A short 1-line tagline below: "Monitoring threats. Defending systems. Staying one step ahead."
+- Two CTA buttons: "View My Work" (scrolls to projects) and "Download Resume" (links to PDF)
+- Subtle animated background (hex grid or particle network)
+
+2. ABOUT ME
+- Split layout: left side has a profile photo with a glowing blue border ring, right side has a short professional bio
+- Below bio: 3 quick stat cards — "X+ CTF Challenges", "X Tools Mastered", "X+ Hours in SIEM" (I'll fill in numbers)
+- Clean, minimal, no clutter
+
+3. TECHNICAL SKILLS
+- Organize skills into visual category cards:
+  • SIEM & Monitoring (Splunk, Wazuh, ELK Stack, etc.)
+  • Network Security (Wireshark, Nmap, Zeek, etc.)
+  • Threat Intelligence (MITRE ATT&CK, VirusTotal, OSINT, etc.)
+  • Endpoint Security (CrowdStrike concepts, Windows Event Logs, Sysmon)
+  • Scripting & Automation (Python, Bash, PowerShell)
+  • Frameworks & Standards (NIST, ISO 27001, Cyber Kill Chain)
+- Each skill shown as a pill/tag with the accent color, grouped under category headers with an icon
+- NO boring progress bars — they mean nothing in security. Use clean tag/badge style instead.
+
+4. EDUCATION
+- Timeline style layout (vertical)
+- Cards with institution name, degree/course, dates, and 1-2 bullet points of relevant highlights
+- Use a vertical line with dot markers for the timeline
+
+5. PRACTICAL EXPOSURE / EXPERIENCE
+- Similar timeline layout
+- Each entry: role/activity title, organization, dates, and 3–4 bullet point achievements using strong action verbs (Detected, Investigated, Analyzed, Configured, Deployed, etc.)
+- If internship or lab-based, label it clearly but don't hide it — real experience is real experience
+
+6. PROJECTS
+- Card grid layout (2 or 3 columns on desktop, 1 on mobile)
+- Each project card has:
+  • Project title
+  • A short 2-line description
+  • Tags for tools used (e.g., Splunk, Python, Wireshark)
+  • A "View Details" button or GitHub link
+  • Subtle hover glow effect
+- Prioritize security projects: SIEM dashboards, log analysis, CTF writeups, honeypot setup, phishing analysis, etc.
+
+7. CERTIFICATIONS & COURSES
+- Badge/card grid layout
+- Each cert card: cert name, issuing body, date, and a small icon or logo placeholder
+- Highlight if it's in-progress with a soft "In Progress" badge
+- Include: CompTIA Security+, Google Cybersecurity Certificate, TryHackMe/HTB progress, any other relevant certs I have
+
+8. CONTACT
+- Clean minimal section
+- Icons + links for: Email, LinkedIn, GitHub, TryHackMe profile
+- A simple contact form (Name, Email, Message, Send button)
+- Optional: a "Currently open to opportunities" status indicator with a green pulsing dot
+
+---
+
+🧭 NAVIGATION
+
+- Sticky top navbar that becomes slightly blurred/frosted on scroll
+- Logo/name on the left
+- Navigation links on the right: About | Skills | Education | Experience | Projects | Certs | Contact
+- Hamburger menu on mobile
+- Active section highlighting as user scrolls
+
+---
+
+⚙️ TECHNICAL REQUIREMENTS
+
+- Fully responsive (mobile, tablet, desktop)
+- Smooth scroll behavior throughout
+- Scroll-triggered fade-in animations using Intersection Observer (no heavy libraries)
+- Fast load time — no unnecessary dependencies
+- Use HTML, CSS, and vanilla JavaScript (or React if already set up)
+- All sections connected via anchor links
+- Add a floating "Back to Top" button that appears after scrolling down
+
+---
+
+🚫 WHAT TO AVOID
+
+- No light/pastel color schemes
+- No generic blue gradient hero that looks like every other dev portfolio
+- No skill progress bars (they look made up)
+- No stock photos or generic illustrations
+- No cluttered layouts — keep spacing generous and breathing room between elements
+
+---
+
+Please build this completely, section by section, with real placeholder content I can easily swap out. Make it feel like a real cybersecurity professional's portfolio — sharp, dark, technical, and impressive.
