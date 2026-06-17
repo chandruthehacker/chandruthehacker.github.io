@@ -84,7 +84,15 @@ const CSS = `
 
   ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:linear-gradient(#7c3aed,#06b6d4);border-radius:4px;}
 
-  .mob-menu{display:flex;flex-direction:column;gap:4px;position:fixed;top:76px;left:50%;transform:translateX(-50%);background:var(--nav-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--nav-border);border-radius:20px;padding:12px;min-width:200px;z-index:90;animation:scale-in 0.2s ease both;}
+  /* ── MOBILE BRAND (hidden on desktop) ── */
+  .nav-brand{display:none;align-items:center;gap:6px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;letter-spacing:-0.3px;white-space:nowrap;}
+  .nav-brand span{background:linear-gradient(135deg,#a78bfa,#60a5fa,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .nav-brand em{color:var(--tm);font-style:normal;font-size:13px;}
+  .nav-spacer{display:none;flex:1;}
+  .nav-divider{width:1px;height:20px;background:var(--border);flex-shrink:0;}
+
+  /* ── MOBILE DROPDOWN ── */
+  .mob-menu{display:flex;flex-direction:column;gap:4px;position:fixed;top:72px;left:12px;right:12px;background:var(--nav-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--nav-border);border-radius:20px;padding:12px;z-index:90;animation:scale-in 0.2s ease both;}
 
   @media(max-width:900px){
     .hero-grid{grid-template-columns:1fr!important;}
@@ -94,7 +102,11 @@ const CSS = `
     .nav-links-desktop{display:none!important;}
     .nav-hamburger{display:flex!important;}
     .exp-stats{grid-template-columns:repeat(2,1fr)!important;}
-    .nav-pill{padding:6px 12px!important;gap:8px!important;}
+    /* Full-width bar on mobile */
+    .nav-pill{left:12px!important;right:12px!important;transform:none!important;border-radius:18px!important;padding:8px 14px!important;gap:10px!important;}
+    .nav-brand{display:flex!important;}
+    .nav-spacer{display:flex!important;}
+    .nav-divider{display:none!important;}
   }
   @media(max-width:600px){
     .skills-grid{grid-template-columns:1fr!important;}
@@ -181,14 +193,27 @@ function Navbar({ dark: isDark, setDark, active }: { dark: boolean; setDark: (v:
 
   return (
     <>
-      <nav className="nav-pill" style={{ position: "fixed", top: 20, left: "50%", transform: "translateX(-50%)", zIndex: 100, background: "var(--nav-bg)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", border: "1px solid var(--nav-border)", borderRadius: 100, padding: "7px 14px", display: "flex", alignItems: "center", gap: 16, boxShadow: scrolled ? "0 8px 40px rgba(0,0,0,0.3)" : "0 4px 24px rgba(0,0,0,0.15)", transition: "box-shadow 0.3s" }}>
+      <nav className="nav-pill" style={{ position: "fixed", top: 16, left: "50%", transform: "translateX(-50%)", zIndex: 100, background: "var(--nav-bg)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", border: "1px solid var(--nav-border)", borderRadius: 100, padding: "7px 14px", display: "flex", alignItems: "center", gap: 16, boxShadow: scrolled ? "0 8px 40px rgba(0,0,0,0.3)" : "0 4px 24px rgba(0,0,0,0.15)", transition: "box-shadow 0.3s" }}>
+
+        {/* ── MOBILE BRAND (hidden on desktop) ── */}
+        <div className="nav-brand">
+          <em style={{ color: "#a78bfa" }}>&gt;</em>
+          <span>0xchandru</span>
+        </div>
+
+        {/* ── SPACER pushes right controls to far right on mobile ── */}
+        <div className="nav-spacer" />
+
+        {/* ── THEME TOGGLE ── */}
         <button className="tog-track" onClick={() => setDark(!isDark)} aria-label="Toggle theme"
-          style={{ background: isDark ? "rgba(124,58,237,0.25)" : "rgba(255,200,0,0.18)", border: `1px solid ${isDark ? "rgba(124,58,237,0.4)" : "rgba(255,200,0,0.4)"}` }}>
+          style={{ background: isDark ? "rgba(124,58,237,0.25)" : "rgba(255,200,0,0.18)", border: `1px solid ${isDark ? "rgba(124,58,237,0.4)" : "rgba(255,200,0,0.4)"}`, flexShrink: 0 }}>
           <div className="tog-thumb" style={{ transform: isDark ? "translateX(2px)" : "translateX(24px)", background: isDark ? "#7c3aed" : "#f59e0b" }}>
             {isDark ? "🌙" : "☀️"}
           </div>
         </button>
-        <div style={{ width: 1, height: 20, background: "var(--border)", flexShrink: 0 }} />
+
+        {/* ── DIVIDER + NAV LINKS (desktop only) ── */}
+        <div className="nav-divider" />
         <div className="nav-links-desktop" style={{ display: "flex", alignItems: "center", gap: 2 }}>
           {NAV_ITEMS.map(n => (
             <button key={n.id} className={`nl ${active === n.id ? "active" : ""}`} onClick={() => go(n.id)} style={{ color: active === n.id ? activeC : textC }}>
@@ -196,28 +221,36 @@ function Navbar({ dark: isDark, setDark, active }: { dark: boolean; setDark: (v:
             </button>
           ))}
         </div>
-        <button className="nav-hamburger" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu"
-          style={{ display: "none", flexDirection: "column", gap: 4, background: "none", border: "none", cursor: "pointer", padding: "4px 6px" }}>
-          <span style={{ width: 18, height: 2, borderRadius: 2, background: "var(--ts)", display: "block", transition: "all 0.2s", transform: menuOpen ? "rotate(45deg) translateY(6px)" : "none" }} />
-          <span style={{ width: 18, height: 2, borderRadius: 2, background: "var(--ts)", display: "block", opacity: menuOpen ? 0 : 1, transition: "all 0.2s" }} />
-          <span style={{ width: 18, height: 2, borderRadius: 2, background: "var(--ts)", display: "block", transition: "all 0.2s", transform: menuOpen ? "rotate(-45deg) translateY(-6px)" : "none" }} />
-        </button>
-        <div style={{ width: 1, height: 20, background: "var(--border)", flexShrink: 0 }} />
+        <div className="nav-divider" />
+
+        {/* ── RESUME ── */}
         <a href={RESUME_URL} target="_blank" rel="noreferrer"
-          style={{ background: "linear-gradient(135deg,#7c3aed,#2563eb)", color: "#fff", textDecoration: "none", padding: "8px 18px", borderRadius: 100, fontSize: 13, fontWeight: 700, fontFamily: "'Inter',sans-serif", whiteSpace: "nowrap", transition: "all 0.3s ease", boxShadow: "0 4px 20px rgba(124,58,237,0.4)" }}
+          style={{ background: "linear-gradient(135deg,#7c3aed,#2563eb)", color: "#fff", textDecoration: "none", padding: "8px 18px", borderRadius: 100, fontSize: 13, fontWeight: 700, fontFamily: "'Inter',sans-serif", whiteSpace: "nowrap", transition: "all 0.3s ease", boxShadow: "0 4px 20px rgba(124,58,237,0.4)", flexShrink: 0 }}
           onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 6px 28px rgba(124,58,237,0.65)"; (e.currentTarget as HTMLElement).style.transform = "scale(1.04)"; }}
           onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 20px rgba(124,58,237,0.4)"; (e.currentTarget as HTMLElement).style.transform = "none"; }}>
           Resume ↗
         </a>
+
+        {/* ── HAMBURGER (mobile only, far right) ── */}
+        <button className="nav-hamburger" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu"
+          style={{ display: "none", flexDirection: "column", gap: 5, background: "none", border: "1px solid var(--border)", borderRadius: 10, cursor: "pointer", padding: "7px 8px", flexShrink: 0 }}>
+          <span style={{ width: 18, height: 2, borderRadius: 2, background: "var(--ts)", display: "block", transition: "all 0.25s", transform: menuOpen ? "rotate(45deg) translateY(7px)" : "none" }} />
+          <span style={{ width: 18, height: 2, borderRadius: 2, background: "var(--ts)", display: "block", opacity: menuOpen ? 0 : 1, transition: "all 0.25s" }} />
+          <span style={{ width: 18, height: 2, borderRadius: 2, background: "var(--ts)", display: "block", transition: "all 0.25s", transform: menuOpen ? "rotate(-45deg) translateY(-7px)" : "none" }} />
+        </button>
       </nav>
+
+      {/* ── MOBILE DROPDOWN MENU ── */}
       {menuOpen && (
         <div className="mob-menu">
-          {NAV_ITEMS.map(n => (
-            <button key={n.id} onClick={() => go(n.id)}
-              style={{ background: active === n.id ? "rgba(124,58,237,0.12)" : "none", border: "none", color: active === n.id ? activeC : textC, padding: "10px 16px", borderRadius: 12, textAlign: "left", cursor: "pointer", fontFamily: "'Inter',sans-serif", fontSize: 14, fontWeight: 500 }}>
-              {n.label}
-            </button>
-          ))}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4 }}>
+            {NAV_ITEMS.map(n => (
+              <button key={n.id} onClick={() => go(n.id)}
+                style={{ background: active === n.id ? "rgba(124,58,237,0.12)" : "transparent", border: active === n.id ? "1px solid rgba(124,58,237,0.25)" : "1px solid transparent", color: active === n.id ? activeC : textC, padding: "11px 14px", borderRadius: 12, textAlign: "left", cursor: "pointer", fontFamily: "'Inter',sans-serif", fontSize: 13, fontWeight: 500, transition: "all 0.18s" }}>
+                {n.label}
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </>
