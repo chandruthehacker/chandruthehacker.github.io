@@ -1,367 +1,439 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 
-/* ─── DESIGN TOKENS ─────────────────────────────────────────────── */
+/* ─── CSS ─────────────────────────────────────────────────────────── */
 const CSS = `
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
   *{box-sizing:border-box;margin:0;padding:0;}
-  @keyframes blob1{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(60px,-40px) scale(1.15)}66%{transform:translate(-30px,30px) scale(0.9)}}
-  @keyframes blob2{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(-50px,60px) scale(0.85)}66%{transform:translate(70px,-20px) scale(1.1)}}
-  @keyframes blob3{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,50px) scale(1.1)}66%{transform:translate(-60px,-40px) scale(0.9)}}
-  @keyframes float{0%,100%{transform:translateY(0px) rotate(0deg)}50%{transform:translateY(-18px) rotate(2deg)}}
-  @keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+
+  /* ── THEME VARS ── */
+  :root {
+    --bg:#050816;
+    --bg2:#080d1f;
+    --card:rgba(255,255,255,0.025);
+    --card-h:rgba(255,255,255,0.055);
+    --border:rgba(255,255,255,0.07);
+    --border-h:rgba(255,255,255,0.16);
+    --tp:#f1f5f9;
+    --ts:#94a3b8;
+    --tm:#475569;
+    --nav-bg:rgba(5,8,22,0.72);
+    --nav-border:rgba(255,255,255,0.10);
+    --input-bg:rgba(255,255,255,0.05);
+    --blob-o:1;
+    --tag-bg:rgba(255,255,255,0.04);
+    --tag-c:#64748b;
+    --stat-bg:rgba(255,255,255,0.03);
+    --grid-c:rgba(255,255,255,0.025);
+  }
+  :root.light {
+    --bg:#f0f4ff;
+    --bg2:#e8edf8;
+    --card:rgba(255,255,255,0.75);
+    --card-h:rgba(255,255,255,0.95);
+    --border:rgba(0,0,0,0.08);
+    --border-h:rgba(124,58,237,0.3);
+    --tp:#0f172a;
+    --ts:#334155;
+    --tm:#64748b;
+    --nav-bg:rgba(240,244,255,0.82);
+    --nav-border:rgba(124,58,237,0.18);
+    --input-bg:rgba(0,0,0,0.04);
+    --blob-o:0.45;
+    --tag-bg:rgba(124,58,237,0.07);
+    --tag-c:#475569;
+    --stat-bg:rgba(255,255,255,0.7);
+    --grid-c:rgba(0,0,0,0.03);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes blob1{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(70px,-50px) scale(1.15)}70%{transform:translate(-40px,40px) scale(0.9)}}
+  @keyframes blob2{0%,100%{transform:translate(0,0) scale(1)}35%{transform:translate(-60px,70px) scale(0.85)}70%{transform:translate(80px,-30px) scale(1.1)}}
+  @keyframes blob3{0%,100%{transform:translate(0,0) scale(1)}40%{transform:translate(50px,60px) scale(1.1)}70%{transform:translate(-70px,-50px) scale(0.9)}}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-16px) rotate(1.5deg)}}
+  @keyframes float2{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
   @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-  @keyframes slideUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
-  @keyframes scaleIn{from{opacity:0;transform:scale(0.92)}to{opacity:1;transform:scale(1)}}
-  @keyframes glow{0%,100%{box-shadow:0 0 20px #7c3aed30}50%{box-shadow:0 0 50px #7c3aed60,0 0 80px #06b6d420}}
-  @keyframes spin-slow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-  @keyframes pulse-ring{0%{transform:scale(0.9);opacity:0.7}100%{transform:scale(1.15);opacity:0}}
-  @keyframes gradient-shift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+  @keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+  @keyframes spin-conic{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+  @keyframes fade-up{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes scale-in{from{opacity:0;transform:scale(0.93)}to{opacity:1;transform:scale(1)}}
+  @keyframes pulse-dot{0%,100%{box-shadow:0 0 0 0 rgba(52,211,153,0.6)}70%{box-shadow:0 0 0 8px rgba(52,211,153,0)}}
 
-  .reveal{opacity:0;transform:translateY(36px);transition:opacity 0.7s cubic-bezier(.16,1,.3,1),transform 0.7s cubic-bezier(.16,1,.3,1);}
-  .reveal.visible{opacity:1;transform:none;}
-  .reveal-left{opacity:0;transform:translateX(-40px);transition:opacity 0.7s cubic-bezier(.16,1,.3,1),transform 0.7s cubic-bezier(.16,1,.3,1);}
-  .reveal-left.visible{opacity:1;transform:none;}
-  .reveal-right{opacity:0;transform:translateX(40px);transition:opacity 0.7s cubic-bezier(.16,1,.3,1),transform 0.7s cubic-bezier(.16,1,.3,1);}
-  .reveal-right.visible{opacity:1;transform:none;}
-  .reveal-scale{opacity:0;transform:scale(0.9);transition:opacity 0.6s cubic-bezier(.16,1,.3,1),transform 0.6s cubic-bezier(.16,1,.3,1);}
-  .reveal-scale.visible{opacity:1;transform:none;}
+  /* ── REVEAL ── */
+  .rv{opacity:0;transform:translateY(34px);transition:opacity 0.72s cubic-bezier(.16,1,.3,1),transform 0.72s cubic-bezier(.16,1,.3,1);}
+  .rv.on{opacity:1;transform:none;}
+  .rl{opacity:0;transform:translateX(-36px);transition:opacity 0.7s cubic-bezier(.16,1,.3,1),transform 0.7s cubic-bezier(.16,1,.3,1);}
+  .rl.on{opacity:1;transform:none;}
+  .rr{opacity:0;transform:translateX(36px);transition:opacity 0.7s cubic-bezier(.16,1,.3,1),transform 0.7s cubic-bezier(.16,1,.3,1);}
+  .rr.on{opacity:1;transform:none;}
+  .d1{transition-delay:0.08s!important;}.d2{transition-delay:0.16s!important;}
+  .d3{transition-delay:0.24s!important;}.d4{transition-delay:0.32s!important;}
+  .d5{transition-delay:0.40s!important;}
 
-  .delay-1{transition-delay:0.1s!important;}
-  .delay-2{transition-delay:0.2s!important;}
-  .delay-3{transition-delay:0.3s!important;}
-  .delay-4{transition-delay:0.4s!important;}
-  .delay-5{transition-delay:0.5s!important;}
+  /* ── GRAD TEXT ── */
+  .gt{background:linear-gradient(135deg,#a78bfa 0%,#60a5fa 55%,#34d399 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite;}
 
-  .proj-card{position:relative;overflow:hidden;cursor:pointer;transition:transform 0.4s cubic-bezier(.16,1,.3,1),box-shadow 0.4s ease;}
-  .proj-card:hover{transform:translateY(-8px);box-shadow:0 32px 80px rgba(124,58,237,0.25)!important;}
-  .proj-card .proj-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(5,8,22,0.97) 0%,rgba(5,8,22,0.6) 50%,transparent 100%);opacity:0;transition:opacity 0.4s ease;}
-  .proj-card:hover .proj-overlay{opacity:1;}
-  .proj-card .proj-info{position:absolute;bottom:0;left:0;right:0;padding:24px;transform:translateY(16px);transition:transform 0.4s cubic-bezier(.16,1,.3,1);opacity:0;}
-  .proj-card:hover .proj-info{transform:none;opacity:1;}
-  .proj-card img{transition:transform 0.6s cubic-bezier(.16,1,.3,1);}
-  .proj-card:hover img{transform:scale(1.06);}
+  /* ── CARDS / HOVER ── */
+  .gcard{background:var(--card);border:1px solid var(--border);transition:all 0.35s cubic-bezier(.16,1,.3,1);}
+  .gcard:hover{background:var(--card-h);border-color:var(--border-h);transform:translateY(-4px);box-shadow:0 20px 60px rgba(124,58,237,0.12);}
+  .proj-img{transition:transform 0.55s cubic-bezier(.16,1,.3,1);}
+  .proj-wrap:hover .proj-img{transform:scale(1.06);}
+  .proj-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(5,8,22,0.96) 0%,rgba(5,8,22,0.55) 50%,transparent 100%);opacity:0;transition:opacity 0.38s ease;}
+  .proj-wrap:hover .proj-overlay{opacity:1;}
+  .proj-reveal{position:absolute;bottom:0;left:0;right:0;padding:20px;opacity:0;transform:translateY(12px);transition:all 0.38s cubic-bezier(.16,1,.3,1);}
+  .proj-wrap:hover .proj-reveal{opacity:1;transform:none;}
 
-  .skill-tag{transition:all 0.25s ease;cursor:default;}
-  .skill-tag:hover{transform:translateY(-2px);}
+  /* ── NAV LINKS ── */
+  .nl{position:relative;background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:13.5px;font-weight:500;transition:color 0.2s;padding:6px 10px;border-radius:8px;}
+  .nl::after{content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:0;height:1.5px;background:linear-gradient(90deg,#7c3aed,#06b6d4);border-radius:2px;transition:width 0.25s ease;}
+  .nl:hover::after,.nl.active::after{width:60%;}
+  .nl:hover{background:rgba(124,58,237,0.07);}
 
-  .cert-card{transition:transform 0.35s cubic-bezier(.16,1,.3,1),box-shadow 0.35s ease;}
-  .cert-card:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(124,58,237,0.2)!important;}
-  .cert-card img{transition:transform 0.5s ease;}
-  .cert-card:hover img{transform:scale(1.04);}
+  /* ── THEME TOGGLE ── */
+  .tog-track{width:52px;height:28px;border-radius:100px;position:relative;cursor:pointer;border:none;transition:all 0.3s;outline:none;}
+  .tog-thumb{position:absolute;top:3px;width:22px;height:22px;border-radius:50%;transition:transform 0.3s cubic-bezier(.34,1.56,.64,1),background 0.3s;display:flex;align-items:center;justify-content:center;font-size:11px;box-shadow:0 2px 8px rgba(0,0,0,0.25);}
 
-  .nav-link-item{position:relative;transition:color 0.2s;}
-  .nav-link-item::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1.5px;background:linear-gradient(90deg,#7c3aed,#06b6d4);transition:width 0.3s ease;}
-  .nav-link-item:hover::after,.nav-link-item.active::after{width:100%;}
+  /* ── SOCIAL HOVER ── */
+  .soc-link{transition:all 0.25s ease;text-decoration:none;}
+  .soc-link:hover{transform:translateX(4px);}
 
-  .btn-primary{transition:all 0.3s ease;background:linear-gradient(135deg,#7c3aed,#2563eb);}
-  .btn-primary:hover{box-shadow:0 8px 32px rgba(124,58,237,0.5);transform:translateY(-2px);}
+  /* ── SKILL PILL ── */
+  .sp{transition:all 0.22s ease;cursor:default;}
+  .sp:hover{transform:translateY(-2px);}
 
-  .btn-outline{transition:all 0.3s ease;}
-  .btn-outline:hover{background:rgba(255,255,255,0.06);transform:translateY(-2px);}
+  /* ── CERT CARD ── */
+  .cc{transition:transform 0.35s cubic-bezier(.16,1,.3,1),box-shadow 0.35s ease;}
+  .cc:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(124,58,237,0.18)!important;}
+  .cc:hover .cc-img{transform:scale(1.04);}
+  .cc-img{transition:transform 0.5s ease;}
 
-  .glass{background:rgba(255,255,255,0.03);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
-  .grad-text{background:linear-gradient(135deg,#a78bfa 0%,#60a5fa 50%,#34d399 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite;}
-  .grad-border{border:1px solid transparent;background-clip:padding-box;position:relative;}
-  .grad-border::before{content:'';position:absolute;inset:-1px;border-radius:inherit;background:linear-gradient(135deg,rgba(124,58,237,0.5),rgba(6,182,212,0.3));z-index:-1;}
+  /* ── INPUTS ── */
+  .fi{width:100%;background:var(--input-bg);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--tp);font-family:'Inter',sans-serif;font-size:14px;outline:none;transition:border-color 0.25s,box-shadow 0.25s;}
+  .fi:focus{border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,0.15);}
 
-  ::-webkit-scrollbar{width:4px;}
-  ::-webkit-scrollbar-track{background:transparent;}
-  ::-webkit-scrollbar-thumb{background:linear-gradient(#7c3aed,#06b6d4);border-radius:4px;}
+  /* ── TIMELINE ── */
+  .tl-line{position:absolute;left:20px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,#7c3aed,#2563eb,#06b6d4,transparent);}
+  .tl-dot{position:absolute;left:12px;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#06b6d4);box-shadow:0 0 16px rgba(124,58,237,0.6);}
 
-  .timeline-line{position:absolute;left:20px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,#7c3aed,#2563eb,#06b6d4,transparent);}
-  .timeline-dot{position:absolute;left:12px;width:18px;height:18px;border-radius:50%;border:2px solid #050816;background:linear-gradient(135deg,#7c3aed,#06b6d4);box-shadow:0 0 16px #7c3aed80;}
+  /* ── SCROLL ── */
+  ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:linear-gradient(#7c3aed,#06b6d4);border-radius:4px;}
 
-  .stat-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:24px;text-align:center;transition:all 0.3s ease;}
-  .stat-card:hover{background:rgba(255,255,255,0.06);border-color:rgba(124,58,237,0.4);transform:translateY(-4px);}
+  /* ── MOBILE MENU ── */
+  .mob-menu{display:flex;flex-direction:column;gap:4px;position:fixed;top:76px;left:50%;transform:translateX(-50%);background:var(--nav-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--nav-border);border-radius:20px;padding:12px;min-width:200px;z-index:90;animation:scale-in 0.2s ease both;}
 
-  input:focus,textarea:focus{outline:none;border-color:#7c3aed!important;box-shadow:0 0 0 3px rgba(124,58,237,0.15)!important;}
+  /* ── RESPONSIVE ── */
+  @media(max-width:900px){
+    .hero-grid{grid-template-columns:1fr!important;}
+    .hero-photo{display:none!important;}
+    .about-grid{grid-template-columns:1fr!important;}
+    .contact-grid{grid-template-columns:1fr!important;}
+    .nav-links-desktop{display:none!important;}
+    .nav-hamburger{display:flex!important;}
+    .exp-stats{grid-template-columns:repeat(2,1fr)!important;}
+    .nav-pill{padding:6px 12px!important;gap:8px!important;}
+  }
+  @media(max-width:600px){
+    .skills-grid{grid-template-columns:1fr!important;}
+    .proj-grid{grid-template-columns:1fr!important;}
+    .cert-grid{grid-template-columns:1fr!important;}
+    .stat-row{gap:20px!important;}
+    .hero-text h1{font-size:42px!important;}
+    .exp-stats{grid-template-columns:repeat(2,1fr)!important;}
+  }
 `;
 
 /* ─── DATA ───────────────────────────────────────────────────────── */
-const ROLES = ["SOC Analyst", "Threat Hunter", "Incident Responder", "Blue Team Defender"];
-
-const NAV = ["About","Skills","Education","Experience","Projects","Certs","Contact"];
+const ROLES = ["SOC Analyst","Threat Hunter","Incident Responder","Blue Team Defender","Security Researcher"];
+const NAV_ITEMS = [
+  { label: "About", id: "about" },
+  { label: "Skills", id: "skills" },
+  { label: "Education", id: "education" },
+  { label: "Experience", id: "experience" },
+  { label: "Projects", id: "projects" },
+  { label: "Certs", id: "certs" },
+  { label: "Contact", id: "contact" },
+];
 
 const SKILLS = [
-  { cat: "SOC Core Tools", color: "#7c3aed", bg: "rgba(124,58,237,0.12)", items: ["Splunk","Microsoft Sentinel","ELK Stack","Wazuh","Zeek","Suricata IDS"] },
-  { cat: "Incident Response", color: "#2563eb", bg: "rgba(37,99,235,0.12)", items: ["Alert Triage","MITRE ATT&CK","Phishing Analysis","IOC Analysis","EDR Tools","NIST IR Lifecycle"] },
-  { cat: "Network Defense", color: "#0891b2", bg: "rgba(8,145,178,0.12)", items: ["Wireshark","TCP/IP Analysis","Firewall Logs","NetFlow","VPN Monitoring","Nmap"] },
-  { cat: "Threat Detection", color: "#059669", bg: "rgba(5,150,105,0.12)", items: ["Sigma Rules","YARA Rules","SIEM Querying","OSINT","Log Analysis","Regex"] },
-  { cat: "Automation & Scripting", color: "#d97706", bg: "rgba(217,119,6,0.12)", items: ["Python","Bash","PowerShell","SOAR Basics","API Integration","Git"] },
-  { cat: "Security Fundamentals", color: "#dc2626", bg: "rgba(220,38,38,0.12)", items: ["Windows Event Logs","Linux Auditing","Active Directory","OWASP Top 10","Encryption","CTF Experience"] },
+  { cat:"SOC Core Tools", color:"#7c3aed", bg:"rgba(124,58,237,0.11)", items:["Splunk","Microsoft Sentinel","ELK Stack","Wazuh","Zeek","Suricata IDS"] },
+  { cat:"Incident Response", color:"#2563eb", bg:"rgba(37,99,235,0.11)", items:["Alert Triage","MITRE ATT&CK","Phishing Analysis","IOC Analysis","EDR Tools","NIST IR Lifecycle"] },
+  { cat:"Network Defense", color:"#0891b2", bg:"rgba(8,145,178,0.11)", items:["Wireshark","TCP/IP Analysis","Firewall Logs","NetFlow","VPN Monitoring","Nmap"] },
+  { cat:"Threat Detection", color:"#059669", bg:"rgba(5,150,105,0.11)", items:["Sigma Rules","YARA Rules","SIEM Querying","OSINT","Log Analysis","Regex"] },
+  { cat:"Automation & Scripting", color:"#d97706", bg:"rgba(217,119,6,0.11)", items:["Python","Bash","PowerShell","SOAR Basics","API Integration","Git"] },
+  { cat:"Security Fundamentals", color:"#dc2626", bg:"rgba(220,38,38,0.11)", items:["Windows Event Logs","Linux Auditing","Active Directory","OWASP Top 10","Encryption","CTF"] },
 ];
 
 const PROJECTS = [
-  { title:"SenSIEM", subtitle:"Open-Source SIEM & Alerting Platform", img:"/__mockup/images/sensiem.webp", tags:["FastAPI","SQLite","Next.js","WebSockets","SIEM"], metrics:[{v:"35+",l:"Detection Rules"},{v:"3",l:"Alert Channels"}], cat:"Defensive", catColor:"#7c3aed", github:"https://github.com/0xchandru/SenSIEM", desc:"Lightweight SIEM with real-time log ingestion, 35+ detection rules, Splunk-style search, and multi-channel alerting." },
-  { title:"AI Phishing Detector", subtitle:"NLP-powered Email Threat Classification", img:"/__mockup/images/phishing-detector.webp", tags:["Python","Google Gemini","NLP","Email Security"], metrics:[{v:"90%",l:"Accuracy"},{v:"20%",l:"Fewer FP"}], cat:"AI / Forensics", catColor:"#2563eb", github:"https://github.com/0xchandru/phishing-email-detector", desc:"Uses Google Gemini AI to classify phishing emails with 90% accuracy on 100+ real samples." },
-  { title:"Log Analysis Tool", subtitle:"CLI Threat Detection from Raw Logs", img:"/__mockup/images/log-parser.webp", tags:["Python","Pandas","Regex","Log Analysis"], metrics:[{v:"60%",l:"Faster"},{v:"90%",l:"Detection"}], cat:"Tools", catColor:"#059669", github:"https://github.com/0xchandru/log-parser", desc:"Auto-detects Apache, Nginx, SSH, syslog formats. Identifies brute-force, geo-anomalies, suspicious sudo." },
-  { title:"HoneyAuth", subtitle:"Decoy Login Honeypot for Attacker Intel", img:"/__mockup/images/honeypot.webp", tags:["Python","Flask","GeoIP","Deception Tech"], metrics:[{v:"200+",l:"Attacks Caught"},{v:"12",l:"Countries"}], cat:"Defensive", catColor:"#7c3aed", github:"https://github.com/0xchandru/honeypot", desc:"Flask-based decoy portal capturing 200+ malicious attempts, mapped to 12 countries over 14 days." },
-  { title:"Password Strength Checker", subtitle:"Real-time Credential Security Analyzer", img:"/__mockup/images/password-checker.webp", tags:["JavaScript","HTML/CSS","Entropy Analysis"], metrics:[{v:"100%",l:"Weak Detection"},{v:"100+",l:"Samples"}], cat:"Tools", catColor:"#059669", github:"https://github.com/0xchandru/password-strength-checker", desc:"Client-side entropy scoring with real-time feedback on weak patterns and dictionary words." },
+  { title:"SenSIEM", subtitle:"Open-Source SIEM & Alerting Platform", img:"/__mockup/images/sensiem.webp", tags:["FastAPI","SQLite","Next.js","WebSockets"], metrics:[{v:"35+",l:"Detection Rules"},{v:"3",l:"Alert Channels"}], cat:"Defensive", catC:"#7c3aed", github:"https://github.com/0xchandru/SenSIEM", desc:"Lightweight SIEM with real-time log ingestion, 35+ detection rules, and multi-channel alerting." },
+  { title:"AI Phishing Detector", subtitle:"NLP-Powered Email Threat Classifier", img:"/__mockup/images/phishing-detector.webp", tags:["Python","Google Gemini","NLP","Email Security"], metrics:[{v:"90%",l:"Accuracy"},{v:"20%",l:"Fewer FP"}], cat:"AI / ML", catC:"#2563eb", github:"https://github.com/0xchandru/phishing-email-detector", desc:"Uses Gemini AI to classify phishing emails with 90% accuracy on 100+ real samples." },
+  { title:"Log Analysis Tool", subtitle:"CLI Threat Detection from Raw Logs", img:"/__mockup/images/log-parser.webp", tags:["Python","Pandas","Regex","Log Analysis"], metrics:[{v:"60%",l:"Faster"},{v:"90%",l:"Detection Rate"}], cat:"Tools", catC:"#059669", github:"https://github.com/0xchandru/log-parser", desc:"Auto-detects Apache, Nginx, SSH, syslog formats and flags brute-force and geo-anomalies." },
+  { title:"HoneyAuth", subtitle:"Decoy Login Honeypot for Attacker Intel", img:"/__mockup/images/honeypot.webp", tags:["Python","Flask","GeoIP","Deception"], metrics:[{v:"200+",l:"Attacks Caught"},{v:"12",l:"Countries"}], cat:"Defensive", catC:"#7c3aed", github:"https://github.com/0xchandru/honeypot", desc:"Flask-based decoy portal capturing 200+ malicious attempts from 12 countries over 14 days." },
+  { title:"Password Strength Checker", subtitle:"Real-time Credential Security Analyzer", img:"/__mockup/images/password-checker.webp", tags:["JavaScript","HTML/CSS","Entropy Analysis"], metrics:[{v:"100%",l:"Weak Detection"},{v:"100+",l:"Samples"}], cat:"Tools", catC:"#059669", github:"https://github.com/0xchandru/password-strength-checker", desc:"Client-side entropy scoring with real-time feedback on weak patterns and dictionary words." },
 ];
 
 const CERTS = [
-  { img:"/__mockup/images/cert-tryhackme.webp", issuer:"TryHackMe", title:"SOC Level 1", date:"June 2026", verified:true, link:"https://tryhackme.com/certificate/THM-WUPYOBHE0K", accent:"#06b6d4" },
-  { img:"/__mockup/images/cert-ibm.webp", issuer:"IBM", title:"Cybersecurity Professional Analyst", date:"June 2026", verified:true, link:"https://www.coursera.org/account/accomplishments/specialization/US4R3ZXUCFTD", accent:"#7c3aed" },
-  { img:"/__mockup/images/cert-google.webp", issuer:"Google", title:"Cybersecurity Professional Certificate", date:"April 2025", verified:true, link:"https://www.coursera.org/account/accomplishments/professional-cert/TGJE3FRTFS2N", accent:"#2563eb" },
-  { img:"/__mockup/images/cert-internshala.webp", issuer:"Internshala / NSDC", title:"Ethical Hacking", date:"November 2024", verified:true, link:"https://trainings.internshala.com/certificate/view/nsdc/1gvfiyruzvc/fj2c4mq927_/", accent:"#059669" },
+  { img:"/__mockup/images/cert-tryhackme.webp", issuer:"TryHackMe", title:"SOC Level 1", date:"June 2026", link:"https://tryhackme.com/certificate/THM-WUPYOBHE0K", accent:"#06b6d4" },
+  { img:"/__mockup/images/cert-ibm.webp", issuer:"IBM", title:"Cybersecurity Professional Analyst", date:"June 2026", link:"https://www.coursera.org/account/accomplishments/specialization/US4R3ZXUCFTD", accent:"#7c3aed" },
+  { img:"/__mockup/images/cert-google.webp", issuer:"Google", title:"Cybersecurity Professional Certificate", date:"April 2025", link:"https://www.coursera.org/account/accomplishments/professional-cert/TGJE3FRTFS2N", accent:"#2563eb" },
+  { img:"/__mockup/images/cert-internshala.webp", issuer:"Internshala / NSDC", title:"Ethical Hacking", date:"November 2024", link:"https://trainings.internshala.com/certificate/view/nsdc/1gvfiyruzvc/fj2c4mq927_/", accent:"#059669" },
 ];
 
 /* ─── HOOKS ──────────────────────────────────────────────────────── */
 function useTypewriter(words: string[]) {
   const [idx, setIdx] = useState(0);
   const [text, setText] = useState("");
-  const [deleting, setDeleting] = useState(false);
+  const [del, setDel] = useState(false);
   useEffect(() => {
-    const word = words[idx];
-    if (!deleting && text === word) {
-      const t = setTimeout(() => setDeleting(true), 1800); return () => clearTimeout(t);
-    }
-    if (deleting && text === "") {
-      setDeleting(false); setIdx((idx + 1) % words.length); return;
-    }
-    const speed = deleting ? 40 : 75;
-    const t = setTimeout(() => setText(deleting ? text.slice(0, -1) : word.slice(0, text.length + 1)), speed);
+    const w = words[idx];
+    if (!del && text === w) { const t = setTimeout(() => setDel(true), 1800); return () => clearTimeout(t); }
+    if (del && text === "") { setDel(false); setIdx((idx + 1) % words.length); return; }
+    const t = setTimeout(() => setText(del ? text.slice(0,-1) : w.slice(0, text.length+1)), del ? 40 : 75);
     return () => clearTimeout(t);
-  }, [text, deleting, idx, words]);
+  }, [text, del, idx, words]);
   return text;
 }
 
-function useCountUp(target: number, trigger: boolean, duration = 1800) {
-  const [val, setVal] = useState(0);
-  useEffect(() => {
-    if (!trigger) return;
-    let start = 0; const step = target / (duration / 16);
-    const t = setInterval(() => { start += step; if (start >= target) { setVal(target); clearInterval(t); } else setVal(Math.floor(start)); }, 16);
-    return () => clearInterval(t);
-  }, [trigger, target, duration]);
-  return val;
-}
-
-function useIntersection(ref: React.RefObject<Element>, opts = {}) {
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold: 0.15, ...opts });
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, []);
-  return visible;
-}
-
-/* ─── BACKGROUND BLOBS ───────────────────────────────────────────── */
-function Blobs() {
+/* ─── BACKGROUND ─────────────────────────────────────────────────── */
+function Blobs({ dark }: { dark: boolean }) {
   return (
-    <div style={{ position: "fixed", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>
-      <div style={{ position: "absolute", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle,rgba(124,58,237,0.18) 0%,transparent 70%)", top: "-100px", left: "-150px", animation: "blob1 18s ease-in-out infinite" }} />
-      <div style={{ position: "absolute", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle,rgba(6,182,212,0.14) 0%,transparent 70%)", top: "40%", right: "-100px", animation: "blob2 22s ease-in-out infinite" }} />
-      <div style={{ position: "absolute", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle,rgba(37,99,235,0.12) 0%,transparent 70%)", bottom: "10%", left: "30%", animation: "blob3 20s ease-in-out infinite" }} />
-      {/* Grid overlay */}
-      <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px)", backgroundSize: "60px 60px", opacity: 0.4 }} />
+    <div style={{ position:"fixed", inset:0, overflow:"hidden", pointerEvents:"none", zIndex:0, opacity:"var(--blob-o)" }}>
+      <div style={{ position:"absolute", width:700, height:700, borderRadius:"50%", background:"radial-gradient(circle,rgba(124,58,237,0.22) 0%,transparent 70%)", top:"-80px", left:"-120px", animation:"blob1 18s ease-in-out infinite" }}/>
+      <div style={{ position:"absolute", width:550, height:550, borderRadius:"50%", background:"radial-gradient(circle,rgba(6,182,212,0.18) 0%,transparent 70%)", top:"45%", right:"-80px", animation:"blob2 22s ease-in-out infinite" }}/>
+      <div style={{ position:"absolute", width:500, height:500, borderRadius:"50%", background:"radial-gradient(circle,rgba(37,99,235,0.15) 0%,transparent 70%)", bottom:"12%", left:"28%", animation:"blob3 20s ease-in-out infinite" }}/>
+      <div style={{ position:"absolute", inset:0, backgroundImage:`linear-gradient(var(--grid-c) 1px,transparent 1px),linear-gradient(90deg,var(--grid-c) 1px,transparent 1px)`, backgroundSize:"60px 60px" }}/>
     </div>
   );
 }
 
-/* ─── NAVBAR ─────────────────────────────────────────────────────── */
-function Navbar({ active }: { active: string }) {
+/* ─── FLOATING NAVBAR ────────────────────────────────────────────── */
+function Navbar({ dark, setDark, active }: { dark:boolean; setDark:(v:boolean)=>void; active:string }) {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const rootEl = () => document.getElementById("ps");
+
   useEffect(() => {
-    const el = document.getElementById("root-scroll");
+    const el = rootEl();
     if (!el) return;
-    const h = () => setScrolled(el.scrollTop > 50);
+    const h = () => setScrolled(el.scrollTop > 80);
     el.addEventListener("scroll", h);
     return () => el.removeEventListener("scroll", h);
   }, []);
-  const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+
+  const go = (id: string) => { rootEl()?.querySelector(`#${id}`)?.scrollIntoView({ behavior:"smooth" }); setMenuOpen(false); };
+
+  const textC = dark ? "#94a3b8" : "#475569";
+  const activeC = "#a78bfa";
 
   return (
-    <nav style={{ position: "sticky", top: 0, zIndex: 100, transition: "all 0.3s", background: scrolled ? "rgba(5,8,22,0.85)" : "transparent", backdropFilter: scrolled ? "blur(20px)" : "none", borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "1px solid transparent" }}>
-      <div style={{ maxWidth: 1180, margin: "0 auto", padding: "0 28px", height: 68, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        {/* Logo */}
-        <div style={{ fontSize: 22, fontWeight: 800, background: "linear-gradient(135deg,#a78bfa,#60a5fa)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", fontFamily: "'Plus Jakarta Sans',sans-serif", letterSpacing: "-0.5px" }}>
-          Chandraprakash
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
-          {NAV.map(n => (
-            <button key={n} className={`nav-link-item ${active.toLowerCase() === n.toLowerCase() ? "active" : ""}`}
-              onClick={() => go(n === "Certs" ? "certs" : n.toLowerCase())}
-              style={{ background: "none", border: "none", color: active.toLowerCase() === n.toLowerCase() ? "#a78bfa" : "#94a3b8", fontSize: 14, fontWeight: 500, cursor: "pointer", fontFamily: "'Inter',sans-serif", letterSpacing: "0.01em", padding: "4px 0" }}>
-              {n}
+    <>
+      {/* ── FLOATING PILL ── */}
+      <nav className="nav-pill" style={{ position:"fixed", top:20, left:"50%", transform:"translateX(-50%)", zIndex:100, background:"var(--nav-bg)", backdropFilter:"blur(24px)", WebkitBackdropFilter:"blur(24px)", border:"1px solid var(--nav-border)", borderRadius:100, padding:"7px 14px", display:"flex", alignItems:"center", gap:16, boxShadow: scrolled ? "0 8px 40px rgba(0,0,0,0.3)" : "0 4px 24px rgba(0,0,0,0.15)", transition:"box-shadow 0.3s" }}>
+        
+        {/* LEFT: theme toggle */}
+        <button className="tog-track" onClick={() => setDark(!dark)} aria-label="Toggle theme"
+          style={{ background: dark ? "rgba(124,58,237,0.25)" : "rgba(255,200,0,0.18)", border: `1px solid ${dark ? "rgba(124,58,237,0.4)" : "rgba(255,200,0,0.4)"}` }}>
+          <div className="tog-thumb" style={{ transform: dark ? "translateX(2px)" : "translateX(24px)", background: dark ? "#7c3aed" : "#f59e0b" }}>
+            {dark ? "🌙" : "☀️"}
+          </div>
+        </button>
+
+        {/* DIVIDER */}
+        <div style={{ width:1, height:20, background:"var(--border)", flexShrink:0 }}/>
+
+        {/* CENTER: nav links (desktop) */}
+        <div className="nav-links-desktop" style={{ display:"flex", alignItems:"center", gap:2 }}>
+          {NAV_ITEMS.map(n => (
+            <button key={n.id} className={`nl ${active === n.id ? "active" : ""}`}
+              onClick={() => go(n.id)}
+              style={{ color: active === n.id ? activeC : textC }}>
+              {n.label}
             </button>
           ))}
-          <a href="https://drive.google.com/file/d/1uXPipbplMNvSRy67olJzTWVWdvJSgHgp/view" target="_blank" rel="noreferrer"
-            className="btn-primary"
-            style={{ color: "#fff", textDecoration: "none", padding: "9px 22px", borderRadius: 10, fontSize: 13, fontWeight: 600, fontFamily: "'Inter',sans-serif", border: "none", cursor: "pointer" }}>
-            Resume ↗
-          </a>
         </div>
-      </div>
-    </nav>
+
+        {/* MOBILE hamburger */}
+        <button className="nav-hamburger" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu"
+          style={{ display:"none", flexDirection:"column", gap:4, background:"none", border:"none", cursor:"pointer", padding:"4px 6px" }}>
+          <span style={{ width:18, height:2, borderRadius:2, background:"var(--ts)", display:"block", transition:"all 0.2s", transform: menuOpen ? "rotate(45deg) translateY(6px)" : "none" }}/>
+          <span style={{ width:18, height:2, borderRadius:2, background:"var(--ts)", display:"block", opacity: menuOpen ? 0 : 1, transition:"all 0.2s" }}/>
+          <span style={{ width:18, height:2, borderRadius:2, background:"var(--ts)", display:"block", transition:"all 0.2s", transform: menuOpen ? "rotate(-45deg) translateY(-6px)" : "none" }}/>
+        </button>
+
+        {/* DIVIDER */}
+        <div style={{ width:1, height:20, background:"var(--border)", flexShrink:0 }}/>
+
+        {/* RIGHT: resume */}
+        <a href="https://drive.google.com/file/d/1uXPipbplMNvSRy67olJzTWVWdvJSgHgp/view" target="_blank" rel="noreferrer"
+          style={{ background:"linear-gradient(135deg,#7c3aed,#2563eb)", color:"#fff", textDecoration:"none", padding:"8px 18px", borderRadius:100, fontSize:13, fontWeight:700, fontFamily:"'Inter',sans-serif", whiteSpace:"nowrap", transition:"all 0.3s ease", boxShadow:"0 4px 20px rgba(124,58,237,0.4)" }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 6px 28px rgba(124,58,237,0.65)"; (e.currentTarget as HTMLElement).style.transform = "scale(1.04)"; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 20px rgba(124,58,237,0.4)"; (e.currentTarget as HTMLElement).style.transform = "none"; }}>
+          Resume ↗
+        </a>
+      </nav>
+
+      {/* Mobile dropdown menu */}
+      {menuOpen && (
+        <div className="mob-menu">
+          {NAV_ITEMS.map(n => (
+            <button key={n.id} onClick={() => go(n.id)}
+              style={{ background: active === n.id ? "rgba(124,58,237,0.12)" : "none", border:"none", color: active === n.id ? activeC : textC, padding:"10px 16px", borderRadius:12, textAlign:"left", cursor:"pointer", fontFamily:"'Inter',sans-serif", fontSize:14, fontWeight:500 }}>
+              {n.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
+
+/* ─── SECTION HEADING ────────────────────────────────────────────── */
+function SH({ label, title, sub }: { label:string; title:string; sub?:string }) {
+  return (
+    <div style={{ marginBottom:64, textAlign:"center" }}>
+      <p style={{ fontFamily:"'Inter',sans-serif", fontSize:12, color:"#7c3aed", fontWeight:700, letterSpacing:"0.16em", textTransform:"uppercase", marginBottom:12 }}>{label}</p>
+      <h2 style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:"clamp(28px,4vw,46px)", fontWeight:800, color:"var(--tp)", letterSpacing:"-1px", lineHeight:1.1, marginBottom:sub?14:0 }}>{title}</h2>
+      {sub && <p style={{ fontFamily:"'Inter',sans-serif", fontSize:15, color:"var(--tm)", maxWidth:490, margin:"0 auto", lineHeight:1.75 }}>{sub}</p>}
+    </div>
   );
 }
 
 /* ─── HERO ───────────────────────────────────────────────────────── */
-function Hero() {
+function Hero({ dark }: { dark:boolean }) {
   const typed = useTypewriter(ROLES);
-  const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const go = (id:string) => document.getElementById("ps")?.querySelector(`#${id}`)?.scrollIntoView({ behavior:"smooth" });
 
   return (
-    <section id="hero" style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "80px 28px", position: "relative" }}>
-      <div style={{ maxWidth: 1180, margin: "0 auto", width: "100%", display: "grid", gridTemplateColumns: "1fr auto", gap: 80, alignItems: "center" }}>
-        {/* Left text */}
-        <div style={{ animation: "slideUp 0.9s cubic-bezier(.16,1,.3,1) both" }}>
-          {/* Status badge */}
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(124,58,237,0.12)", border: "1px solid rgba(124,58,237,0.3)", borderRadius: 100, padding: "6px 16px", marginBottom: 28, fontFamily: "'Inter',sans-serif", fontSize: 12, color: "#a78bfa", letterSpacing: "0.08em", fontWeight: 500 }}>
-            <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#34d399", display: "inline-block", animation: "pulse-ring 1.5s ease-out infinite" }} />
+    <section id="hero" style={{ minHeight:"100vh", display:"flex", alignItems:"center", padding:"100px 28px 80px" }}>
+      <div style={{ maxWidth:1180, margin:"0 auto", width:"100%", display:"grid", gridTemplateColumns:"1fr auto", gap:64, alignItems:"center" }} className="hero-grid">
+        
+        {/* ── TEXT ── */}
+        <div className="hero-text" style={{ animation:"fade-up 0.9s cubic-bezier(.16,1,.3,1) both" }}>
+          {/* Badge */}
+          <div style={{ display:"inline-flex", alignItems:"center", gap:8, background:"rgba(52,211,153,0.1)", border:"1px solid rgba(52,211,153,0.3)", borderRadius:100, padding:"7px 18px", marginBottom:28, fontSize:12, color:"#34d399", fontFamily:"'Inter',sans-serif", fontWeight:600, letterSpacing:"0.06em" }}>
+            <span style={{ width:7, height:7, borderRadius:"50%", background:"#34d399", display:"inline-block", animation:"pulse-dot 1.8s infinite" }}/>
             Available for SOC Analyst Roles
           </div>
 
-          {/* Greeting */}
-          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 18, color: "#94a3b8", marginBottom: 12, fontWeight: 400 }}>
-            Hey there, I'm
+          <p style={{ fontFamily:"'Inter',sans-serif", fontSize:17, color:"var(--ts)", marginBottom:10, fontWeight:400 }}>
+            Hey, I'm
           </p>
 
-          {/* Name */}
-          <h1 style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: "clamp(44px,6vw,80px)", fontWeight: 800, lineHeight: 1.05, letterSpacing: "-2px", color: "#f1f5f9", marginBottom: 20 }}>
-            Chandra&shy;<br />
-            <span className="grad-text">prakash</span>
+          {/* NAME — single word, never broken */}
+          <h1 style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:"clamp(48px,6.5vw,84px)", fontWeight:800, lineHeight:1.02, letterSpacing:"-2.5px", color:"var(--tp)", marginBottom:18 }}>
+            Chandraprakash
           </h1>
+          <h2 className="gt" style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:"clamp(20px,3vw,32px)", fontWeight:700, letterSpacing:"-0.5px", marginBottom:22, display:"block" }}>
+            Cybersecurity Professional
+          </h2>
 
           {/* Typewriter */}
-          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "clamp(18px,2.5vw,26px)", color: "#94a3b8", marginBottom: 24, minHeight: "1.4em", display: "flex", alignItems: "center", gap: 4 }}>
-            <span style={{ color: "#a78bfa", fontWeight: 600 }}>→</span>
-            <span style={{ color: "#e2e8f0", fontWeight: 500 }}>{typed}</span>
-            <span style={{ borderRight: "2px solid #7c3aed", height: "1.1em", animation: "blink 1s step-end infinite", display: "inline-block" }} />
+          <div style={{ fontFamily:"'Inter',sans-serif", fontSize:"clamp(16px,2vw,20px)", color:"var(--ts)", marginBottom:28, minHeight:"1.5em", display:"flex", alignItems:"center", gap:8 }}>
+            <span style={{ color:"#a78bfa", fontWeight:700, fontSize:"1.2em" }}>→</span>
+            <span style={{ color:"var(--tp)", fontWeight:500 }}>{typed}</span>
+            <span style={{ borderRight:"2.5px solid #7c3aed", height:"1.1em", animation:"blink 1s step-end infinite", display:"inline-block" }}/>
           </div>
 
           {/* Bio */}
-          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 16, color: "#64748b", lineHeight: 1.8, marginBottom: 40, maxWidth: 540 }}>
-            B.Sc Computer Science graduate from <span style={{ color: "#a78bfa" }}>GTN Arts College, Dindigul</span> — passionate about cybersecurity, SOC operations, threat detection, and building tools that defend systems.
+          <p style={{ fontFamily:"'Inter',sans-serif", fontSize:16, color:"var(--tm)", lineHeight:1.8, marginBottom:40, maxWidth:540 }}>
+            B.Sc Computer Science graduate from <span style={{ color:"#a78bfa", fontWeight:600 }}>GTN Arts College, Dindigul</span> — specialising in SOC operations, threat detection, SIEM, incident response, and security automation.
           </p>
 
           {/* CTAs */}
-          <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginBottom: 56 }}>
-            <button className="btn-primary" onClick={() => go("projects")}
-              style={{ color: "#fff", border: "none", padding: "14px 32px", borderRadius: 12, fontSize: 15, fontWeight: 600, cursor: "pointer", fontFamily: "'Inter',sans-serif", letterSpacing: "0.01em" }}>
+          <div style={{ display:"flex", gap:14, flexWrap:"wrap", marginBottom:52 }}>
+            <button onClick={() => go("projects")}
+              style={{ background:"linear-gradient(135deg,#7c3aed,#2563eb)", color:"#fff", border:"none", padding:"14px 34px", borderRadius:12, fontSize:15, fontWeight:700, cursor:"pointer", fontFamily:"'Inter',sans-serif", boxShadow:"0 8px 28px rgba(124,58,237,0.38)", transition:"all 0.3s ease" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 12px 36px rgba(124,58,237,0.55)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 28px rgba(124,58,237,0.38)"; (e.currentTarget as HTMLElement).style.transform = "none"; }}>
               View Projects ↓
             </button>
-            <a href="https://drive.google.com/file/d/1uXPipbplMNvSRy67olJzTWVWdvJSgHgp/view" target="_blank" rel="noreferrer"
-              className="btn-outline"
-              style={{ color: "#e2e8f0", textDecoration: "none", padding: "14px 32px", borderRadius: 12, fontSize: 15, fontWeight: 500, border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer", fontFamily: "'Inter',sans-serif", display: "inline-flex", alignItems: "center", gap: 8 }}>
-              Download Resume ↗
+            <a href="mailto:cyberchandru87@gmail.com"
+              style={{ color:"var(--tp)", textDecoration:"none", padding:"14px 32px", borderRadius:12, fontSize:15, fontWeight:500, border:"1px solid var(--border)", cursor:"pointer", fontFamily:"'Inter',sans-serif", display:"inline-flex", alignItems:"center", gap:8, transition:"all 0.3s" }}
+              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = "rgba(124,58,237,0.08)"; el.style.borderColor = "rgba(124,58,237,0.4)"; }}
+              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = "transparent"; el.style.borderColor = "var(--border)"; }}>
+              ✉ Get in touch
             </a>
           </div>
 
           {/* Quick stats */}
-          <div style={{ display: "flex", gap: 36 }}>
-            {[{ n: "Top 1%", l: "TryHackMe" }, { n: "149+", l: "Rooms" }, { n: "5", l: "Projects" }, { n: "4", l: "Certs" }].map(s => (
+          <div className="stat-row" style={{ display:"flex", gap:36, flexWrap:"wrap" }}>
+            {[{ n:"Top 1%", l:"TryHackMe Rank" },{ n:"149+", l:"Rooms Completed" },{ n:"5", l:"Projects Built" },{ n:"4", l:"Certifications" }].map(s => (
               <div key={s.l}>
-                <div style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 24, fontWeight: 800, color: "#f1f5f9", letterSpacing: "-0.5px" }}>{s.n}</div>
-                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 12, color: "#475569" }}>{s.l}</div>
+                <div style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:26, fontWeight:800, color:"var(--tp)", letterSpacing:"-0.5px" }}>{s.n}</div>
+                <div style={{ fontFamily:"'Inter',sans-serif", fontSize:12, color:"var(--tm)" }}>{s.l}</div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Right: Profile photo */}
-        <div style={{ position: "relative", width: 340, height: 340, flexShrink: 0, animation: "float 6s ease-in-out infinite" }}>
-          {/* Outer glow ring */}
-          <div style={{ position: "absolute", inset: -20, borderRadius: "50%", background: "conic-gradient(from 0deg,#7c3aed,#2563eb,#06b6d4,#7c3aed)", animation: "spin-slow 8s linear infinite", opacity: 0.6 }} />
-          <div style={{ position: "absolute", inset: -16, borderRadius: "50%", background: "#050816" }} />
-          {/* Image container */}
-          <div style={{ position: "relative", width: "100%", height: "100%", borderRadius: "50%", overflow: "hidden", border: "3px solid rgba(124,58,237,0.4)", zIndex: 1 }}>
+        {/* ── PHOTO ── */}
+        <div className="hero-photo" style={{ position:"relative", width:320, height:320, flexShrink:0, animation:"float 6s ease-in-out infinite" }}>
+          {/* Spinning ring */}
+          <div style={{ position:"absolute", inset:-22, borderRadius:"50%", background:"conic-gradient(from 0deg,#7c3aed,#2563eb,#06b6d4,#34d399,#7c3aed)", animation:"spin-conic 8s linear infinite", opacity:0.7 }}/>
+          <div style={{ position:"absolute", inset:-16, borderRadius:"50%", background:"var(--bg)" }}/>
+          {/* Profile */}
+          <div style={{ position:"relative", width:"100%", height:"100%", borderRadius:"50%", overflow:"hidden", border:"3px solid rgba(124,58,237,0.45)", zIndex:1 }}>
             <img src="/__mockup/images/profile.webp" alt="Chandraprakash"
-              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }}
-              onError={e => { const el = e.currentTarget as HTMLImageElement; el.src = ""; el.style.background = "linear-gradient(135deg,#7c3aed,#06b6d4)"; }} />
+              style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"center top" }}/>
           </div>
-          {/* Floating badges */}
-          <div style={{ position: "absolute", top: 20, right: -50, background: "rgba(124,58,237,0.15)", backdropFilter: "blur(8px)", border: "1px solid rgba(124,58,237,0.3)", borderRadius: 12, padding: "10px 16px", animation: "float 4s ease-in-out infinite", zIndex: 2 }}>
-            <div style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 18, fontWeight: 800, color: "#a78bfa" }}>Top 1%</div>
-            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 11, color: "#64748b" }}>TryHackMe</div>
+          {/* Badges */}
+          <div style={{ position:"absolute", top:18, right:-54, background:"var(--nav-bg)", backdropFilter:"blur(12px)", border:"1px solid rgba(124,58,237,0.35)", borderRadius:12, padding:"10px 16px", animation:"float2 4s ease-in-out infinite", zIndex:2 }}>
+            <div style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:17, fontWeight:800, color:"#a78bfa" }}>Top 1%</div>
+            <div style={{ fontFamily:"'Inter',sans-serif", fontSize:10, color:"var(--tm)" }}>TryHackMe</div>
           </div>
-          <div style={{ position: "absolute", bottom: 30, left: -50, background: "rgba(6,182,212,0.15)", backdropFilter: "blur(8px)", border: "1px solid rgba(6,182,212,0.3)", borderRadius: 12, padding: "10px 16px", animation: "float 5s ease-in-out infinite 1s", zIndex: 2 }}>
-            <div style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 18, fontWeight: 800, color: "#67e8f9" }}>149+</div>
-            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 11, color: "#64748b" }}>Rooms Done</div>
+          <div style={{ position:"absolute", bottom:24, left:-58, background:"var(--nav-bg)", backdropFilter:"blur(12px)", border:"1px solid rgba(6,182,212,0.35)", borderRadius:12, padding:"10px 16px", animation:"float2 5s ease-in-out infinite 1.2s", zIndex:2 }}>
+            <div style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:17, fontWeight:800, color:"#67e8f9" }}>149+</div>
+            <div style={{ fontFamily:"'Inter',sans-serif", fontSize:10, color:"var(--tm)" }}>Rooms Done</div>
           </div>
         </div>
-      </div>
-
-      {/* Scroll hint */}
-      <div style={{ position: "absolute", bottom: 32, left: "50%", transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: 8, color: "#334155", animation: "float 2.5s ease-in-out infinite" }}>
-        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase" }}>Scroll</div>
-        <div style={{ width: 1, height: 48, background: "linear-gradient(to bottom,rgba(124,58,237,0.5),transparent)" }} />
       </div>
     </section>
   );
 }
 
-/* ─── SECTION WRAPPER ────────────────────────────────────────────── */
-function SecHead({ label, title, sub }: { label: string; title: string; sub?: string }) {
-  return (
-    <div style={{ marginBottom: 64, textAlign: "center" }}>
-      <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "#7c3aed", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 12 }}>{label}</p>
-      <h2 style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: "clamp(30px,4vw,48px)", fontWeight: 800, color: "#f1f5f9", letterSpacing: "-1px", lineHeight: 1.1, marginBottom: sub ? 16 : 0 }}>{title}</h2>
-      {sub && <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 16, color: "#64748b", maxWidth: 500, margin: "0 auto", lineHeight: 1.7 }}>{sub}</p>}
-    </div>
-  );
-}
-
 /* ─── ABOUT ──────────────────────────────────────────────────────── */
-function About() {
+function About({ dark }: { dark:boolean }) {
   const ref = useRef<HTMLElement>(null!);
-  const v = useIntersection(ref);
+  useReveal(ref);
   return (
-    <section id="about" ref={ref} style={{ padding: "120px 28px" }}>
-      <div style={{ maxWidth: 1180, margin: "0 auto" }}>
-        <div className={`reveal ${v ? "visible" : ""}`}>
-          <SecHead label="About Me" title="Who I Am" sub="A detail-oriented security professional building real-world skills through hands-on labs and projects." />
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "start" }}>
-          {/* Left: bio */}
-          <div className={`reveal-left ${v ? "visible" : ""}`}>
-            <div className="glass grad-border" style={{ borderRadius: 24, padding: 40 }}>
-              <div style={{ width: 56, height: 56, borderRadius: 16, background: "linear-gradient(135deg,#7c3aed,#2563eb)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, marginBottom: 24 }}>🛡️</div>
-              <h3 style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 22, fontWeight: 700, color: "#f1f5f9", marginBottom: 16 }}>Cybersecurity & SOC Operations</h3>
-              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 15, color: "#94a3b8", lineHeight: 1.8, marginBottom: 20 }}>
-                B.Sc Computer Science graduate from <span style={{ color: "#a78bfa" }}>GTN Arts College, Dindigul</span>, with a strong focus on SOC operations, threat detection, SIEM, log analysis, and incident response.
+    <section id="about" ref={ref} style={{ padding:"120px 28px" }}>
+      <div style={{ maxWidth:1180, margin:"0 auto" }}>
+        <div className="rv"><SH label="About Me" title="Building a Defense-First Mindset" sub="Passionate about protecting digital infrastructure through hands-on research, real projects, and continuous learning."/></div>
+        <div className="about-grid" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:48 }}>
+          <div className="rl">
+            <div className="gcard" style={{ borderRadius:24, padding:40 }}>
+              <div style={{ width:52, height:52, borderRadius:16, background:"linear-gradient(135deg,#7c3aed,#2563eb)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:26, marginBottom:24 }}>🛡️</div>
+              <h3 style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:20, fontWeight:800, color:"var(--tp)", marginBottom:14 }}>SOC & Security Operations</h3>
+              <p style={{ fontFamily:"'Inter',sans-serif", fontSize:15, color:"var(--ts)", lineHeight:1.8, marginBottom:18 }}>
+                B.Sc CS graduate from <span style={{ color:"#a78bfa", fontWeight:600 }}>GTN Arts College, Dindigul</span> focused on SOC ops, threat detection, SIEM, log analysis, and incident response.
               </p>
-              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 15, color: "#64748b", lineHeight: 1.8 }}>
-                Currently progressing through TryHackMe's SOC Level 1 & Level 2 paths while building real security tools — from custom SIEMs to honeypots and phishing detectors.
+              <p style={{ fontFamily:"'Inter',sans-serif", fontSize:14, color:"var(--tm)", lineHeight:1.8 }}>
+                Building real experience through TryHackMe SOC Level 1 (completed) and Level 2 (in progress), plus self-built security tools deployed in real scenarios.
               </p>
-              <div style={{ display: "flex", gap: 12, marginTop: 28, flexWrap: "wrap" }}>
-                {[
-                  { icon: "🎓", text: "B.Sc Computer Science" },
-                  { icon: "📍", text: "Dindigul, India" },
-                  { icon: "💼", text: "Open to Opportunities" },
-                ].map(b => (
-                  <div key={b.text} style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 8, padding: "7px 14px", fontFamily: "'Inter',sans-serif", fontSize: 13, color: "#94a3b8" }}>
+              <div style={{ display:"flex", gap:10, marginTop:26, flexWrap:"wrap" }}>
+                {[{ icon:"🎓", text:"B.Sc Computer Science" },{ icon:"📍", text:"Dindigul, India" },{ icon:"💼", text:"Open to Work" }].map(b => (
+                  <div key={b.text} style={{ display:"inline-flex", alignItems:"center", gap:7, background:"var(--tag-bg)", border:"1px solid var(--border)", borderRadius:8, padding:"6px 14px", fontFamily:"'Inter',sans-serif", fontSize:12, color:"var(--ts)" }}>
                     {b.icon} {b.text}
                   </div>
                 ))}
               </div>
             </div>
           </div>
-
-          {/* Right: highlights + stats */}
-          <div className={`reveal-right ${v ? "visible" : ""}`} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+          <div className="rr" style={{ display:"flex", flexDirection:"column", gap:16 }}>
             {[
-              { icon: "⚡", color: "#7c3aed", title: "SOC Training", desc: "TryHackMe SOC Level 1 completed, Level 2 in progress. Top 1% globally with 17,374 points." },
-              { icon: "🔧", color: "#2563eb", title: "Security Tools Built", desc: "Built a custom SIEM (SenSIEM), honeypot, log analyzer, and AI-powered phishing detector." },
-              { icon: "📜", color: "#06b6d4", title: "4 Certifications", desc: "IBM, Google, TryHackMe SOC Level 1, and Ethical Hacking — all verified." },
-            ].map((item, i) => (
-              <div key={item.title} className="glass" style={{ borderRadius: 16, padding: 24, border: "1px solid rgba(255,255,255,0.06)", display: "flex", gap: 16, alignItems: "flex-start", transition: "all 0.3s", cursor: "default" }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = `${item.color}50`; (e.currentTarget as HTMLElement).style.transform = "translateX(4px)"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.06)"; (e.currentTarget as HTMLElement).style.transform = "none"; }}>
-                <div style={{ width: 44, height: 44, borderRadius: 12, background: `${item.color}20`, border: `1px solid ${item.color}30`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>{item.icon}</div>
+              { icon:"⚡", c:"#7c3aed", t:"TryHackMe — Top 1% Global", d:"SOC Level 1 certified. 149 rooms, 28 badges, 17,374 points. Level 2 in progress." },
+              { icon:"🔧", c:"#2563eb", t:"Real Security Tools Built", d:"SenSIEM, honeypot, log analyzer, AI phishing detector — all shipped and documented." },
+              { icon:"📜", c:"#06b6d4", t:"4 Verified Certifications", d:"IBM, Google, TryHackMe SOC Level 1, and Ethical Hacking — all with credential links." },
+            ].map(item => (
+              <div key={item.t} className="gcard" style={{ borderRadius:16, padding:22, display:"flex", gap:16, alignItems:"flex-start", cursor:"default" }}>
+                <div style={{ width:42, height:42, borderRadius:12, background:`${item.c}18`, border:`1px solid ${item.c}30`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:20, flexShrink:0 }}>{item.icon}</div>
                 <div>
-                  <div style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 15, fontWeight: 700, color: "#f1f5f9", marginBottom: 4 }}>{item.title}</div>
-                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "#64748b", lineHeight: 1.6 }}>{item.desc}</div>
+                  <div style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:14, fontWeight:700, color:"var(--tp)", marginBottom:5 }}>{item.t}</div>
+                  <div style={{ fontFamily:"'Inter',sans-serif", fontSize:13, color:"var(--tm)", lineHeight:1.6 }}>{item.d}</div>
                 </div>
               </div>
             ))}
-
-            {/* CGPA card */}
-            <div className="glass" style={{ borderRadius: 16, padding: 24, border: "1px solid rgba(255,255,255,0.06)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "#64748b" }}>CGPA — GTN Arts College</div>
-              <div style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 28, fontWeight: 800, background: "linear-gradient(135deg,#a78bfa,#60a5fa)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>8.01</div>
+            <div className="gcard" style={{ borderRadius:16, padding:22, display:"flex", justifyContent:"space-between", alignItems:"center", cursor:"default" }}>
+              <div style={{ fontFamily:"'Inter',sans-serif", fontSize:13, color:"var(--tm)" }}>CGPA — GTN Arts College</div>
+              <div className="gt" style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:30, fontWeight:800 }}>8.01</div>
             </div>
           </div>
         </div>
@@ -373,29 +445,23 @@ function About() {
 /* ─── SKILLS ─────────────────────────────────────────────────────── */
 function Skills() {
   const ref = useRef<HTMLElement>(null!);
-  const v = useIntersection(ref);
-
+  useReveal(ref);
   return (
-    <section id="skills" ref={ref} style={{ padding: "120px 28px", background: "rgba(255,255,255,0.01)" }}>
-      <div style={{ maxWidth: 1180, margin: "0 auto" }}>
-        <div className={`reveal ${v ? "visible" : ""}`}>
-          <SecHead label="Technical Skills" title="What I Work With" sub="Tools and technologies I've used in labs, CTFs, and real security projects." />
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(330px,1fr))", gap: 20 }}>
+    <section id="skills" ref={ref} style={{ padding:"120px 28px", background: dark ? "rgba(255,255,255,0.01)" : "rgba(0,0,0,0.015)" }}>
+      <div style={{ maxWidth:1180, margin:"0 auto" }}>
+        <div className="rv"><SH label="Technical Skills" title="Tools & Technologies" sub="Hands-on experience through labs, CTFs, projects, and TryHackMe training paths."/></div>
+        <div className="skills-grid rv" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(320px,1fr))", gap:18 }}>
           {SKILLS.map((cat, i) => (
-            <div key={cat.cat} className={`reveal ${v ? "visible" : ""} delay-${Math.min(i + 1, 5)}`}
-              style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 20, padding: 28, transition: "all 0.35s ease", cursor: "default" }}
-              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = `${cat.color}40`; el.style.background = `${cat.color}08`; el.style.transform = "translateY(-4px)"; }}
-              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "rgba(255,255,255,0.06)"; el.style.background = "rgba(255,255,255,0.02)"; el.style.transform = "none"; }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
-                <div style={{ width: 10, height: 10, borderRadius: "50%", background: cat.color, boxShadow: `0 0 10px ${cat.color}` }} />
-                <h3 style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 15, fontWeight: 700, color: "#f1f5f9" }}>{cat.cat}</h3>
+            <div key={cat.cat} className={`gcard d${Math.min(i+1,5)}`} style={{ borderRadius:18, padding:26, cursor:"default" }}
+              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = `${cat.color}45`; el.style.background = `${cat.color}09`; }}
+              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "var(--border)"; el.style.background = "var(--card)"; }}>
+              <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:18 }}>
+                <div style={{ width:10, height:10, borderRadius:"50%", background:cat.color, boxShadow:`0 0 10px ${cat.color}` }}/>
+                <h3 style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:14, fontWeight:700, color:"var(--tp)" }}>{cat.cat}</h3>
               </div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+              <div style={{ display:"flex", flexWrap:"wrap", gap:7 }}>
                 {cat.items.map(sk => (
-                  <span key={sk} className="skill-tag" style={{ background: cat.bg, border: `1px solid ${cat.color}30`, borderRadius: 8, padding: "5px 12px", fontFamily: "'Inter',sans-serif", fontSize: 12, color: "#94a3b8", fontWeight: 500 }}>
-                    {sk}
-                  </span>
+                  <span key={sk} className="sp" style={{ background:cat.bg, border:`1px solid ${cat.color}28`, borderRadius:8, padding:"5px 12px", fontFamily:"'Inter',sans-serif", fontSize:12, color:cat.color, fontWeight:500 }}>{sk}</span>
                 ))}
               </div>
             </div>
@@ -409,56 +475,40 @@ function Skills() {
 /* ─── EDUCATION ──────────────────────────────────────────────────── */
 function Education() {
   const ref = useRef<HTMLElement>(null!);
-  const v = useIntersection(ref);
-
+  useReveal(ref);
   return (
-    <section id="education" ref={ref} style={{ padding: "120px 28px" }}>
-      <div style={{ maxWidth: 900, margin: "0 auto" }}>
-        <div className={`reveal ${v ? "visible" : ""}`}>
-          <SecHead label="Education" title="Academic Background" />
-        </div>
-
-        <div className={`reveal ${v ? "visible" : ""} delay-1`} style={{ position: "relative", paddingLeft: 52 }}>
-          <div className="timeline-line" />
-          <div className="timeline-dot" style={{ top: 32 }} />
-
-          <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 24, padding: 40, transition: "all 0.35s ease" }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(124,58,237,0.4)"; (e.currentTarget as HTMLElement).style.background = "rgba(124,58,237,0.05)"; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.06)"; (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.02)"; }}>
-
-            <div style={{ display: "flex", gap: 24, alignItems: "flex-start", flexWrap: "wrap" }}>
-              {/* College image */}
-              <div style={{ width: 80, height: 80, borderRadius: 16, overflow: "hidden", flexShrink: 0, border: "1px solid rgba(255,255,255,0.08)" }}>
-                <img src="/__mockup/images/edu-gtn.png" alt="GTN Arts College"
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  onError={e => { const el = e.currentTarget.parentElement!; el.style.background = "linear-gradient(135deg,#7c3aed20,#2563eb20)"; (e.currentTarget as HTMLImageElement).style.display = "none"; }} />
+    <section id="education" ref={ref} style={{ padding:"120px 28px" }}>
+      <div style={{ maxWidth:900, margin:"0 auto" }}>
+        <div className="rv"><SH label="Education" title="Academic Background"/></div>
+        <div className="rv d1" style={{ position:"relative", paddingLeft:52 }}>
+          <div className="tl-line"/>
+          <div className="tl-dot" style={{ top:28 }}/>
+          <div className="gcard" style={{ borderRadius:24, padding:36 }}>
+            <div style={{ display:"flex", gap:22, alignItems:"flex-start", flexWrap:"wrap" }}>
+              <div style={{ width:76, height:76, borderRadius:16, overflow:"hidden", border:"1px solid var(--border)", flexShrink:0, background:"var(--tag-bg)" }}>
+                <img src="/__mockup/images/edu-gtn.png" alt="GTN" style={{ width:"100%", height:"100%", objectFit:"cover" }} onError={e => { (e.currentTarget as HTMLImageElement).style.display="none"; }}/>
               </div>
-
-              <div style={{ flex: 1 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12 }}>
+              <div style={{ flex:1 }}>
+                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", flexWrap:"wrap", gap:10, marginBottom:12 }}>
                   <div>
-                    <h3 style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 22, fontWeight: 800, color: "#f1f5f9", marginBottom: 4, letterSpacing: "-0.5px" }}>B.Sc Computer Science</h3>
-                    <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 15, color: "#a78bfa", fontWeight: 500 }}>GTN Arts College, Dindigul</p>
+                    <h3 style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:22, fontWeight:800, color:"var(--tp)", letterSpacing:"-0.5px", marginBottom:4 }}>B.Sc Computer Science</h3>
+                    <p style={{ fontFamily:"'Inter',sans-serif", fontSize:14, color:"#a78bfa", fontWeight:600 }}>GTN Arts College, Dindigul</p>
                   </div>
-                  <div style={{ textAlign: "right" }}>
-                    <div style={{ background: "rgba(52,211,153,0.12)", border: "1px solid rgba(52,211,153,0.3)", borderRadius: 8, padding: "4px 14px", fontSize: 12, color: "#34d399", fontFamily: "'Inter',sans-serif", fontWeight: 600, marginBottom: 6, display: "inline-block" }}>
-                      ✓ Completed
-                    </div>
-                    <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "#475569" }}>2023 – 2026</div>
+                  <div style={{ textAlign:"right" }}>
+                    <div style={{ background:"rgba(52,211,153,0.12)", border:"1px solid rgba(52,211,153,0.3)", borderRadius:8, padding:"4px 14px", fontSize:12, color:"#34d399", fontFamily:"'Inter',sans-serif", fontWeight:600, marginBottom:6, display:"inline-block" }}>✓ Completed</div>
+                    <div style={{ fontFamily:"'Inter',sans-serif", fontSize:13, color:"var(--tm)" }}>2023 – 2026</div>
                   </div>
                 </div>
-
-                <div style={{ display: "flex", gap: 24, margin: "20px 0 24px", borderTop: "1px solid rgba(255,255,255,0.06)", borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "16px 0" }}>
+                <div style={{ display:"flex", gap:20, borderTop:"1px solid var(--border)", borderBottom:"1px solid var(--border)", padding:"14px 0", margin:"0 0 20px" }}>
                   <div>
-                    <div style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 24, fontWeight: 800, background: "linear-gradient(135deg,#a78bfa,#60a5fa)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>8.01</div>
-                    <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 11, color: "#475569" }}>CGPA</div>
+                    <div className="gt" style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:28, fontWeight:800 }}>8.01</div>
+                    <div style={{ fontFamily:"'Inter',sans-serif", fontSize:11, color:"var(--tm)" }}>CGPA</div>
                   </div>
                 </div>
-
-                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "#475569", marginBottom: 16 }}>Relevant Coursework</p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                  {["Computer Networks","Cryptography & Network Security","Operating Systems","Data Structures & Algorithms","Database Management Systems","Web Technologies","Software Engineering"].map(c => (
-                    <span key={c} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 8, padding: "4px 12px", fontFamily: "'Inter',sans-serif", fontSize: 12, color: "#64748b" }}>{c}</span>
+                <p style={{ fontFamily:"'Inter',sans-serif", fontSize:12, color:"var(--tm)", marginBottom:12, fontWeight:500, letterSpacing:"0.05em", textTransform:"uppercase" }}>Relevant Coursework</p>
+                <div style={{ display:"flex", flexWrap:"wrap", gap:7 }}>
+                  {["Computer Networks","Cryptography","Operating Systems","Data Structures","DBMS","Web Technologies","Software Engineering"].map(c => (
+                    <span key={c} style={{ background:"var(--tag-bg)", border:"1px solid var(--border)", borderRadius:8, padding:"4px 12px", fontFamily:"'Inter',sans-serif", fontSize:12, color:"var(--ts)" }}>{c}</span>
                   ))}
                 </div>
               </div>
@@ -473,62 +523,49 @@ function Education() {
 /* ─── EXPERIENCE ─────────────────────────────────────────────────── */
 function Experience() {
   const ref = useRef<HTMLElement>(null!);
-  const v = useIntersection(ref);
-
+  useReveal(ref);
   return (
-    <section id="experience" ref={ref} style={{ padding: "120px 28px", background: "rgba(255,255,255,0.01)" }}>
-      <div style={{ maxWidth: 900, margin: "0 auto" }}>
-        <div className={`reveal ${v ? "visible" : ""}`}>
-          <SecHead label="Experience" title="Practical Exposure" sub="Hands-on cybersecurity training translated into real skills." />
-        </div>
-
-        <div style={{ position: "relative", paddingLeft: 52 }}>
-          <div className="timeline-line" style={{ background: "linear-gradient(to bottom,#06b6d4,#2563eb,#7c3aed,transparent)" }} />
-          <div className="timeline-dot" style={{ top: 32, background: "linear-gradient(135deg,#06b6d4,#2563eb)" }} />
-
-          <div className={`reveal ${v ? "visible" : ""} delay-1`}
-            style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 24, padding: 40 }}>
-
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12, marginBottom: 28 }}>
+    <section id="experience" ref={ref} style={{ padding:"120px 28px", background: "rgba(255,255,255,0.01)" }}>
+      <div style={{ maxWidth:900, margin:"0 auto" }}>
+        <div className="rv"><SH label="Experience" title="Practical Exposure" sub="Hands-on security training through real labs, CTF competitions, and simulation exercises."/></div>
+        <div className="rv d1" style={{ position:"relative", paddingLeft:52 }}>
+          <div className="tl-line" style={{ background:"linear-gradient(to bottom,#06b6d4,#2563eb,#7c3aed,transparent)" }}/>
+          <div className="tl-dot" style={{ top:28, background:"linear-gradient(135deg,#06b6d4,#2563eb)" }}/>
+          <div className="gcard" style={{ borderRadius:24, padding:36 }}>
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", flexWrap:"wrap", gap:12, marginBottom:24 }}>
               <div>
-                <div style={{ display: "inline-flex", gap: 8, marginBottom: 10 }}>
-                  <span style={{ background: "rgba(6,182,212,0.12)", border: "1px solid rgba(6,182,212,0.3)", borderRadius: 6, padding: "3px 12px", fontSize: 11, color: "#67e8f9", fontFamily: "'Inter',sans-serif", fontWeight: 600, letterSpacing: "0.05em" }}>LAB TRAINING</span>
+                <div style={{ display:"inline-flex", gap:8, marginBottom:10 }}>
+                  <span style={{ background:"rgba(6,182,212,0.12)", border:"1px solid rgba(6,182,212,0.3)", borderRadius:6, padding:"3px 12px", fontSize:11, color:"#67e8f9", fontFamily:"'Inter',sans-serif", fontWeight:700, letterSpacing:"0.06em" }}>LAB TRAINING</span>
                 </div>
-                <h3 style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 22, fontWeight: 800, color: "#f1f5f9", marginBottom: 4, letterSpacing: "-0.5px" }}>TryHackMe Cybersecurity Training</h3>
-                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 14, color: "#67e8f9" }}>TryHackMe · Hands-on Cybersecurity Training</p>
+                <h3 style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:20, fontWeight:800, color:"var(--tp)", letterSpacing:"-0.5px", marginBottom:4 }}>TryHackMe Cybersecurity Training</h3>
+                <p style={{ fontFamily:"'Inter',sans-serif", fontSize:13, color:"#67e8f9" }}>TryHackMe · Hands-on Cybersecurity Platform</p>
               </div>
-              <span style={{ background: "rgba(52,211,153,0.12)", border: "1px solid rgba(52,211,153,0.3)", borderRadius: 8, padding: "5px 14px", fontSize: 12, color: "#34d399", fontFamily: "'Inter',sans-serif", fontWeight: 600 }}>
-                ● Active
-              </span>
+              <span style={{ background:"rgba(52,211,153,0.12)", border:"1px solid rgba(52,211,153,0.3)", borderRadius:8, padding:"5px 14px", fontSize:12, color:"#34d399", fontFamily:"'Inter',sans-serif", fontWeight:600 }}>● Active</span>
             </div>
-
-            {/* Stats grid */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16, marginBottom: 28 }}>
-              {[{ v: "Top 1%", l: "Global Rank", c: "#a78bfa" }, { v: "149", l: "Rooms Done", c: "#60a5fa" }, { v: "28", l: "Badges Earned", c: "#34d399" }, { v: "17,374", l: "Total Points", c: "#fbbf24" }].map(s => (
-                <div key={s.l} className="stat-card">
-                  <div style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 20, fontWeight: 800, color: s.c, marginBottom: 4 }}>{s.v}</div>
-                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 11, color: "#475569" }}>{s.l}</div>
+            <div className="exp-stats" style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:14, marginBottom:24 }}>
+              {[{ v:"Top 1%", l:"Global Rank", c:"#a78bfa" },{ v:"149", l:"Rooms Done", c:"#60a5fa" },{ v:"28", l:"Badges", c:"#34d399" },{ v:"17,374", l:"Points", c:"#fbbf24" }].map(s => (
+                <div key={s.l} style={{ background:"var(--stat-bg)", border:"1px solid var(--border)", borderRadius:14, padding:"18px 10px", textAlign:"center" }}>
+                  <div style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:20, fontWeight:800, color:s.c, marginBottom:4 }}>{s.v}</div>
+                  <div style={{ fontFamily:"'Inter',sans-serif", fontSize:11, color:"var(--tm)" }}>{s.l}</div>
                 </div>
               ))}
             </div>
-
-            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 12, marginBottom: 24 }}>
+            <ul style={{ listStyle:"none", display:"flex", flexDirection:"column", gap:11, marginBottom:22 }}>
               {[
-                "Completed SOC Level 1 certification — mastering SIEM fundamentals, alert triage, log analysis, and SOC workflows",
-                "Currently in SOC Level 2 — advancing into threat hunting, detection engineering, and IR procedures",
-                "Investigated real-world attack scenarios: phishing, ransomware, network intrusions, and credential attacks",
-                "Achieved Top 1% global ranking through consistent 149+ room completions and 28 badges",
+                "Completed SOC Level 1 — mastering SIEM, alert triage, log analysis, and full SOC workflows",
+                "SOC Level 2 in progress — advancing into threat hunting, detection engineering, and IR procedures",
+                "Investigated phishing, ransomware, network intrusion, and credential attack scenarios",
+                "Top 1% globally — 149+ rooms, 28 badges across Cyber Defense, Forensics, and OSINT paths",
               ].map((pt, i) => (
-                <li key={i} style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
-                  <span style={{ width: 20, height: 20, borderRadius: "50%", background: "rgba(6,182,212,0.15)", border: "1px solid rgba(6,182,212,0.3)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, color: "#67e8f9", flexShrink: 0, marginTop: 2 }}>✓</span>
-                  <span style={{ fontFamily: "'Inter',sans-serif", fontSize: 14, color: "#94a3b8", lineHeight: 1.7 }}>{pt}</span>
+                <li key={i} style={{ display:"flex", gap:12, alignItems:"flex-start" }}>
+                  <span style={{ width:20, height:20, borderRadius:"50%", background:"rgba(6,182,212,0.15)", border:"1px solid rgba(6,182,212,0.3)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:10, color:"#67e8f9", flexShrink:0, marginTop:2 }}>✓</span>
+                  <span style={{ fontFamily:"'Inter',sans-serif", fontSize:14, color:"var(--ts)", lineHeight:1.7 }}>{pt}</span>
                 </li>
               ))}
             </ul>
-
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-              {["SOC Level 1 ✓","SOC Level 2 (Active)","Cyber Defense","Incident Response","Threat Hunting","Network Analysis","Digital Forensics"].map(t => (
-                <span key={t} style={{ background: "rgba(6,182,212,0.08)", border: "1px solid rgba(6,182,212,0.2)", borderRadius: 8, padding: "5px 12px", fontFamily: "'Inter',sans-serif", fontSize: 12, color: "#67e8f9", fontWeight: 500 }}>{t}</span>
+            <div style={{ display:"flex", flexWrap:"wrap", gap:7 }}>
+              {["SOC Level 1 ✓","SOC Level 2 (Active)","Cyber Defense","Incident Response","Threat Hunting","Digital Forensics"].map(t => (
+                <span key={t} style={{ background:"rgba(6,182,212,0.08)", border:"1px solid rgba(6,182,212,0.22)", borderRadius:8, padding:"5px 12px", fontFamily:"'Inter',sans-serif", fontSize:12, color:"#67e8f9", fontWeight:500 }}>{t}</span>
               ))}
             </div>
           </div>
@@ -541,80 +578,58 @@ function Experience() {
 /* ─── PROJECTS ───────────────────────────────────────────────────── */
 function Projects() {
   const ref = useRef<HTMLElement>(null!);
-  const v = useIntersection(ref);
+  useReveal(ref);
   const [filter, setFilter] = useState("All");
-  const cats = ["All", "Defensive", "AI / Forensics", "Tools"];
+  const cats = ["All","Defensive","AI / ML","Tools"];
   const shown = filter === "All" ? PROJECTS : PROJECTS.filter(p => p.cat === filter);
 
   return (
-    <section id="projects" ref={ref} style={{ padding: "120px 28px" }}>
-      <div style={{ maxWidth: 1180, margin: "0 auto" }}>
-        <div className={`reveal ${v ? "visible" : ""}`}>
-          <SecHead label="Projects" title="Security Projects" sub="Real tools I've built — from custom SIEMs to AI-powered threat detectors." />
-        </div>
-
-        {/* Filter tabs */}
-        <div className={`reveal ${v ? "visible" : ""} delay-1`} style={{ display: "flex", gap: 8, justifyContent: "center", marginBottom: 52, flexWrap: "wrap" }}>
+    <section id="projects" ref={ref} style={{ padding:"120px 28px" }}>
+      <div style={{ maxWidth:1180, margin:"0 auto" }}>
+        <div className="rv"><SH label="Projects" title="Security Projects" sub="Real tools built from scratch — from custom SIEMs to AI-powered threat detectors."/></div>
+        <div className="rv d1" style={{ display:"flex", gap:8, justifyContent:"center", marginBottom:48, flexWrap:"wrap" }}>
           {cats.map(c => (
             <button key={c} onClick={() => setFilter(c)}
-              style={{
-                background: filter === c ? "linear-gradient(135deg,#7c3aed,#2563eb)" : "rgba(255,255,255,0.04)",
-                border: filter === c ? "none" : "1px solid rgba(255,255,255,0.07)",
-                color: filter === c ? "#fff" : "#64748b",
-                borderRadius: 10, padding: "8px 20px", fontSize: 13, fontWeight: 500, cursor: "pointer",
-                fontFamily: "'Inter',sans-serif", transition: "all 0.25s ease",
-              }}>
+              style={{ background: filter===c ? "linear-gradient(135deg,#7c3aed,#2563eb)" : "var(--card)", border: filter===c ? "none" : "1px solid var(--border)", color: filter===c ? "#fff" : "var(--ts)", borderRadius:10, padding:"8px 20px", fontSize:13, fontWeight:600, cursor:"pointer", fontFamily:"'Inter',sans-serif", transition:"all 0.25s ease" }}>
               {c}
             </button>
           ))}
         </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(340px,1fr))", gap: 24 }}>
+        <div className="proj-grid" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(340px,1fr))", gap:22 }}>
           {shown.map((p, i) => (
-            <div key={p.title} className={`proj-card reveal ${v ? "visible" : ""} delay-${Math.min(i + 1, 5)}`}
-              style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 20, overflow: "hidden" }}>
+            <div key={p.title} className={`gcard rv proj-wrap d${Math.min(i+1,5)}`} style={{ borderRadius:20, overflow:"hidden", cursor:"pointer" }}>
               {/* Image */}
-              <div style={{ height: 200, overflow: "hidden", position: "relative", background: "#0f172a" }}>
-                <img src={p.img} alt={p.title} style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} />
-                <div className="proj-overlay" />
-                <div className="proj-info">
-                  <div style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 16, fontWeight: 700, color: "#f1f5f9", marginBottom: 4 }}>{p.title}</div>
-                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 12, color: "#94a3b8" }}>{p.desc.slice(0, 80)}…</div>
+              <div style={{ height:196, overflow:"hidden", position:"relative", background:dark?"#0f172a":"#e2e8f0" }}>
+                <img src={p.img} alt={p.title} className="proj-img" style={{ width:"100%", height:"100%", objectFit:"cover" }} onError={e => { (e.currentTarget as HTMLImageElement).style.display="none"; }}/>
+                <div className="proj-overlay"/>
+                <div className="proj-reveal">
+                  <div style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:15, fontWeight:700, color:"#f1f5f9", marginBottom:4 }}>{p.title}</div>
+                  <div style={{ fontFamily:"'Inter',sans-serif", fontSize:12, color:"#94a3b8" }}>{p.desc.slice(0,85)}…</div>
                 </div>
-                {/* Cat badge */}
-                <div style={{ position: "absolute", top: 12, left: 12, background: `${p.catColor}20`, border: `1px solid ${p.catColor}40`, backdropFilter: "blur(8px)", borderRadius: 8, padding: "4px 12px", fontSize: 11, color: p.catColor, fontFamily: "'Inter',sans-serif", fontWeight: 600 }}>
-                  {p.cat}
-                </div>
+                <div style={{ position:"absolute", top:12, left:12, background:`${p.catC}22`, border:`1px solid ${p.catC}44`, backdropFilter:"blur(8px)", borderRadius:8, padding:"3px 12px", fontSize:11, color:p.catC, fontFamily:"'Inter',sans-serif", fontWeight:700 }}>{p.cat}</div>
               </div>
-
               {/* Content */}
-              <div style={{ padding: 24 }}>
-                <h3 style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 18, fontWeight: 800, color: "#f1f5f9", marginBottom: 4, letterSpacing: "-0.3px" }}>{p.title}</h3>
-                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 12, color: "#475569", marginBottom: 12 }}>{p.subtitle}</p>
-                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "#64748b", lineHeight: 1.7, marginBottom: 16 }}>{p.desc}</p>
-
-                {/* Metrics */}
-                <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
+              <div style={{ padding:22 }}>
+                <h3 style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:17, fontWeight:800, color:"var(--tp)", marginBottom:3, letterSpacing:"-0.3px" }}>{p.title}</h3>
+                <p style={{ fontFamily:"'Inter',sans-serif", fontSize:12, color:"var(--tm)", marginBottom:10 }}>{p.subtitle}</p>
+                <p style={{ fontFamily:"'Inter',sans-serif", fontSize:13, color:"var(--ts)", lineHeight:1.7, marginBottom:14 }}>{p.desc}</p>
+                <div style={{ display:"flex", gap:10, marginBottom:14 }}>
                   {p.metrics.map(m => (
-                    <div key={m.l} style={{ background: `${p.catColor}12`, border: `1px solid ${p.catColor}25`, borderRadius: 10, padding: "8px 14px", textAlign: "center" }}>
-                      <div style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 17, fontWeight: 800, color: p.catColor }}>{m.v}</div>
-                      <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 10, color: "#475569" }}>{m.l}</div>
+                    <div key={m.l} style={{ background:`${p.catC}12`, border:`1px solid ${p.catC}25`, borderRadius:10, padding:"8px 14px", textAlign:"center" }}>
+                      <div style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:16, fontWeight:800, color:p.catC }}>{m.v}</div>
+                      <div style={{ fontFamily:"'Inter',sans-serif", fontSize:10, color:"var(--tm)" }}>{m.l}</div>
                     </div>
                   ))}
                 </div>
-
-                {/* Tags */}
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 20 }}>
+                <div style={{ display:"flex", flexWrap:"wrap", gap:6, marginBottom:18 }}>
                   {p.tags.map(t => (
-                    <span key={t} style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 6, padding: "3px 10px", fontSize: 11, color: "#64748b", fontFamily: "'Inter',sans-serif" }}>{t}</span>
+                    <span key={t} style={{ background:"var(--tag-bg)", border:"1px solid var(--border)", borderRadius:6, padding:"3px 10px", fontSize:11, color:"var(--ts)", fontFamily:"'Inter',sans-serif" }}>{t}</span>
                   ))}
                 </div>
-
                 <a href={p.github} target="_blank" rel="noreferrer"
-                  style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 10, padding: "10px", color: "#94a3b8", fontSize: 12, fontFamily: "'Inter',sans-serif", fontWeight: 500, textDecoration: "none", transition: "all 0.25s ease" }}
-                  onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = `${p.catColor}50`; el.style.color = p.catColor; }}
-                  onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "rgba(255,255,255,0.08)"; el.style.color = "#94a3b8"; }}>
+                  style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:8, background:"var(--tag-bg)", border:"1px solid var(--border)", borderRadius:10, padding:"9px", color:"var(--ts)", fontSize:12, fontFamily:"'Inter',sans-serif", fontWeight:500, textDecoration:"none", transition:"all 0.25s ease" }}
+                  onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor=`${p.catC}50`; el.style.color=p.catC; }}
+                  onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor="var(--border)"; el.style.color="var(--ts)"; }}>
                   ⬡ View on GitHub ↗
                 </a>
               </div>
@@ -626,43 +641,30 @@ function Projects() {
   );
 }
 
-/* ─── CERTIFICATIONS ─────────────────────────────────────────────── */
+/* ─── CERTIFICATES ───────────────────────────────────────────────── */
 function Certs() {
   const ref = useRef<HTMLElement>(null!);
-  const v = useIntersection(ref);
-
+  useReveal(ref);
   return (
-    <section id="certs" ref={ref} style={{ padding: "120px 28px", background: "rgba(255,255,255,0.01)" }}>
-      <div style={{ maxWidth: 1180, margin: "0 auto" }}>
-        <div className={`reveal ${v ? "visible" : ""}`}>
-          <SecHead label="Certifications" title="Credentials & Courses" sub="Verified certifications in cybersecurity, SOC operations, and ethical hacking." />
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(260px,1fr))", gap: 24 }}>
+    <section id="certs" ref={ref} style={{ padding:"120px 28px", background:"rgba(255,255,255,0.01)" }}>
+      <div style={{ maxWidth:1180, margin:"0 auto" }}>
+        <div className="rv"><SH label="Certifications" title="Credentials & Courses" sub="Verified certifications across cybersecurity, SOC, and ethical hacking."/></div>
+        <div className="cert-grid rv" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(250px,1fr))", gap:22 }}>
           {CERTS.map((c, i) => (
-            <div key={c.title} className={`cert-card reveal ${v ? "visible" : ""} delay-${Math.min(i + 1, 5)}`}
-              style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 20, overflow: "hidden" }}>
-              {/* Cert image */}
-              <div style={{ height: 160, overflow: "hidden", background: "#0f172a", borderBottom: "1px solid rgba(255,255,255,0.05)", position: "relative" }}>
-                <img src={c.img} alt={c.title} style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} />
-                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top,rgba(5,8,22,0.8),transparent)" }} />
-                {c.verified && (
-                  <div style={{ position: "absolute", top: 10, right: 10, background: "rgba(52,211,153,0.15)", border: "1px solid rgba(52,211,153,0.4)", backdropFilter: "blur(8px)", borderRadius: 8, padding: "3px 10px", fontSize: 10, color: "#34d399", fontFamily: "'Inter',sans-serif", fontWeight: 600 }}>
-                    ✓ VERIFIED
-                  </div>
-                )}
+            <div key={c.title} className={`cc gcard d${Math.min(i+1,4)}`} style={{ borderRadius:20, overflow:"hidden" }}>
+              <div style={{ height:155, overflow:"hidden", background:dark?"#0f172a":"#e2e8f0", position:"relative" }}>
+                <img src={c.img} alt={c.title} className="cc-img" style={{ width:"100%", height:"100%", objectFit:"cover" }} onError={e => { (e.currentTarget as HTMLImageElement).style.display="none"; }}/>
+                <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top,rgba(5,8,22,0.75),transparent)" }}/>
+                <div style={{ position:"absolute", top:10, right:10, background:"rgba(52,211,153,0.15)", border:"1px solid rgba(52,211,153,0.4)", backdropFilter:"blur(8px)", borderRadius:8, padding:"3px 10px", fontSize:10, color:"#34d399", fontFamily:"'Inter',sans-serif", fontWeight:700 }}>✓ VERIFIED</div>
               </div>
-
-              {/* Info */}
-              <div style={{ padding: 20 }}>
-                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 11, color: c.accent, fontWeight: 600, letterSpacing: "0.08em", marginBottom: 6, textTransform: "uppercase" }}>{c.issuer}</p>
-                <h3 style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 15, fontWeight: 700, color: "#f1f5f9", lineHeight: 1.4, marginBottom: 8 }}>{c.title}</h3>
-                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 12, color: "#475569", marginBottom: 16 }}>{c.date}</p>
+              <div style={{ padding:20 }}>
+                <p style={{ fontFamily:"'Inter',sans-serif", fontSize:11, color:c.accent, fontWeight:700, letterSpacing:"0.1em", marginBottom:5, textTransform:"uppercase" }}>{c.issuer}</p>
+                <h3 style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:14, fontWeight:700, color:"var(--tp)", lineHeight:1.4, marginBottom:7 }}>{c.title}</h3>
+                <p style={{ fontFamily:"'Inter',sans-serif", fontSize:12, color:"var(--tm)", marginBottom:14 }}>{c.date}</p>
                 <a href={c.link} target="_blank" rel="noreferrer"
-                  style={{ display: "block", textAlign: "center", background: `${c.accent}10`, border: `1px solid ${c.accent}25`, borderRadius: 8, padding: "8px", fontSize: 12, color: c.accent, fontFamily: "'Inter',sans-serif", fontWeight: 500, textDecoration: "none", transition: "all 0.25s ease" }}
-                  onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = `${c.accent}20`; }}
-                  onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = `${c.accent}10`; }}>
+                  style={{ display:"block", textAlign:"center", background:`${c.accent}10`, border:`1px solid ${c.accent}28`, borderRadius:8, padding:"8px", fontSize:12, color:c.accent, fontFamily:"'Inter',sans-serif", fontWeight:600, textDecoration:"none", transition:"all 0.25s ease" }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background=`${c.accent}22`; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background=`${c.accent}10`; }}>
                   View Certificate ↗
                 </a>
               </div>
@@ -677,87 +679,77 @@ function Certs() {
 /* ─── CONTACT ────────────────────────────────────────────────────── */
 function Contact() {
   const ref = useRef<HTMLElement>(null!);
-  const v = useIntersection(ref);
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  useReveal(ref);
+  const [form, setForm] = useState({ name:"", email:"", message:"" });
   const [sent, setSent] = useState(false);
 
   const socials = [
-    { icon: "✉️", label: "Email", val: "cyberchandru87@gmail.com", href: "mailto:cyberchandru87@gmail.com", color: "#7c3aed" },
-    { icon: "💼", label: "LinkedIn", val: "chandraprakash-soc", href: "https://www.linkedin.com/in/chandraprakash-soc/", color: "#2563eb" },
-    { icon: "⬡", label: "GitHub", val: "0xchandru", href: "https://github.com/0xchandru", color: "#6b7280" },
-    { icon: "🎯", label: "TryHackMe", val: "0xchandru", href: "https://tryhackme.com/p/0xchandru", color: "#06b6d4" },
+    { icon:"✉️", label:"Email", val:"cyberchandru87@gmail.com", href:"mailto:cyberchandru87@gmail.com", c:"#7c3aed" },
+    { icon:"💼", label:"LinkedIn", val:"chandraprakash-soc", href:"https://www.linkedin.com/in/chandraprakash-soc/", c:"#2563eb" },
+    { icon:"⬡", label:"GitHub", val:"0xchandru", href:"https://github.com/0xchandru", c:"#6b7280" },
+    { icon:"🎯", label:"TryHackMe", val:"0xchandru", href:"https://tryhackme.com/p/0xchandru", c:"#06b6d4" },
+    { icon:"🐦", label:"Twitter / X", val:"@0xchandru", href:"https://x.com/0xchandru", c:"#0ea5e9" },
   ];
 
   return (
-    <section id="contact" ref={ref} style={{ padding: "120px 28px" }}>
-      <div style={{ maxWidth: 1080, margin: "0 auto" }}>
-        <div className={`reveal ${v ? "visible" : ""}`}>
-          <SecHead label="Contact" title="Let's Connect" sub="Open to SOC Analyst, security analyst, and entry-level cybersecurity roles." />
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48 }}>
+    <section id="contact" ref={ref} style={{ padding:"120px 28px" }}>
+      <div style={{ maxWidth:1060, margin:"0 auto" }}>
+        <div className="rv"><SH label="Contact" title="Let's Connect" sub="Open to SOC Analyst, security analyst, and entry-level cybersecurity roles globally."/></div>
+        <div className="contact-grid" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:44 }}>
           {/* Left */}
-          <div className={`reveal-left ${v ? "visible" : ""}`}>
-            {/* Status */}
-            <div style={{ display: "flex", alignItems: "center", gap: 12, background: "rgba(52,211,153,0.08)", border: "1px solid rgba(52,211,153,0.2)", borderRadius: 12, padding: "16px 20px", marginBottom: 36 }}>
-              <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#34d399", flexShrink: 0, boxShadow: "0 0 0 4px rgba(52,211,153,0.2)" }} />
+          <div className="rl">
+            <div style={{ display:"flex", alignItems:"center", gap:12, background:"rgba(52,211,153,0.08)", border:"1px solid rgba(52,211,153,0.22)", borderRadius:12, padding:"16px 20px", marginBottom:32 }}>
+              <div style={{ width:10, height:10, borderRadius:"50%", background:"#34d399", flexShrink:0, animation:"pulse-dot 2s infinite" }}/>
               <div>
-                <div style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 14, fontWeight: 600, color: "#34d399" }}>Open to Opportunities</div>
-                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 12, color: "#475569" }}>SOC Analyst L1 & entry-level cybersecurity roles</div>
+                <div style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:13, fontWeight:700, color:"#34d399" }}>Open to Opportunities</div>
+                <div style={{ fontFamily:"'Inter',sans-serif", fontSize:12, color:"var(--tm)" }}>SOC Analyst L1 & entry-level cybersecurity roles</div>
               </div>
             </div>
-
-            <h3 style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 22, fontWeight: 800, color: "#f1f5f9", marginBottom: 12, letterSpacing: "-0.5px" }}>Get In Touch</h3>
-            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 15, color: "#64748b", lineHeight: 1.8, marginBottom: 32 }}>
-              Whether you're looking to hire a SOC Analyst, collaborate on a security project, or just want to connect — I'd love to hear from you.
+            <h3 style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:20, fontWeight:800, color:"var(--tp)", marginBottom:10, letterSpacing:"-0.5px" }}>Get In Touch</h3>
+            <p style={{ fontFamily:"'Inter',sans-serif", fontSize:14, color:"var(--tm)", lineHeight:1.8, marginBottom:28 }}>
+              Looking to hire a SOC analyst? Want to collaborate on a security project? Or just connect with a fellow defender — I'd love to hear from you.
             </p>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
               {socials.map(s => (
-                <a key={s.label} href={s.href} target="_blank" rel="noreferrer"
-                  style={{ display: "flex", alignItems: "center", gap: 16, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "14px 18px", textDecoration: "none", transition: "all 0.25s ease" }}
-                  onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = `${s.color}40`; el.style.background = `${s.color}06`; el.style.transform = "translateX(4px)"; }}
-                  onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = "rgba(255,255,255,0.06)"; el.style.background = "rgba(255,255,255,0.02)"; el.style.transform = "none"; }}>
-                  <div style={{ width: 38, height: 38, borderRadius: 10, background: `${s.color}15`, border: `1px solid ${s.color}25`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }}>{s.icon}</div>
+                <a key={s.label} href={s.href} target="_blank" rel="noreferrer" className="soc-link gcard"
+                  style={{ display:"flex", alignItems:"center", gap:14, borderRadius:12, padding:"13px 16px" }}
+                  onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor=`${s.c}40`; el.style.background=`${s.c}07`; }}
+                  onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor="var(--border)"; el.style.background="var(--card)"; }}>
+                  <div style={{ width:36, height:36, borderRadius:10, background:`${s.c}15`, border:`1px solid ${s.c}25`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:17, flexShrink:0 }}>{s.icon}</div>
                   <div>
-                    <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 11, color: "#475569", fontWeight: 500 }}>{s.label}</div>
-                    <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "#94a3b8" }}>{s.val}</div>
+                    <div style={{ fontFamily:"'Inter',sans-serif", fontSize:11, color:"var(--tm)", fontWeight:500 }}>{s.label}</div>
+                    <div style={{ fontFamily:"'Inter',sans-serif", fontSize:13, color:"var(--ts)" }}>{s.val}</div>
                   </div>
                 </a>
               ))}
             </div>
           </div>
-
-          {/* Right: form */}
-          <div className={`reveal-right ${v ? "visible" : ""}`}>
-            <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 24, padding: 36 }}>
+          {/* Right */}
+          <div className="rr">
+            <div className="gcard" style={{ borderRadius:22, padding:32 }}>
               {sent ? (
-                <div style={{ textAlign: "center", padding: "48px 0" }}>
-                  <div style={{ fontSize: 52, marginBottom: 16 }}>🚀</div>
-                  <h3 style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 22, fontWeight: 800, color: "#34d399", marginBottom: 8 }}>Message Sent!</h3>
-                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 14, color: "#64748b" }}>I'll respond within 24 hours.</p>
+                <div style={{ textAlign:"center", padding:"48px 0" }}>
+                  <div style={{ fontSize:52, marginBottom:14 }}>🚀</div>
+                  <h3 style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:20, fontWeight:800, color:"#34d399", marginBottom:8 }}>Message Sent!</h3>
+                  <p style={{ fontFamily:"'Inter',sans-serif", fontSize:13, color:"var(--tm)" }}>I'll respond within 24 hours.</p>
                 </div>
               ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-                  <h3 style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 20, fontWeight: 700, color: "#f1f5f9", marginBottom: 4 }}>Send a Message</h3>
-                  {[{ k: "name", l: "Your Name", t: "text", ph: "Chandraprakash" }, { k: "email", l: "Email Address", t: "email", ph: "your@email.com" }].map(f => (
+                <div style={{ display:"flex", flexDirection:"column", gap:18 }}>
+                  <h3 style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:18, fontWeight:800, color:"var(--tp)", marginBottom:4 }}>Send a Message</h3>
+                  {[{ k:"name", l:"Your Name", t:"text", ph:"Your name" },{ k:"email", l:"Email Address", t:"email", ph:"your@email.com" }].map(f => (
                     <div key={f.k}>
-                      <label style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "#64748b", display: "block", marginBottom: 8, fontWeight: 500 }}>{f.l}</label>
-                      <input type={f.t} placeholder={f.ph}
-                        value={form[f.k as keyof typeof form]}
-                        onChange={e => setForm({ ...form, [f.k]: e.target.value })}
-                        style={{ width: "100%", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 10, padding: "12px 16px", color: "#f1f5f9", fontFamily: "'Inter',sans-serif", fontSize: 14, boxSizing: "border-box", transition: "all 0.25s ease" }} />
+                      <label style={{ fontFamily:"'Inter',sans-serif", fontSize:12, color:"var(--tm)", display:"block", marginBottom:7, fontWeight:600 }}>{f.l}</label>
+                      <input type={f.t} placeholder={f.ph} className="fi" value={form[f.k as keyof typeof form]} onChange={e => setForm({ ...form, [f.k]:e.target.value })}/>
                     </div>
                   ))}
                   <div>
-                    <label style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "#64748b", display: "block", marginBottom: 8, fontWeight: 500 }}>Message</label>
-                    <textarea placeholder="Tell me about the role or project..." rows={4}
-                      value={form.message}
-                      onChange={e => setForm({ ...form, message: e.target.value })}
-                      style={{ width: "100%", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 10, padding: "12px 16px", color: "#f1f5f9", fontFamily: "'Inter',sans-serif", fontSize: 14, resize: "vertical", boxSizing: "border-box", transition: "all 0.25s ease" }} />
+                    <label style={{ fontFamily:"'Inter',sans-serif", fontSize:12, color:"var(--tm)", display:"block", marginBottom:7, fontWeight:600 }}>Message</label>
+                    <textarea placeholder="Tell me about the role or project…" rows={4} className="fi" value={form.message} onChange={e => setForm({ ...form, message:e.target.value })} style={{ resize:"vertical" }}/>
                   </div>
-                  <button className="btn-primary" onClick={() => setSent(true)}
-                    style={{ color: "#fff", border: "none", borderRadius: 12, padding: "14px", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "'Inter',sans-serif", letterSpacing: "0.02em" }}>
+                  <button onClick={() => setSent(true)}
+                    style={{ background:"linear-gradient(135deg,#7c3aed,#2563eb)", color:"#fff", border:"none", borderRadius:12, padding:"13px", fontSize:14, fontWeight:700, cursor:"pointer", fontFamily:"'Inter',sans-serif", boxShadow:"0 6px 24px rgba(124,58,237,0.35)", transition:"all 0.3s ease" }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow="0 10px 32px rgba(124,58,237,0.55)"; (e.currentTarget as HTMLElement).style.transform="translateY(-1px)"; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow="0 6px 24px rgba(124,58,237,0.35)"; (e.currentTarget as HTMLElement).style.transform="none"; }}>
                     Send Message →
                   </button>
                 </div>
@@ -772,36 +764,50 @@ function Contact() {
 
 /* ─── FOOTER ─────────────────────────────────────────────────────── */
 function Footer() {
-  const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const go = (id:string) => document.getElementById("ps")?.querySelector(`#${id}`)?.scrollIntoView({ behavior:"smooth" });
   return (
-    <footer style={{ borderTop: "1px solid rgba(255,255,255,0.06)", padding: "40px 28px" }}>
-      <div style={{ maxWidth: 1180, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 16 }}>
-        <div style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 16, fontWeight: 800, background: "linear-gradient(135deg,#a78bfa,#60a5fa)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-          Chandraprakash
-        </div>
-        <div style={{ display: "flex", gap: 28 }}>
-          {NAV.map(n => (
-            <button key={n} onClick={() => go(n === "Certs" ? "certs" : n.toLowerCase())}
-              style={{ background: "none", border: "none", color: "#334155", fontSize: 13, cursor: "pointer", fontFamily: "'Inter',sans-serif", transition: "color 0.2s" }}
-              onMouseEnter={e => (e.currentTarget.style.color = "#a78bfa")}
-              onMouseLeave={e => (e.currentTarget.style.color = "#334155")}>
-              {n}
+    <footer style={{ borderTop:"1px solid var(--border)", padding:"36px 28px" }}>
+      <div style={{ maxWidth:1180, margin:"0 auto", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:16 }}>
+        <div className="gt" style={{ fontFamily:"'Plus Jakarta Sans',sans-serif", fontSize:17, fontWeight:800 }}>Chandraprakash</div>
+        <div style={{ display:"flex", gap:24, flexWrap:"wrap" }}>
+          {NAV_ITEMS.map(n => (
+            <button key={n.id} onClick={() => go(n.id)}
+              style={{ background:"none", border:"none", color:"var(--tm)", fontSize:13, cursor:"pointer", fontFamily:"'Inter',sans-serif", transition:"color 0.2s" }}
+              onMouseEnter={e => (e.currentTarget.style.color="#a78bfa")}
+              onMouseLeave={e => (e.currentTarget.style.color="var(--tm)")}>
+              {n.label}
             </button>
           ))}
         </div>
-        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 12, color: "#1e293b" }}>
-          Built with passion. Designed to impress.
+        <div style={{ fontFamily:"'Inter',sans-serif", fontSize:12, color:"var(--tm)" }}>
+          © 2026 Chandraprakash
         </div>
       </div>
     </footer>
   );
 }
 
+/* ─── REVEAL HOOK ────────────────────────────────────────────────── */
+let dark = true; // module-level ref for static sections that can't receive prop
+function useReveal(ref: React.RefObject<Element>) {
+  useEffect(() => {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.querySelectorAll(".rv,.rl,.rr").forEach(el => el.classList.add("on")); obs.unobserve(e.target); } });
+    }, { threshold:0.1 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+}
+
 /* ─── ROOT ───────────────────────────────────────────────────────── */
 export function Portfolio() {
-  const rootRef = useRef<HTMLDivElement>(null!);
+  const [isDark, setIsDark] = useState(true);
   const [active, setActive] = useState("hero");
   const [showTop, setShowTop] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null!);
+
+  // Keep module-level dark in sync
+  dark = isDark;
 
   // Inject CSS
   useEffect(() => {
@@ -811,56 +817,62 @@ export function Portfolio() {
     return () => s.remove();
   }, []);
 
+  // Apply theme class on <html>
+  useEffect(() => {
+    const html = document.documentElement;
+    if (isDark) html.classList.remove("light");
+    else html.classList.add("light");
+    return () => html.classList.remove("light");
+  }, [isDark]);
+
   // Scroll tracking
   useEffect(() => {
     const el = rootRef.current;
     if (!el) return;
     const handle = () => {
       setShowTop(el.scrollTop > 500);
-      const secs = ["hero","about","skills","education","experience","projects","certs","contact"];
-      for (const id of [...secs].reverse()) {
+      const ids = ["hero","about","skills","education","experience","projects","certs","contact"];
+      for (const id of [...ids].reverse()) {
         const s = document.getElementById(id);
-        if (s && s.getBoundingClientRect().top < 200) { setActive(id); break; }
+        if (s && el.getBoundingClientRect().top - s.getBoundingClientRect().top > -100) { setActive(id); break; }
       }
     };
-    el.addEventListener("scroll", handle);
+    el.addEventListener("scroll", handle, { passive:true });
     return () => el.removeEventListener("scroll", handle);
   }, []);
 
-  // IntersectionObserver — re-observe on mount
+  // Global IntersectionObserver for reveals
   useEffect(() => {
     const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target); } });
-    }, { threshold: 0.12 });
-    document.querySelectorAll(".reveal,.reveal-left,.reveal-right,.reveal-scale").forEach(el => obs.observe(el));
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("on"); obs.unobserve(e.target); } });
+    }, { threshold:0.1 });
+    document.querySelectorAll(".rv,.rl,.rr").forEach(el => obs.observe(el));
     return () => obs.disconnect();
   }, []);
 
-  return (
-    <div ref={rootRef} id="root-scroll"
-      style={{ background: "#050816", minHeight: "100vh", overflowY: "auto", overflowX: "hidden", position: "relative", fontFamily: "'Inter',sans-serif", scrollBehavior: "smooth" }}>
-      <Blobs />
-      <div style={{ position: "relative", zIndex: 1 }}>
-        <Navbar active={active} />
-        <Hero />
-        <About />
-        <Skills />
-        <Education />
-        <Experience />
-        <Projects />
-        <Certs />
-        <Contact />
-        <Footer />
-      </div>
+  const bg = isDark ? "#050816" : "#f0f4ff";
 
-      {/* Back to top */}
+  return (
+    <div ref={rootRef} id="ps"
+      style={{ background:bg, minHeight:"100vh", overflowY:"auto", overflowX:"hidden", position:"relative", fontFamily:"'Inter',sans-serif", scrollBehavior:"smooth", transition:"background 0.4s ease" }}>
+      <Blobs dark={isDark}/>
+      <Navbar dark={isDark} setDark={setIsDark} active={active}/>
+      <div style={{ position:"relative", zIndex:1 }}>
+        <Hero dark={isDark}/>
+        <About dark={isDark}/>
+        <Skills/>
+        <Education/>
+        <Experience/>
+        <Projects/>
+        <Certs/>
+        <Contact/>
+        <Footer/>
+      </div>
       {showTop && (
-        <button onClick={() => rootRef.current.scrollTo({ top: 0, behavior: "smooth" })}
-          style={{ position: "fixed", bottom: 32, right: 32, width: 46, height: 46, borderRadius: "50%", background: "linear-gradient(135deg,#7c3aed,#2563eb)", border: "none", color: "#fff", fontSize: 18, cursor: "pointer", zIndex: 200, boxShadow: "0 8px 32px rgba(124,58,237,0.5)", transition: "all 0.3s ease" }}
-          onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.1)")}
-          onMouseLeave={e => (e.currentTarget.style.transform = "none")}>
-          ↑
-        </button>
+        <button onClick={() => rootRef.current.scrollTo({ top:0, behavior:"smooth" })}
+          style={{ position:"fixed", bottom:32, right:32, width:46, height:46, borderRadius:"50%", background:"linear-gradient(135deg,#7c3aed,#2563eb)", border:"none", color:"#fff", fontSize:18, cursor:"pointer", zIndex:200, boxShadow:"0 8px 32px rgba(124,58,237,0.5)", transition:"all 0.3s ease" }}
+          onMouseEnter={e => (e.currentTarget.style.transform="scale(1.12)")}
+          onMouseLeave={e => (e.currentTarget.style.transform="none")}>↑</button>
       )}
     </div>
   );
