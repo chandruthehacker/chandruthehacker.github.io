@@ -99,10 +99,10 @@ const CSS = `
   .mob-menu{display:flex;flex-direction:column;gap:4px;position:fixed;top:72px;right:12px;width:auto;min-width:170px;background:var(--nav-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--nav-border);border-radius:20px;padding:10px;z-index:90;animation:scale-in 0.2s ease both;}
 
   @media(max-width:900px){
-    /* Hero: image on top, text below */
-    .hero-section{padding:80px 20px 60px!important;}
-    .hero-grid{grid-template-columns:1fr!important;justify-items:center;gap:32px!important;}
-    .hero-photo{order:-1!important;width:clamp(160px,42vw,240px)!important;height:clamp(160px,42vw,240px)!important;margin:0 auto!important;}
+    /* Hero: image on top, text below — extra top padding clears the fixed navbar */
+    .hero-section{padding:110px 20px 60px!important;}
+    .hero-grid{grid-template-columns:1fr!important;justify-items:center;gap:28px!important;}
+    .hero-photo{order:-1!important;width:min(76vw,320px)!important;height:min(76vw,320px)!important;margin:0 auto!important;}
     .about-grid{grid-template-columns:1fr!important;}
     .contact-grid{grid-template-columns:1fr!important;}
     .nav-links-desktop{display:none!important;}
