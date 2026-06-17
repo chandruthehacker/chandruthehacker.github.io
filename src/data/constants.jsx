@@ -123,11 +123,9 @@ export const EDUCATION = {
   coursework: [
     "Computer Networks",
     "Cryptography",
+    "DBMS",
     "Operating Systems",
     "Data Structures",
-    "DBMS",
-    "Web Technologies",
-    "Software Engineering",
   ],
 };
 
