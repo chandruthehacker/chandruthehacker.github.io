@@ -1,73 +1,74 @@
-# Cybersecurity Portfolio - Chandraprakash
+# Cybersecurity Portfolio — Chandraprakash
 
-A clean, recruiter-focused cybersecurity portfolio for a B.Sc Computer Science graduate. Fully redesigned from a generic dev portfolio into a structured, professional security profile with MITRE-style UI patterns, terminal log blocks, category badges, and zero `dangerouslySetInnerHTML`.
+A clean, recruiter-focused cybersecurity portfolio. Modern redesign with floating pill navbar, gradient blob background, scroll-reveal animations, dark/light theme, and a filter-able project grid.
 
 ## Tech Stack
 
-- **Frontend**: React 18 (JSX + TSX)
-- **Build System**: CRACO (Create React App Configuration Override) over react-scripts
-- **Styling**: styled-components with dark/light theme via ThemeProvider
-- **Animations**: Framer Motion (fadeInUp, staggerContainer)
-- **Forms**: @emailjs/browser (Contact section, service_j8n2w7r / template_k34okyh)
-- **Meta**: react-helmet
-
-## Key Design Decisions
-
-- **No react-router-dom / BrowserRouter**: Navigation uses plain anchor `href` + `scrollIntoView`
-- **No react-scroll**: Removed entirely
-- **No dangerouslySetInnerHTML**: All project content is structured JSX data objects
-- **No react-tilt**: Replaced with CSS hover transforms
-- **Accent color**: `#00ff88` (dark mode), `#00cc6a` (light mode) — terminal green
-- **Project categories**: `defensive`, `forensics`, `automation`
+- **Frontend**: React 18 + TypeScript (TSX)
+- **Build System**: Vite
+- **Styling**: Inline styles + CSS-in-JS (injected via `<style>` tag in Portfolio.tsx)
+- **Animations**: CSS keyframes + IntersectionObserver scroll reveals
+- **Entry**: `src/main.tsx` → `src/App.tsx` → `src/Portfolio.tsx`
 
 ## Project Structure
 
 ```
 src/
-  App.jsx          - Main app entry (ThemeProvider, lazy-loaded sections, modal state)
-  index.js         - React DOM render entry
-  components/
-    cards/
-      ProjectCard.jsx       - Project card with category overlay + metric badges
-      CertificateCard.jsx   - Certificate card with issuer/skills/status/verify UI
-    sections/
-      Hero.jsx              - Stats bar, typewriter, gradient profile border
-      Skills.tsx            - Motion-animated skill cards by domain
-      Education.jsx         - Single card with coursework chips
-      PracticalExposure.jsx - Vertical timeline with LAB/SIMULATION/COMPETITION badges
-      Projects.jsx          - Project grid
-      Certificates.jsx      - Stacked certificate list
-      Contact.jsx           - EmailJS contact form (unchanged)
-      Footer.jsx            - Minimal nav footer
-    Dialog/
-      ProjectDetails.jsx    - Structured modal report (no innerHTML), green terminal log block
-    Navbar.jsx              - Terminal-style logo, nav links, green Resume button, mobile menu
-    CyberPreloader.tsx      - Custom loading screen (1800ms)
-    Toggle/                 - Dark mode switch
   data/
-    constants.jsx  - All content: Bio, stats, skills, projects (structured detail objects),
-                     certificates (skills/status/verify), education, practicalExposure
-  utils/
-    Themes.js      - Theme definitions (accent, textPrimary, cardBorder aliases added)
-    motion.js      - Simplified: fadeInUp, staggerContainer only
-  assets/          - Images (certificates, education, icons, profile, projects)
-public/            - Static assets and index.html
+    constants.jsx     ← ALL editable content: bio, roles, skills, projects, certs, socials
+  Portfolio.tsx       ← Main portfolio component (imports from constants)
+  App.tsx             ← Simple wrapper that renders <Portfolio />
+  main.tsx            ← React DOM entry point
+  index.css           ← Base reset styles only
+
+public/
+  images/             ← All portfolio images (profile, projects, certs, education)
+  favicon.png / ico   ← Favicons
+
+_old/                 ← Previous portfolio code (archived, not used)
+artifacts/            ← Mockup sandbox (design prototyping, not used in production)
 ```
+
+## How to Edit Content
+
+**All portfolio content lives in one file:** `src/data/constants.jsx`
+
+| Export         | What it controls                          |
+|----------------|-------------------------------------------|
+| `ROLES`        | Typewriter cycling roles in hero          |
+| `NAV_ITEMS`    | Navbar links                              |
+| `RESUME_URL`   | Resume button link                        |
+| `HERO_STATS`   | Stats bar (Top 1%, 149+ rooms, etc.)      |
+| `BIO`          | Name, college, email, profile image path  |
+| `ABOUT_HIGHLIGHTS` | 3 highlight cards in About section    |
+| `SKILLS`       | Skill categories with items and colors    |
+| `EDUCATION`    | Degree, college, CGPA, coursework         |
+| `EXPERIENCE`   | TryHackMe stats, bullet points, tags      |
+| `PROJECTS`     | Project cards with images, tags, metrics  |
+| `CERTS`        | Certificate cards with issuer/link        |
+| `SOCIALS`      | Contact section social links              |
 
 ## Running the App
 
-Workflow: "Start application"
+Workflow: **Start application**
 ```
-PORT=5000 HOST=0.0.0.0 DANGEROUSLY_DISABLE_HOST_CHECK=true npm run start
+npm run dev
 ```
+Runs on port 5000 at `http://0.0.0.0:5000`
+
+## Building for Production
+
+```
+npm run build
+```
+Output goes to `build/` directory.
 
 ## Deployment
 
-Static site:
-- Build command: `npm run build`
-- Public directory: `build`
+Static site — build command `npm run build`, public directory `build`.
 
-## Known Non-Issues
+## User Preferences
 
-- `UNSAFE_componentWillMount` warning: from react-helmet (SideEffect), third-party, unfixable without replacing the library
-- react-scroll is installed as a package dependency but not imported anywhere in source
+- Constants always in a separate file (`src/data/constants.jsx`) — never embedded in component code
+- Clean folder structure: no unused files in `src/`
+- All images served from `public/images/`
