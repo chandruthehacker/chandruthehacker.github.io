@@ -71,6 +71,8 @@ const CSS = `
 
   .soc-link{transition:all 0.25s ease;text-decoration:none;}
   .soc-link:hover{transform:translateX(4px);}
+  .exp-link{display:inline-flex;align-items:center;justify-content:center;gap:7px;max-width:100%;background:linear-gradient(135deg,#7c3aed,#2563eb);border:1px solid rgba(255,255,255,0.12);border-radius:9px;padding:8px 14px;color:#fff;text-decoration:none;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;line-height:1.2;white-space:nowrap;box-shadow:0 8px 24px rgba(124,58,237,0.24);transition:transform 0.25s ease,box-shadow 0.25s ease;}
+  .exp-link:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(124,58,237,0.38);}
 
   .sp{transition:all 0.22s ease;cursor:default;}
   .sp:hover{transform:translateY(-2px);}
@@ -86,8 +88,10 @@ const CSS = `
   .tl-line{position:absolute;left:20px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,#7c3aed,#2563eb,#06b6d4,transparent);}
   .tl-dot{position:absolute;left:12px;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#06b6d4);box-shadow:0 0 16px rgba(124,58,237,0.6);}
 
-  ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:linear-gradient(#7c3aed,#06b6d4);border-radius:4px;}
-
+  #ps{scrollbar-color:#7c3aed transparent;scrollbar-width:thin;}
+  #ps::-webkit-scrollbar{width:4px;}
+  #ps::-webkit-scrollbar-track{background:transparent;}
+  #ps::-webkit-scrollbar-thumb{background:linear-gradient(#7c3aed,#06b6d4);border-radius:4px;}
   /* ── MOBILE BRAND (hidden on desktop) ── */
   .nav-brand{display:none;align-items:center;gap:6px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:800;letter-spacing:-0.3px;white-space:nowrap;}
   .nav-brand span{background:linear-gradient(135deg,#a78bfa,#60a5fa,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
@@ -122,6 +126,8 @@ const CSS = `
     .edu-card{padding:20px!important;}
     /* Experience header stack */
     .exp-header{flex-direction:column!important;align-items:flex-start!important;}
+    .exp-meta{align-items:flex-start!important;width:100%!important;}
+    .exp-link{width:100%!important;min-height:38px;}
   }
   @media(max-width:600px){
     .skills-grid{grid-template-columns:1fr!important;}
@@ -132,6 +138,7 @@ const CSS = `
     .hero-text{text-align:center!important;}
     .hero-text .stat-row{justify-content:center!important;}
     .exp-stats{grid-template-columns:repeat(2,1fr)!important;}
+    .exp-card{padding:24px!important;}
     /* Education: hide logo image on very small screens to give content more room */
     .edu-logo{display:none!important;}
   }
@@ -141,6 +148,8 @@ const CSS = `
     .nav-brand{font-size:13px!important;}
     .nav-resume{display:none!important;}
     .mob-menu{right:8px!important;}
+    .exp-card{padding:20px!important;}
+    .exp-link{font-size:11.5px;padding:8px 10px;}
   }
   /* ── HERO RESUME BUTTON — only visible on ≤370px ── */
   .hero-resume-btn{display:none;}
@@ -482,6 +491,19 @@ function Education() {
 }
 
 /* ─── EXPERIENCE ──────────────────────────────────────────────────── */
+function isPresent(endDate?: string) {
+  return endDate?.trim().toLowerCase() === "present";
+}
+
+function experiencePeriod(item: { startDate?: string; endDate?: string }) {
+  if (item.startDate && item.endDate) return `${item.startDate} - ${item.endDate}`;
+  return item.startDate || item.endDate || "";
+}
+
+function experienceLinkLabel(item: { linkLabel?: string }) {
+  return item.linkLabel || "View Details";
+}
+
 function Experience() {
   const ref = useRef<HTMLElement>(null!);
   useReveal(ref);
@@ -491,40 +513,61 @@ function Experience() {
         <div className="rv"><SH label="Experience" title="Practical Exposure" sub="Hands-on security training through real labs, CTF competitions, and simulation exercises." /></div>
         <div className="rv d1 tl-wrap" style={{ position: "relative", paddingLeft: 52 }}>
           <div className="tl-line" style={{ background: "linear-gradient(to bottom,#06b6d4,#2563eb,#7c3aed,transparent)" }} />
-          <div className="tl-dot" style={{ top: 28, background: "linear-gradient(135deg,#06b6d4,#2563eb)" }} />
-          <div className="gcard" style={{ borderRadius: 24, padding: 36 }}>
-            <div className="exp-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12, marginBottom: 24 }}>
-              <div>
-                <div style={{ display: "inline-flex", gap: 8, marginBottom: 10 }}>
-                  <span style={{ background: "var(--exp-accent-bg)", border: "1px solid var(--exp-accent-border)", borderRadius: 6, padding: "3px 12px", fontSize: 11, color: "var(--exp-accent)", fontFamily: "'Inter',sans-serif", fontWeight: 700, letterSpacing: "0.06em" }}>{EXPERIENCE.badge}</span>
+          {EXPERIENCE.map((item, i) => {
+            const period = experiencePeriod(item);
+            const active = isPresent(item.endDate);
+
+            return (
+              <div key={`${item.title}-${item.org}`} className={`d${Math.min(i + 1, 5)}`} style={{ position: "relative", marginBottom: i === EXPERIENCE.length - 1 ? 0 : 28 }}>
+                <div className="tl-dot" style={{ top: 28, left: -40, background: "linear-gradient(135deg,#06b6d4,#2563eb)" }} />
+                <div className="gcard exp-card" style={{ borderRadius: 24, padding: 36 }}>
+                  <div className="exp-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 14, marginBottom: 24 }}>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ display: "inline-flex", gap: 8, marginBottom: 10 }}>
+                        <span style={{ background: "var(--exp-accent-bg)", border: "1px solid var(--exp-accent-border)", borderRadius: 6, padding: "3px 12px", fontSize: 11, color: "var(--exp-accent)", fontFamily: "'Inter',sans-serif", fontWeight: 700, letterSpacing: "0.06em" }}>{item.badge}</span>
+                      </div>
+                      <h3 style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 20, fontWeight: 800, color: "var(--tp)", letterSpacing: "-0.5px", marginBottom: 4 }}>{item.title}</h3>
+                      <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "var(--exp-accent)" }}>{item.org}</p>
+                    </div>
+                    <div className="exp-meta" style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8, flexShrink: 0 }}>
+                      {period && (
+                        <span style={{ background: "var(--stat-bg)", border: "1px solid var(--border)", borderRadius: 8, padding: "5px 14px", fontSize: 12, color: "var(--ts)", fontFamily: "'Inter',sans-serif", fontWeight: 600, whiteSpace: "nowrap" }}>{period}</span>
+                      )}
+                      {active && (
+                        <span style={{ background: "rgba(52,211,153,0.12)", border: "1px solid rgba(52,211,153,0.3)", borderRadius: 8, padding: "5px 14px", fontSize: 12, color: "#34d399", fontFamily: "'Inter',sans-serif", fontWeight: 600, whiteSpace: "nowrap" }}>● Active</span>
+                      )}
+                      {item.link && (
+                        <a className="exp-link" href={item.link} target="_blank" rel="noreferrer" aria-label={`${experienceLinkLabel(item)} for ${item.title}`}>
+                          {experienceLinkLabel(item)} ↗
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                  <div className="exp-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 14, marginBottom: 24 }}>
+                    {item.stats.map(s => (
+                      <div key={s.l} style={{ background: "var(--stat-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: "18px 10px", textAlign: "center" }}>
+                        <div style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 20, fontWeight: 800, color: s.c, marginBottom: 4 }}>{s.v}</div>
+                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 11, color: "var(--tm)" }}>{s.l}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 11, marginBottom: 22 }}>
+                    {item.points.map((pt, pointIndex) => (
+                      <li key={pointIndex} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                        <span style={{ width: 20, height: 20, borderRadius: "50%", background: "var(--exp-accent-bg)", border: "1px solid var(--exp-accent-border)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, color: "var(--exp-accent)", flexShrink: 0, marginTop: 2 }}>✓</span>
+                        <span style={{ fontFamily: "'Inter',sans-serif", fontSize: 14, color: "var(--ts)", lineHeight: 1.7 }}>{pt}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
+                    {item.tags.map(t => (
+                      <span key={t} style={{ background: "var(--exp-accent-bg2)", border: "1px solid var(--exp-accent-border2)", borderRadius: 8, padding: "5px 12px", fontFamily: "'Inter',sans-serif", fontSize: 12, color: "var(--exp-accent)", fontWeight: 500 }}>{t}</span>
+                    ))}
+                  </div>
                 </div>
-                <h3 style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 20, fontWeight: 800, color: "var(--tp)", letterSpacing: "-0.5px", marginBottom: 4 }}>{EXPERIENCE.title}</h3>
-                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: 13, color: "var(--exp-accent)" }}>{EXPERIENCE.org}</p>
               </div>
-              <span style={{ background: "rgba(52,211,153,0.12)", border: "1px solid rgba(52,211,153,0.3)", borderRadius: 8, padding: "5px 14px", fontSize: 12, color: "#34d399", fontFamily: "'Inter',sans-serif", fontWeight: 600 }}>● {EXPERIENCE.status}</span>
-            </div>
-            <div className="exp-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 14, marginBottom: 24 }}>
-              {EXPERIENCE.stats.map(s => (
-                <div key={s.l} style={{ background: "var(--stat-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: "18px 10px", textAlign: "center" }}>
-                  <div style={{ fontFamily: "'Plus Jakarta Sans',sans-serif", fontSize: 20, fontWeight: 800, color: s.c, marginBottom: 4 }}>{s.v}</div>
-                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: 11, color: "var(--tm)" }}>{s.l}</div>
-                </div>
-              ))}
-            </div>
-            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 11, marginBottom: 22 }}>
-              {EXPERIENCE.points.map((pt, i) => (
-                <li key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                  <span style={{ width: 20, height: 20, borderRadius: "50%", background: "var(--exp-accent-bg)", border: "1px solid var(--exp-accent-border)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, color: "var(--exp-accent)", flexShrink: 0, marginTop: 2 }}>✓</span>
-                  <span style={{ fontFamily: "'Inter',sans-serif", fontSize: 14, color: "var(--ts)", lineHeight: 1.7 }}>{pt}</span>
-                </li>
-              ))}
-            </ul>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
-              {EXPERIENCE.tags.map(t => (
-                <span key={t} style={{ background: "var(--exp-accent-bg2)", border: "1px solid var(--exp-accent-border2)", borderRadius: 8, padding: "5px 12px", fontFamily: "'Inter',sans-serif", fontSize: 12, color: "var(--exp-accent)", fontWeight: 500 }}>{t}</span>
-              ))}
-            </div>
-          </div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -781,7 +824,7 @@ export function Portfolio() {
 
   return (
     <div ref={rootRef} id="ps"
-      style={{ background: bg, minHeight: "100vh", overflowY: "auto", overflowX: "hidden", position: "relative", fontFamily: "'Inter',sans-serif", scrollBehavior: "smooth", transition: "background 0.4s ease" }}>
+      style={{ background: bg, height: "100vh", overflowY: "auto", overflowX: "hidden", position: "relative", fontFamily: "'Inter',sans-serif", scrollBehavior: "smooth", transition: "background 0.4s ease" }}>
       <Blobs />
       <Navbar dark={isDark} setDark={setIsDark} active={active} />
       <div style={{ position: "relative", zIndex: 1 }}>
