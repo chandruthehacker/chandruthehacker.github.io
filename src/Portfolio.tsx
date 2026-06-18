@@ -67,7 +67,7 @@ const CSS = `
   .nl:hover{background:rgba(124,58,237,0.07);}
 
   .tog-track{width:52px;height:28px;border-radius:100px;position:relative;cursor:pointer;border:none;transition:all 0.3s;outline:none;}
-  .tog-thumb{position:absolute;top:3px;width:22px;height:22px;border-radius:50%;transition:transform 0.3s cubic-bezier(.34,1.56,.64,1),background 0.3s;display:flex;align-items:center;justify-content:center;font-size:11px;box-shadow:0 2px 8px rgba(0,0,0,0.25);}
+  .tog-thumb{position:absolute;top:2px;width:22px;height:22px;border-radius:50%;transition:transform 0.3s cubic-bezier(.34,1.56,.64,1),background 0.3s;display:flex;align-items:center;justify-content:center;font-size:11px;box-shadow:0 2px 8px rgba(0,0,0,0.25);}
 
   .soc-link{transition:all 0.25s ease;text-decoration:none;}
   .soc-link:hover{transform:translateX(4px);}
@@ -238,7 +238,7 @@ function Navbar({ dark: isDark, setDark, active }: { dark: boolean; setDark: (v:
         {/* ── THEME TOGGLE ── */}
         <button className="tog-track" onClick={() => setDark(!isDark)} aria-label="Toggle theme"
           style={{ background: isDark ? "rgba(124,58,237,0.25)" : "rgba(255,200,0,0.18)", border: `1px solid ${isDark ? "rgba(124,58,237,0.4)" : "rgba(255,200,0,0.4)"}`, flexShrink: 0 }}>
-          <div className="tog-thumb" style={{ transform: isDark ? "translateX(2px)" : "translateX(24px)", background: isDark ? "#7c3aed" : "#f59e0b" }}>
+          <div className="tog-thumb" style={{ transform: isDark ? "translateX(2px)" : "translateX(24px)", background: isDark ? "#7c3aed" : "#f28100" }}>
             {isDark ? "🌙" : "☀️"}
           </div>
         </button>
