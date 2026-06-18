@@ -280,11 +280,6 @@ function Navbar({ dark: isDark, setDark, active }: { dark: boolean; setDark: (v:
               {n.label}
             </button>
           ))}
-          {/* Resume link — always visible in dropdown (critical on ≤380px where navbar Resume is hidden) */}
-          <a href={RESUME_URL} target="_blank" rel="noreferrer"
-            style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginTop: 6, background: "linear-gradient(135deg,#7c3aed,#2563eb)", color: "#fff", textDecoration: "none", padding: "11px 16px", borderRadius: 12, fontFamily: "'Inter',sans-serif", fontSize: 14, fontWeight: 700 }}>
-            Resume ↗
-          </a>
         </div>
       )}
     </>
