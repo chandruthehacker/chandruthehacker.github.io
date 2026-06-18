@@ -536,7 +536,7 @@ function Projects() {
   const ref = useRef<HTMLElement>(null!);
   useReveal(ref);
   const [filter, setFilter] = useState("All");
-  const cats = ["All", "Defensive", "AI / ML", "Tools"];
+  const cats = ["All", ...Array.from(new Set(PROJECTS.map(p => p.cat)))];
   const shown = filter === "All" ? PROJECTS : PROJECTS.filter(p => p.cat === filter);
 
   return (
@@ -553,7 +553,7 @@ function Projects() {
         </div>
         <div className="proj-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(340px,1fr))", gap: 22 }}>
           {shown.map((p, i) => (
-            <div key={p.title} className={`gcard rv proj-wrap d${Math.min(i + 1, 5)}`} style={{ borderRadius: 20, overflow: "hidden", cursor: "pointer" }}>
+            <div key={p.title} className={`gcard proj-wrap d${Math.min(i + 1, 5)}`} style={{ borderRadius: 20, overflow: "hidden", cursor: "pointer" }}>
               <div style={{ height: 196, overflow: "hidden", position: "relative", background: dark ? "#0f172a" : "#e2e8f0" }}>
                 <img src={p.img} alt={p.title} className="proj-img" style={{ width: "100%", height: "100%", objectFit: "cover" }} onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} />
                 <div className="proj-overlay" />
