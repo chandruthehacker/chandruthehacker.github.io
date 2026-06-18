@@ -142,6 +142,11 @@ const CSS = `
     .nav-resume{display:none!important;}
     .mob-menu{right:8px!important;}
   }
+  /* ── HERO RESUME BUTTON — only visible on ≤370px ── */
+  .hero-resume-btn{display:none;}
+  @media(max-width:370px){
+    .hero-resume-btn{display:inline-flex!important;}
+  }
 `;
 
 /* ─── REVEAL HOOK ─────────────────────────────────────────────────── */
@@ -326,6 +331,11 @@ function Hero({ dark: isDark }: { dark: boolean }) {
               onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = "rgba(124,58,237,0.08)"; el.style.borderColor = "rgba(124,58,237,0.4)"; }}
               onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = "transparent"; el.style.borderColor = "var(--border)"; }}>
               ✉ Get in touch
+            </a>
+            {/* Resume button — only visible on ≤370px when navbar Resume is hidden */}
+            <a className="hero-resume-btn" href={RESUME_URL} target="_blank" rel="noreferrer"
+              style={{ alignItems: "center", gap: 6, background: "linear-gradient(135deg,#7c3aed,#2563eb)", color: "#fff", textDecoration: "none", padding: "14px 28px", borderRadius: 12, fontSize: 15, fontWeight: 700, fontFamily: "'Inter',sans-serif", boxShadow: "0 8px 28px rgba(124,58,237,0.38)" }}>
+              Resume ↗
             </a>
           </div>
           <div className="stat-row" style={{ display: "flex", gap: 36, flexWrap: "wrap" }}>
