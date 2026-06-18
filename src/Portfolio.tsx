@@ -135,6 +135,13 @@ const CSS = `
     /* Education: hide logo image on very small screens to give content more room */
     .edu-logo{display:none!important;}
   }
+  /* ── TINY SCREENS ≤380px — hide Resume from navbar, tighten spacing ── */
+  @media(max-width:380px){
+    .nav-pill{left:8px!important;right:8px!important;padding:6px 10px!important;gap:6px!important;}
+    .nav-brand{font-size:13px!important;}
+    .nav-resume{display:none!important;}
+    .mob-menu{right:8px!important;}
+  }
 `;
 
 /* ─── REVEAL HOOK ─────────────────────────────────────────────────── */
@@ -243,7 +250,7 @@ function Navbar({ dark: isDark, setDark, active }: { dark: boolean; setDark: (v:
         <div className="nav-divider" />
 
         {/* ── RESUME ── */}
-        <a href={RESUME_URL} target="_blank" rel="noreferrer"
+        <a className="nav-resume" href={RESUME_URL} target="_blank" rel="noreferrer"
           style={{ background: "linear-gradient(135deg,#7c3aed,#2563eb)", color: "#fff", textDecoration: "none", padding: "8px 18px", borderRadius: 100, fontSize: 13, fontWeight: 700, fontFamily: "'Inter',sans-serif", whiteSpace: "nowrap", transition: "all 0.3s ease", boxShadow: "0 4px 20px rgba(124,58,237,0.4)", flexShrink: 0 }}
           onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 6px 28px rgba(124,58,237,0.65)"; (e.currentTarget as HTMLElement).style.transform = "scale(1.04)"; }}
           onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 20px rgba(124,58,237,0.4)"; (e.currentTarget as HTMLElement).style.transform = "none"; }}>
@@ -268,6 +275,11 @@ function Navbar({ dark: isDark, setDark, active }: { dark: boolean; setDark: (v:
               {n.label}
             </button>
           ))}
+          {/* Resume link — always visible in dropdown (critical on ≤380px where navbar Resume is hidden) */}
+          <a href={RESUME_URL} target="_blank" rel="noreferrer"
+            style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginTop: 6, background: "linear-gradient(135deg,#7c3aed,#2563eb)", color: "#fff", textDecoration: "none", padding: "11px 16px", borderRadius: 12, fontFamily: "'Inter',sans-serif", fontSize: 14, fontWeight: 700 }}>
+            Resume ↗
+          </a>
         </div>
       )}
     </>
