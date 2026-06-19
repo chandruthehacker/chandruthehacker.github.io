@@ -48,7 +48,7 @@ export const BIO = {
   cgpa:        "8.01",
   period:      "2020 – 2023",                        // FIXED: actual degree years
   degree:      "B.Sc Computer Science",
-  email:       "cyberchandru87@gmail.com",
+  email:       "chandraprakash.soc@gmail.com",
   available:   "Actively Seeking SOC Analyst & Security Analyst Roles",
   location:    "Dindigul, India",
   profileImg:  "/images/profile.webp",
@@ -362,7 +362,7 @@ export const CERTS = [
 
 /* ── SOCIAL LINKS ── */
 export const SOCIALS = [
-  { icon: "✉️", label: "Email",       val: "cyberchandru87@gmail.com",  href: "mailto:cyberchandru87@gmail.com",                   c: "#7c3aed" },
+  { icon: "✉️", label: "Email",       val: "chandraprakash.soc@gmail.com",  href: "mailto:chandraprakash.soc@gmail.com",                   c: "#7c3aed" },
   { icon: "💼", label: "LinkedIn",    val: "chandraprakash-soc",         href: "https://www.linkedin.com/in/chandraprakash-soc/",   c: "#2563eb" },
   { icon: "⬡",  label: "GitHub",      val: "0xchandru",                  href: "https://github.com/0xchandru",                     c: "#6b7280" },
   { icon: "🎯", label: "TryHackMe",   val: "0xchandru",                  href: "https://tryhackme.com/p/0xchandru",                 c: "#06b6d4" },

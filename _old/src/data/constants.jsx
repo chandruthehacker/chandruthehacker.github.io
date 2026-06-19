@@ -81,7 +81,7 @@ export const Bio = {
   github: socialLinks.github,
   resume:
     "https://drive.google.com/file/d/1uXPipbplMNvSRy67olJzTWVWdvJSgHgp/view?usp=sharing",
-  gmail: "cyberchandru87@gmail.com",
+  gmail: "chandraprakash.soc@gmail.com",
   phone: "+919786475035",
   linkedin: socialLinks.linkedin,
   twitter: socialLinks.x,

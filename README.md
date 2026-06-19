@@ -33,7 +33,7 @@
 │   Name      :  Chandraprakash C                                     │
 │   Role      :  SOC Analyst (Fresher) — Actively Seeking Roles       │
 │   Location  :  Dindigul, Tamil Nadu, India                          │
-│   Email     :  cyberchandru87@gmail.com                             │
+│   Email     :  chandraprakash.soc@gmail.com                             │
 │   Degree    :  B.Sc Computer Science — GTN Arts College (2020–2023) │
 │   CGPA      :  8.01 / 10                                            │
 │                                                                     │
@@ -218,8 +218,8 @@ My approach: build real things, document everything, and simulate production-gra
 
 <div align="center">
 
-<a href="mailto:cyberchandru87@gmail.com">
-  <img src="https://img.shields.io/badge/Email-cyberchandru87@gmail.com-7c3aed?style=for-the-badge&logo=gmail&logoColor=white&labelColor=0f172a" />
+<a href="mailto:chandraprakash.soc@gmail.com">
+  <img src="https://img.shields.io/badge/Email-chandraprakash.soc@gmail.com-7c3aed?style=for-the-badge&logo=gmail&logoColor=white&labelColor=0f172a" />
 </a>
 
 <a href="https://www.linkedin.com/in/chandraprakash-soc/">
