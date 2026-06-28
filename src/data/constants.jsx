@@ -25,7 +25,7 @@ export const NAV_ITEMS = [
 
 /* ── RESUME LINK ── */
 export const RESUME_URL =
-  "https://drive.google.com/file/d/1uXPipbplMNvSRy67olJzTWVWdvJSgHgp/view";
+  "https://drive.google.com/file/d/1BfKEt23J9QgF_PbOscd2GmYI6lNbARVW/view?usp=sharing";
 
 /* ── HERO STATS BAR ──
    Rule: Every number must survive a recruiter asking "how?" in an interview.
