@@ -205,15 +205,15 @@ export const EXPERIENCE = [
 
     stats: [
       { v: "Top 1%",  l: "Global rank (3M+ users)", c: "#a78bfa" },
-      { v: "149+",    l: "Rooms completed",          c: "#60a5fa" },
-      { v: "28",      l: "Badges earned",            c: "#34d399" },
-      { v: "17,374",  l: "Points",                   c: "#fbbf24" },
+      { v: "200+",    l: "Rooms completed",          c: "#60a5fa" },
+      { v: "37+",      l: "Badges earned",            c: "#34d399" },
+      { v: "20,000+",  l: "Points",                   c: "#fbbf24" },
     ],
 
     points: [
       "Earned SOC Level 1 certification — demonstrated proficiency in SIEM operations, alert triage, phishing analysis, network log forensics, and end-to-end incident handling across simulated real-world attack scenarios.",
       "Ranked top 1% globally out of 3M+ users — driven by consistent room completion across both offensive and defensive domains, reflecting sustained effort over an extended period rather than short-burst study.",
-      "Completed 149+ rooms and earned 28 badges across four structured paths — Cyber Defense, Digital Forensics, OSINT, and Network Security — building validated, hands-on depth in each area.",
+      "Completed 200+ rooms and earned 28 badges across four structured paths — Cyber Defense, Digital Forensics, OSINT, and Network Security — building validated, hands-on depth in each area.",
       "Currently advancing through SOC Level 2 — deepening expertise in threat hunting, detection engineering, adversary emulation, and NIST-aligned incident response at a senior analyst level.",
     ],
 
@@ -327,7 +327,15 @@ export const PROJECTS = [
    ──────────────────────────────────────────────────────────────────────── */
 export const CERTS = [
   {
-    img:    "/images/cert-tryhackme.webp",
+    img:    "/images/cert-soclevel2-tryhackme.webp",
+    issuer: "TryHackMe",
+    title:  "SOC Level 2",
+    date:   "July 2026",
+    link:   "https://tryhackme.com/certificate/THM-STZB1WEDBN",
+    accent: "#06b6d4",
+  },
+  {
+    img:    "/images/cert-soclevel1-tryhackme.webp",
     issuer: "TryHackMe",
     title:  "SOC Level 1",
     date:   "June 2026",
